@@ -1,0 +1,137 @@
+@startuml
+
+class Archaios{
+    - int idUser
+    - int idGroup
+    - String playName
+    - Stats statistics
+    + main()
+    - preInit()
+    - init()
+    - end()
+    - save()
+    - menu()
+}
+
+class UserInputParser{
+    + getUserInputAsInteger()
+    + getUserInputAsChar()
+    + getUserInputAsString()
+}
+
+class Menu{
+
+    + askUserForSkill()
+    + printArcheologists()
+    + hireArcheologist()
+    + licenseArcheologist()
+}
+
+class Stats{
+    - int points
+    + getPlaceStats()
+    + getTreasureStatsByRegion()
+    + getTreasureStatsByType()
+}
+
+class Repository{
+    + getTreasure()
+    + getRegion()
+    + getSkill()
+}
+
+class Treasure{
+    - String idCode
+    - ETreasureRarity rarity
+    - ETreasureType type
+    - int parts
+    - int points
+}
+
+abstract Region{
+    + getAllTreasures()
+    + getRandomTreasure()
+    + getTreasuresOfRarity()
+}
+
+class Grecia{
+    + static String idCode
+    + static List<Treasure> treasureCollection
+}
+
+class Archeologist{
+    - String name
+    - int exp
+    - Region specialization
+    - List<Skill> skillCollection
+    - getLevel()
+    - getSkillBonus()
+}
+
+class Skill{
+
+}
+
+class UtilsHelper{
+    + ucfirst()
+    + ucfirstAll()
+    + getPercent()
+    + getRandomIdxs()
+}
+
+class CodeHelper{
+    + getRegion()
+    + getType()
+    + getTreasureNumber()
+    + getTreasurePart()
+    + getFullTReasure()
+}
+
+interface IOperation {
+    + getName()
+    + operation()
+}
+
+enum ETerrainType{
+    SMALL
+    MEDIUM
+    BIG
+}
+
+enum ESkillType{
+    TREASURE
+    EXCAVATION
+    TERRAIN
+    EXPERT
+}
+
+enum ETreasureRarity{
+    COMMON
+    UNCOMMON
+    RARE
+
+    + getCode()
+    + getByCode()
+}
+
+enum ETreasureType{
+    COIN
+    TILE
+    BEAD
+    JEWELRY
+    CERAMIC
+    EQUIP
+    STELE
+    FRAGMENT
+
+    + getCode()
+    + getByCode()
+}
+
+Archaios *-- Stats
+
+Repository o-- Treasure
+
+Region <|-- Grecia
+
+@enduml
