@@ -1,4 +1,7 @@
+package people;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class Archeologist {
     public String name;

@@ -1,3 +1,8 @@
+package people;
+
+import java.util.List;
+import java.util.Map;
+
 public class Skill {
     public int getBonusRandomTreasures(){
 
