@@ -1,8 +1,16 @@
 @startuml
+top to bottom direction
+
+package "org.accesodatos.archaios"{
+
+annotation Mike
+annotation Javi
+annotation Rubén
+annotation Sergio
 
 class Archaios{
-    - int idUser
-    - int idGroup
+    - String idUser
+    - String idGroup
     - String playName
     - Stats statistics
     + main()
@@ -20,11 +28,18 @@ class UserInputParser{
 }
 
 class Menu{
+    - ArrayList<IOperation> operationCollection
 
     + askUserForSkill()
     + printArcheologists()
     + hireArcheologist()
     + licenseArcheologist()
+    + printSkills()
+    + atlas()
+}
+
+class Atlas{
+    - ArrayList<Region> regionCollection
 }
 
 class Stats{
@@ -68,8 +83,36 @@ class Archeologist{
     - getSkillBonus()
 }
 
-class Skill{
+abstract Skill{
+    + int getBonusRandomTreasures()
+    + Map<ETreasureRarity, Integer> getBonusTreasures()
+    + float getBonusTreasurePercentage()
+    + int getBonusActions()
+    + float getBonusActionsPercengate()
+    + int getRevelationEmpty()
+    + int getRevelationTreasure()
+    + List<ETerrainShape> getBonusTerrainShapes()
+}
 
+class Excavation{
+    - Map<ETerrainShape, Pair<Integer, Integer>> smallShapes
+    - Map<ETerrainShape, Pair<Integer, Integer>> mediumShapes
+    - Map<ETerrainShape, Pair<Integer, Integer>> bigShapes
+    - ArrayList<Treasure> foundTreasures
+    - ArrayList<ArrayList<Treasure>> grid
+
+    + generateGrid()
+    + excavateIn(Pair<Integer, Integer> coordinates)
+    + excavationFinalization()
+}
+
+class Zeraf{
+    - String idUser
+    + sendData(ArrayList<String> treasureCodeCollection)
+}
+
+class ZerafFactory{
+    + createZeraf(String idUser)
 }
 
 class UtilsHelper{
@@ -84,7 +127,7 @@ class CodeHelper{
     + getType()
     + getTreasureNumber()
     + getTreasurePart()
-    + getFullTReasure()
+    + getFullTreasure()
 }
 
 interface IOperation {
@@ -96,6 +139,14 @@ enum ETerrainType{
     SMALL
     MEDIUM
     BIG
+}
+
+enum ETerrainShape{
+    ROW
+    HORIZONTAL
+    COLUMN
+    VERTICAL
+    SQUARE
 }
 
 enum ESkillType{
@@ -129,9 +180,33 @@ enum ETreasureType{
 }
 
 Archaios *-- Stats
+Menu <|-- IOperation
+Archaios o-- Menu
+Menu o-- Atlas
+Menu o-- UserInputParser
+Atlas o-- CodeHelper
 
 Repository o-- Treasure
+Repository o-- Region
+
+Treasure *-- ETreasureType
+Treasure *-- ETreasureRarity
 
 Region <|-- Grecia
 
+Archeologist o-- Skill
+Skill o-- ESkillType
+Archeologist o-- UtilsHelper
+
+Excavation o-- ETerrainShape
+Excavation 0-- ETerrainType
+
+ZerafFactory -- Zeraf
+
+Mike -- Archaios
+Rubén -- Repository
+Javi -- Archeologist
+Sergio -- Excavation
+Mike -- ZerafFactory
+}
 @enduml
