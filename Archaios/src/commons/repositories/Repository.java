@@ -1,4 +1,4 @@
-package repositories;
+package commons.repositories;
 
 import java.util.ArrayList;
 import java.util.HashMap;

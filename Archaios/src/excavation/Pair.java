@@ -1,4 +1,4 @@
-package org.accesodatos.archaios.Excavation;
+package excavation;
 
 import java.util.Objects;
 
