@@ -24,7 +24,7 @@ public class Menu {
         System.out.println(TitleGenerator.generateTitle("Archaios", '='));
 
         for(int i = 0; i < entryCollection.size(); i++){
-            System.out.println(i + ". " + entryCollection.get(i).getName());
+            System.out.println((i + 1) + ". " + entryCollection.get(i).getName());
         }
 
         System.out.println("0. Exit");

@@ -6,10 +6,9 @@ public class ExcavateMenu implements IOperation{
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getName'");
+        return "Excavación";
     }
-
+    
     @Override
     public void operation() {
         // TODO Auto-generated method stub

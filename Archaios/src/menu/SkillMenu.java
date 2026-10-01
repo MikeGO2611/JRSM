@@ -6,8 +6,7 @@ public class SkillMenu implements IOperation {
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getName'");
+        return "Estadísticas";
     }
 
     @Override

@@ -6,8 +6,7 @@ public class AtlasMenu implements IOperation{
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getName'");
+        return "Atlas";
     }
 
     @Override

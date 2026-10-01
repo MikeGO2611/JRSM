@@ -1,3 +1,4 @@
+package main;
 import menu.Menu;
 
 public class Archaios {
