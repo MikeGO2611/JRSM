@@ -1,19 +1,35 @@
-import regions.Countries.*;
-
-import regions.Region;
-
-import commons.repositories.*;
-import treasures.*;
+import menu.Menu;
 
 public class Archaios {
+    private static String idUser;
+    private static String idGroup;
+    private static String playName;
+    //private static Stats statistics;
+    
     public static void main(String[] args) {
-        // pruebas de funcionalidad
-        Greece greece = new Greece();
-        
-        Repository<Region> repositorio = new Repository<Region>();
-        repositorio.addElement(greece);
+        preInit();
+        init();
+        menu();
+    }
 
-        System.out.println(greece.getRandomTreasure().getName());
-        System.out.println(greece.getRandomRarityTreasure(ETreasureRarity.RARE).getName());
+    private static void menu(){
+        Menu mainMenu = new Menu();
+        mainMenu.start();
+    }
+    
+    private static void preInit(){
+        
+    }
+
+    private static void init(){
+        
+    }
+
+    private static void end(){
+        
+    }
+
+    private static void save(){
+        
     }
 }
