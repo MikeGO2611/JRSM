@@ -8,7 +8,7 @@ import treasures.Treasure;
 public class Greece extends Region {
    public static final String CODE = "GRC";
 
-   public Greece() {
+   public Greece(){
       super("GRC", "Grecia");
       this.treasures.add(new Treasure("Calco griego", "GRC", ETreasureType.COIN, "001", 1, 1, ETreasureRarity.COMMON, "Moneda griega de cobre que tenía el menor valor."));
       this.treasures.add(new Treasure("Óbolo griego", "GRC", ETreasureType.COIN, "002", 1, 1, ETreasureRarity.COMMON, "Moneda griega de plata de poco valor."));
@@ -34,4 +34,8 @@ public class Greece extends Region {
       this.treasures.add(new Treasure("Casco frigio", "GRC", ETreasureType.EQUIP, "003", 21, 6, ETreasureRarity.RARE, "Casco de bronce con una protuberancia en la parte superior y dos placas laterales para la cara."));
       this.treasures.add(new Treasure("Xifos", "GRC", ETreasureType.EQUIP, "004", 25, 4, ETreasureRarity.UNCOMMON, "Espada de bronce utilizada por los hoplitas griegos."));
    }
+
+    public String getCode() {
+        return CODE;
+    }
 }

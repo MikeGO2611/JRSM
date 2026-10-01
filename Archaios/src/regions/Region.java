@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Region {
+import commons.repositories.ICode;
+
+public abstract class Region implements ICode {
     private final String code;
     private final String name;
     protected List<Treasure> treasures = new ArrayList<>();
