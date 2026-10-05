@@ -6,7 +6,7 @@ package commons.operations;
  */
 public interface IOperation {
     /**
-     * @return El nombre de la opración, el texto a mostrar en el menú principal y como cabecera de la sección.
+     * @return El nombre de la operación, el texto a mostrar en el menú principal y como cabecera de la sección.
      */
     public String getName();
 
