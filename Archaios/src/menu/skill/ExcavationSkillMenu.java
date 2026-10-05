@@ -1,12 +1,12 @@
-package menu;
+package menu.skill;
 
 import commons.operations.IOperation;
 
-public class SkillMenu implements IOperation {
+public class ExcavationSkillMenu implements IOperation {
 
     @Override
     public String getName() {
-        return "Estadísticas";
+        return "Excavación";
     }
 
     @Override

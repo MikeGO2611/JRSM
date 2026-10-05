@@ -1,12 +1,12 @@
-package menu;
+package menu.archeologist;
 
 import commons.operations.IOperation;
 
-public class ArcheologistMenu implements IOperation {
+public class ListArcheologists implements IOperation{
 
     @Override
     public String getName() {
-        return "Arqueólogos";
+        return "Ver Arqueólogos";
     }
 
     @Override

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import commons.operations.IOperation;
+import menu.archeologist.ArcheologistMenu;
+import menu.skill.SkillMenu;
 
 public class Menu {
 
@@ -21,12 +23,10 @@ public class Menu {
     }
 
     public void start(){
-        System.out.println(TitleGenerator.generateTitle("Archaios", '='));
-
-        for(int i = 0; i < entryCollection.size(); i++){
-            System.out.println((i + 1) + ". " + entryCollection.get(i).getName());
-        }
-
-        System.out.println("0. Exit");
+        MenuGenerator.askUserMenuOption(
+                "Archaios", 
+                '=', entryCollection, 
+                "0. Salir", 
+                "Opción no aceptada.");
     }
 }
