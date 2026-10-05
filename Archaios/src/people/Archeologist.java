@@ -41,19 +41,19 @@ public class Archeologist {
     }*/
     //Si tiene especializacion al escavar se le llamaria si tiene especializacion
     public void extrasExpSpecialization(){
-        extraActions = exp/25;
-        extraRandomTreasure = exp/50;
-        extraCTreasure = exp/50;
-        extraITreasure = exp/100;
-        extraRTreasure = exp/200;
+        extraActions = this.exp/25;
+        extraRandomTreasure = this.exp/50;
+        extraCTreasure = this.exp/50;
+        extraITreasure = this.exp/100;
+        extraRTreasure = this.exp/200;
     }
 
     public void addExp(int exp){
         int levelInicial = level;
         this.exp += exp;
         if(level != 5){
-            if(exp > maxExp){
-                exp /= 50;
+            while(this.exp >= maxExp){
+                this.exp = exp-maxExp;
                 maxExp += 50;
                 level++;
             }
