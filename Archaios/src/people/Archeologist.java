@@ -7,12 +7,12 @@ import java.util.Scanner;
 public class Archeologist {
     private String name = null;
     private int exp = 0;
+    private int maxExp = 50;
     private int level= 0;
     private String specialization = null; 
-    boolean haveSpecialization = false;
     private List<Skill> skillCollection = new ArrayList<>();
     private int extraActions = 0;
-    private int extraRandomTreasura = 0;
+    private int extraRandomTreasure = 0;
     private int extraCTreasure = 0;
     private int extraITreasure = 0;
     private int extraRTreasure = 0;
@@ -21,9 +21,28 @@ public class Archeologist {
         this.name = name;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
+    /*public void archeologistInformation(){
+        StringBuilder information = new StringBuilder();
+        information.append("--------------------").append(this.name)
+        .append("--------------------\n")
+        .append("Nivel: ").append(this.level)
+        .append("Exp: ").append(exp).append("/");
+        if(level!=5) {information.append(maxExp);};
+        information.append("\nTerrenos: \n").append("  -Pequeños\n");
+        if(level >= 2){information.append("  -Mediano\n");};
+        if(level >= 4){information.append("  -Grande\n");};
+        information.append("Habilidades: ");
+
+        System.out.println(information);
+    }*/
+    //Si tiene especializacion al escavar se le llamaria si tiene especializacion
     public void extrasExpSpecialization(){
         extraActions = exp/25;
-        extraRandomTreasura = exp/50;
+        extraRandomTreasure = exp/50;
         extraCTreasure = exp/50;
         extraITreasure = exp/100;
         extraRTreasure = exp/200;
@@ -33,22 +52,16 @@ public class Archeologist {
         int levelInicial = level;
         this.exp += exp;
         if(level != 5){
-            if(exp >= 50){
-                if(exp < 100){
-                    level = 1;
-                }else if(exp < 150){
-                    level = 2;
-                }else if(exp < 200){
-                    level = 3;
-                }else if(exp < 250){
-                    level = 4;
-                }else{
-                    level = 5;
-                    setSpecialization();
-                    haveSpecialization = true;
-                }
+            if(exp > maxExp){
+                exp /= 50;
+                maxExp += 50;
+                level++;
+            }
+            if(level == 5){
+                setSpecialization();
             }
         }
+        if(level == 5){extrasExpSpecialization();};
         //Cambiar el addSkill para hacer q dea una Skill aleatoria.
         if(levelInicial != level){addSkill();}
     }
@@ -69,6 +82,8 @@ public class Archeologist {
         return this.skillCollection;
     }
 
+    //Region seria darle al usuario una lista de las regiones que puede escoger y segun 
+    //la que escoja se devuelve el nombre.
     public void setSpecialization(){
         this.specialization = Region;
     }
@@ -85,5 +100,21 @@ public class Archeologist {
         String skill = scn.nextLine();
 
         this.skillCollection.add(skill);
+    }
+
+    public int getExtraActions() {
+        return extraActions;
+    }
+    public int getExtraRandomTreasure() {
+        return extraRandomTreasure;
+    }
+    public int getExtraCTreasure() {
+        return extraCTreasure;
+    }
+    public int getExtraITreasure() {
+        return extraITreasure;
+    }
+    public int getExtraRTreasure() {
+        return extraRTreasure;
     }
 }
