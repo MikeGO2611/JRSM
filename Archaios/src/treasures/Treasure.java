@@ -1,5 +1,10 @@
 package treasures;
 
+/**
+ * Clase Treasure
+ * Contiene los atributos necesarios para ser almacenado
+ * @author Rubén Hernández
+ */
 public class Treasure {
     private String name;
     private String description;
@@ -8,6 +13,18 @@ public class Treasure {
     private ETreasureRarity rarity;
     private int parts;
     private int points;
+
+    /**
+     * Constructor que genera el código del tesoro a partir de region, type y codeNumber.
+     * @param name
+     * @param region
+     * @param type
+     * @param codeNumber
+     * @param parts
+     * @param points
+     * @param rarity
+     * @param description
+     */
 
     public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int points,
             ETreasureRarity rarity, String description) {

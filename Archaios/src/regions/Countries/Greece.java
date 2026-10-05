@@ -8,6 +8,10 @@ import treasures.Treasure;
 public class Greece extends Region {
    public static final String CODE = "GRC";
 
+   /**
+    * Constructor de Greece.
+    * Al crearse crea todos los tesoros de la región y los añade a la lista de la clase padre. 
+    */ 
    public Greece(){
       super("GRC", "Grecia");
       this.treasures.add(new Treasure("Calco griego", "GRC", ETreasureType.COIN, "001", 1, 1, ETreasureRarity.COMMON, "Moneda griega de cobre que tenía el menor valor."));
