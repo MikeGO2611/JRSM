@@ -1,9 +1,22 @@
 package people;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Skill {
+    private String name;
+    private String description;
+    private String type;
+    private List<Skill> dependencies = new ArrayList<>();
+    private List<Skill> incompatibilities = new ArrayList<>();
+
+    public Skill(String name, String description, String type){
+        this.name = name;
+        this.description = description;
+        this.type = type;
+    }
+
     public int getBonusRandomTreasures(){
         return -1;
     }
