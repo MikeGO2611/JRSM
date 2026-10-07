@@ -10,13 +10,20 @@ public class Archeologist {
     private int maxExp = 50;
     private int level= 0;
     private String specialization = null; 
+    private String rarity;
     private List<Skill> skillCollection = new ArrayList<>();
     private int extraActions = 0;
     private int extraRandomTreasure = 0;
     private int extraCTreasure = 0;
     private int extraITreasure = 0;
     private int extraRTreasure = 0;
+    private List<ETerrainShape> terrainShapes = new ArrayList<>();
 
+    public Archeologist(String name, String rarity) {
+    this.name = name;
+    this.rarity = rarity;
+    this.terrainShapes.add(ETerrainShape.CUADRADO); // Asumiendo que el enum lo llama CUADRADO o similar
+}
     public void setName(String name){
         this.name = name;
     }
@@ -48,23 +55,25 @@ public class Archeologist {
         extraRTreasure = this.exp/200;
     }
 
-    public void addExp(int exp){
-        int levelInicial = level;
-        this.exp += exp;
-        if(level != 5){
-            while(this.exp >= maxExp){
-                this.exp = exp-maxExp;
-                maxExp += 50;
-                level++;
-            }
-            if(level == 5){
-                setSpecialization();
-            }
+    public void addExp(int expGained) {
+    int levelInicial = this.level;
+    this.exp += expGained;
+    while (this.level < 5 && this.exp >= this.maxExp) {
+        this.exp -= this.maxExp;
+        this.level++;
+        this.maxExp += 50;
+        if (this.level == 5) {
+            break; 
         }
-        if(level == 5){extrasExpSpecialization();};
-        //Cambiar el addSkill para hacer q dea una Skill aleatoria.
-        if(levelInicial != level){addSkill();}
     }
+    if (this.level == 5) {
+        extrasExpSpecialization();
+    }
+    int levelsGained = this.level - levelInicial;
+    for (int i = 0; i < levelsGained; i++) {
+        addSkill(); 
+    }
+}
 
     public int getLevel(){
         return this.level;
@@ -117,4 +126,22 @@ public class Archeologist {
     public int getExtraRTreasure() {
         return extraRTreasure;
     }
+
+    public void addTerrainShape(ETerrainShape shape) {
+    if (!this.terrainShapes.contains(shape)) {
+        this.terrainShapes.add(shape);
+    }
+
+    public String getRarity() {
+    return this.rarity;
+}
+
+    public void setRarity(String rarity) {
+        this.rarity = rarity;
+    }
+
+    public List<ETerrainShape> getTerrainShapes() {
+        return this.terrainShapes;
+    }
+}
 }
