@@ -1,12 +1,12 @@
-package menu;
+package menu.treasure;
 
 import commons.operations.IOperation;
 
-public class StatsMenu implements IOperation{
+public class TreasureCatalogMenu implements IOperation {
 
     @Override
     public String getName() {
-        return "Estadísticas";
+        return "Catálogo de tesoros";
     }
 
     @Override

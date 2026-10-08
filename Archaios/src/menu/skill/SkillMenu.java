@@ -19,7 +19,7 @@ public class SkillMenu implements IOperation {
 
     @Override
     public String getName() {
-        return "Estadísticas";
+        return "Habilidades";
     }
 
     @Override

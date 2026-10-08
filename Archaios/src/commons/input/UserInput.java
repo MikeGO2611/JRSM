@@ -32,7 +32,7 @@ public class UserInput {
     public static int getUserIntegerInRange(int min, int max, String errorMessage){
         int userInput = getUserInteger();
 
-        while (userInput < min || userInput >= max){
+        while (userInput < min || userInput > max){
             System.out.println(errorMessage);
             userInput = getUserInteger();
         }

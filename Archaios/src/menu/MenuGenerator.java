@@ -8,10 +8,12 @@ import commons.operations.IOperation;
 public class MenuGenerator {
 
     public static void askUserMenuOption(String title, Character ch, List<IOperation> entryCollection, String exitOption, String errorMessage){
-        printMenu(title, ch, entryCollection, exitOption);
-
         boolean userExit = false;
         while (!userExit) {
+            // Para ocultar el estado de la consola anterior:
+            //System.out.print("\033[H\033[2J");
+
+            printMenu(title, ch, entryCollection, exitOption);
             int userInput = UserInput.getUserIntegerInRange(0, entryCollection.size(), errorMessage);
             
             if(userInput != 0) entryCollection.get(userInput - 1).operation();

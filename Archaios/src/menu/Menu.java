@@ -5,7 +5,12 @@ import java.util.List;
 
 import commons.operations.IOperation;
 import menu.archeologist.ArcheologistMenu;
+import menu.atlas.AtlasMenu;
+import menu.excavation.ExcavateMenu;
+import menu.license.LicenseMenu;
 import menu.skill.SkillMenu;
+import menu.stats.StatsMenu;
+import menu.treasure.TreasureCatalogMenu;
 
 public class Menu {
 
@@ -25,7 +30,8 @@ public class Menu {
     public void start(){
         MenuGenerator.askUserMenuOption(
                 "Archaios", 
-                '=', entryCollection, 
+                '=',
+                entryCollection, 
                 "0. Salir", 
                 "Opción no aceptada.");
     }

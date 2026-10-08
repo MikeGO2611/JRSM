@@ -1,4 +1,4 @@
-package menu;
+package menu.atlas;
 
 import commons.operations.IOperation;
 

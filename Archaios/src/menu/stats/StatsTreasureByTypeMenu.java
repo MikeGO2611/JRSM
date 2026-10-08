@@ -1,12 +1,12 @@
-package menu;
+package menu.stats;
 
 import commons.operations.IOperation;
 
-public class LicenseMenu implements IOperation{
+public class StatsTreasureByTypeMenu implements IOperation{
 
     @Override
     public String getName() {
-        return "Licencias";
+        return "Por tipo";
     }
 
     @Override

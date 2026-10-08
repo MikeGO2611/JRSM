@@ -1,4 +1,4 @@
-package menu;
+package menu.excavation;
 
 import commons.operations.IOperation;
 

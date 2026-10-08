@@ -24,16 +24,12 @@ public class ArcheologistMenu implements IOperation {
 
     @Override
     public void operation() {
-        boolean userExit = false;
-
-        while (!userExit) {
-            MenuGenerator.askUserMenuOption(
-                getName(), 
-                ':', 
-                entryCollection, 
-                "0. Volver", 
-                "Operación no válida.");
-        }
+        MenuGenerator.askUserMenuOption(
+            getName(), 
+            ':', 
+            entryCollection, 
+            "0. Volver", 
+            "Operación no válida.");
     }
 
 }
