@@ -16,6 +16,7 @@ public class Skill {
         this.description = description;
         this.type = type;
     }
+    
 
     public int getBonusRandomTreasures(){
         return -1;
