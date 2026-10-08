@@ -16,37 +16,22 @@ public class Skill {
         this.description = description;
         this.type = type;
     }
-    
+    public String getName() { return name; }
+    public String getDescription() { return description; }
+    public String getType() { return type; }
+    public List<Skill> getDependencies() { return dependencies; }
+    public List<Skill> getIncompatibilities() { return incompatibilities; }
 
-    public int getBonusRandomTreasures(){
-        return -1;
-    }
+    public void addDependency(Skill skill) { this.dependencies.add(skill); }
+    public void addIncompatibility(Skill skill) { this.incompatibilities.add(skill); }
 
-    public Map<ETreasureRarity, Integer> getBonusTreasures(){
-        return null;
-    }
-
-    public float getBonusTreasurePercentage(){
-        return -1;
-    }
-
-    public int getBonusActions(){
-        return -1;
-    }
-
-    public float getBonusActionsPercentage(){
-        return -1;
-    }
-
-    public int getRevelationEmpty(){
-        return -1;
-    }
-
-    public int getRevelationTreasure(){
-        return -1;
-    }
-
-    public List<ETerrainShape> getBonusTerrainShapes(){
-        return -1;
-    }
+    public int getBonusActions() { return 0; }
+    public float getBonusActionsPercentage() { return 1.0f; } 
+    public int getBonusRandomTreasures() { return 0; }
+    public int getBonusCommonTreasures() { return 0; }
+    public int getBonusUncommonTreasures() { return 0; }
+    public int getBonusRareTreasures() { return 0; }
+    public int getRevelationEmpty() { return 0; }
+    public int getRevelationTreasure() { return 0; }
+    public List<ETerrainShape> getBonusTerrainShapes() { return new ArrayList<>(); }
 }
