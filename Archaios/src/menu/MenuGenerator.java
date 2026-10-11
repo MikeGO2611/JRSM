@@ -5,8 +5,26 @@ import java.util.List;
 import commons.input.UserInput;
 import commons.operations.IOperation;
 
-public class MenuGenerator {
+/**
+ * Utilidad para generar menús en base a entradas.
+ * Clase estática, no se puede instanciar ni heredar.
+ * @author Miguel González Obenza
+ */
+final public class MenuGenerator {
 
+    // Definiendo el constructor como un método privado se impide la instanciación de la clase.
+    private MenuGenerator(){
+
+    }
+
+    /**
+     * Imprime el menú en base al {@code entryCollection} y pide al usuario su selección.
+     * @param title el título del menú
+     * @param ch el decorador que rodea el título del menú
+     * @param entryCollection la colección de entradas del menú
+     * @param exitOption se mostrará para la opción de salida
+     * @param errorMessage se mostrará en caso de que el usuario elija una opción inválida
+     */
     public static void askUserMenuOption(String title, Character ch, List<IOperation> entryCollection, String exitOption, String errorMessage){
         boolean userExit = false;
         while (!userExit) {
@@ -21,11 +39,25 @@ public class MenuGenerator {
         }
     }
 
+    /**
+     * Imprime un menú en base al {@code entryCollection}
+     * @param title el título del menú
+     * @param ch el decorador que rodea el título del menú
+     * @param entryCollection la colección de entradas del menú
+     * @param exitOption el texto para la opción de salida
+     */
     private static void printMenu(String title, Character ch, List<IOperation> entryCollection, String exitOption) {
         System.out.println(MenuGenerator.generateMenu(title, ch, entryCollection));
         System.out.println(exitOption);
     }
 
+    /**
+     * Genera el {@code String} para el menú en base a {@code entryCollection}
+     * @param title el título del menú
+     * @param ch el decorador que rodea el título del menú
+     * @param entryCollection la colección de entradas del menú
+     * @return el menú generado
+     */
     private static String generateMenu(String title, Character ch, List<IOperation> entryCollection){
         StringBuilder sb = new StringBuilder();
 
@@ -40,6 +72,12 @@ public class MenuGenerator {
         return sb.toString();
     }
 
+    /**
+     * Genera un título decorándolo con caracteres.
+     * @param title el título
+     * @param ch el caracter de decoración
+     * @return el título generado
+     */
     private static String generateTitle(String title, Character ch){
         StringBuilder sb = new StringBuilder();
 

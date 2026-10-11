@@ -1,10 +1,20 @@
 package commons.input;
 
 import java.io.Console;
+import java.io.IOError;
 
+/**
+ * Utilidad para gestionar el input del usuario.
+ * @author Miguel González Obenza
+ */
 public class UserInput {
     private static Console console = System.console();
 
+    /**
+     * Pidea al usuario un número entero.
+     * Si el usuario no proporciona un número entero, se le vuelve a pedir hasta que lo introduzca.
+     * @return el número entero
+     */
     public static int getUserInteger(){
         int userInput = Integer.MIN_VALUE;
         boolean correctInput = false;
@@ -15,6 +25,8 @@ public class UserInput {
                 correctInput = true;
             } catch (NumberFormatException e){
                 System.out.println("\nEl input no es un número entero válido.\n");
+            } catch(IOError e){
+                System.err.println("Error de input o output.");
             }
         }
 

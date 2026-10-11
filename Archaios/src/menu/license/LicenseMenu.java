@@ -1,12 +1,11 @@
 package menu.license;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import commons.operations.IOperation;
-import menu.Menu;
-import menu.MenuGenerator;
 
+/**
+ * Menú con las opciones para las licencias.
+ * @author Miguel González Obenza
+ */
 public class LicenseMenu implements IOperation{
 
     @Override
@@ -17,6 +16,7 @@ public class LicenseMenu implements IOperation{
     @Override
     public void operation() {
         // TODO
+        throw new UnsupportedOperationException("Unimplemented method 'operation'");
     }
 
 }

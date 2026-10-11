@@ -12,11 +12,18 @@ import menu.skill.SkillMenu;
 import menu.stats.StatsMenu;
 import menu.treasure.TreasureCatalogMenu;
 
+/**
+ * Menú que sirve como punto de entrada para la interfaz con el usuario.
+ * @author Miguel González Obenza
+ */
 public class Menu {
 
     private List<IOperation> entryCollection = new ArrayList<>();
 
 
+    /**
+     * Inicializa el menú con sus entradas.
+     */
     public Menu(){
         entryCollection.add(new ArcheologistMenu());
         entryCollection.add(new SkillMenu());
@@ -27,6 +34,9 @@ public class Menu {
         entryCollection.add(new StatsMenu());
     }
 
+    /**
+     * Inicio del menú principal.
+     */
     public void start(){
         MenuGenerator.askUserMenuOption(
                 "Archaios", 

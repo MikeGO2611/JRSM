@@ -2,6 +2,10 @@ package menu.excavation;
 
 import commons.operations.IOperation;
 
+/**
+ * Menú con las opciones de excavación.
+ * @author Miguel González Obenza
+ */
 public class ExcavateMenu implements IOperation{
 
     @Override
