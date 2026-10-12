@@ -1,18 +1,33 @@
 package people;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TreasureSkill extends Skill {
-    private int common, uncommon, rare, random;
+    private int randomTreasures;
+    private Map<ETreasureRarity, Integer> bonusTreasures = new HashMap<>();
 
-    public TreasureSkill(String name, String description, int common, int uncommon, int rare, int random){
-        super(name, description, "tesoro");
-        this.common = common;
-        this.uncommon = uncommon;
-        this.rare = rare;
-        this.random = random;
+    public TreasureSkill(String name, String description, int randomTreasures, int common, int uncommon, int rare) {
+        super(name, description, ESkillType.TREASURE);
+        this.randomTreasures = randomTreasures;
+
+        if (common > 0) {
+            bonusTreasures.put(ETreasureRarity.COMMON, common);
+        }
+        if (uncommon > 0) {
+            bonusTreasures.put(ETreasureRarity.UNCOMMON, uncommon);
+        }
+        if (rare > 0) {
+            bonusTreasures.put(ETreasureRarity.RARE, rare);
+        }
     }
 
-    @Override public int getBonusCommonTreasures(){return common;}
-    @Override public int getBonusUncommonTreasures(){return uncommon;}
-    @Override public int getBonusRareTreasures(){return rare;}
-    @Override public int getBonusRandomTreasures(){return random;}
+    @Override
+    public int getBonusRandomTreasures() {
+        return this.randomTreasures;
+    }
+
+    @Override
+    public Map<ETreasureRarity, Integer> getBonusTreasures() {
+        return this.bonusTreasures;
+    }
 }
