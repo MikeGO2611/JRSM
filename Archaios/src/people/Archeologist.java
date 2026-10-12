@@ -3,6 +3,8 @@ package people;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Archeologist {
     private String name = null;
@@ -148,5 +150,62 @@ public class Archeologist {
 
     public int getSkillBonus() {
         return -1;
+    }
+
+    public int getTotalBonusActions() {
+        int total = this.extraActions;
+        for (Skill s : this.skillCollection) {
+            total += s.getBonusActions();
+        }
+        return total;
+    }
+
+    public float getTotalActionsMultiplier() {
+        float multiplier = 1.0f;
+        for (Skill s : this.skillCollection) {
+            multiplier *= s.getBonusActionsPercentage();
+        }
+        return multiplier;
+    }
+
+    public int getTotalRandomTreasures() {
+        int total = this.extraRandomTreasure;
+        for (Skill s : this.skillCollection) {
+            total += s.getBonusRandomTreasures();
+        }
+        return total;
+    }
+
+    public Map<ETreasureRarity, Integer> getTotalBonusTreasures() {
+        Map<ETreasureRarity, Integer> totals = new HashMap<>();
+        totals.put(ETreasureRarity.COMMON, this.extraCTreasure);
+        totals.put(ETreasureRarity.UNCOMMON, this.extraITreasure);
+        totals.put(ETreasureRarity.RARE, this.extraRTreasure);
+
+        for (Skill s : this.skillCollection) {
+            Map<ETreasureRarity, Integer> bonus = s.getBonusTreasures();
+            for (ETreasureRarity rarity : bonus.keySet()) {
+                int cantHabilidad = bonus.get(rarity);
+                int cantActual = totals.getOrDefault(rarity, 0);
+                totals.put(rarity, cantActual + cantHabilidad);
+            }
+        }
+        return totals;
+    }
+
+    public int getRevelationEmpty() {
+        int total = 0;
+        for (Skill s : this.skillCollection) {
+            total += s.getRevelationEmpty();
+        }
+        return total;
+    }
+
+    public int getRevelationTreasure() {
+        int total = 0;
+        for (Skill s : this.skillCollection) {
+            total += s.getRevelationTreasure();
+        }
+        return total;
     }
 }
