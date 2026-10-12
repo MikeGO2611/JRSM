@@ -32,20 +32,6 @@ public class Archeologist {
         return this.name;
     }
 
-    /*public void archeologistInformation(){
-        StringBuilder information = new StringBuilder();
-        information.append("--------------------").append(this.name)
-        .append("--------------------\n")
-        .append("Nivel: ").append(this.level)
-        .append("Exp: ").append(exp).append("/");
-        if(level!=5) {information.append(maxExp);};
-        information.append("\nTerrenos: \n").append("  -Pequeños\n");
-        if(level >= 2){information.append("  -Mediano\n");};
-        if(level >= 4){information.append("  -Grande\n");};
-        information.append("Habilidades: ");
-
-        System.out.println(information);
-    }*/
     //Si tiene especializacion al escavar se le llamaria si tiene especializacion
     public void extrasExpSpecialization(){
         extraActions = this.exp/25;
@@ -128,13 +114,14 @@ public class Archeologist {
     }
 
     public void addTerrainShape(ETerrainShape shape) {
-    if (!this.terrainShapes.contains(shape)) {
-        this.terrainShapes.add(shape);
+        if (!this.terrainShapes.contains(shape)) {
+            this.terrainShapes.add(shape);
+        }
     }
 
     public String getRarity() {
-    return this.rarity;
-}
+        return this.rarity;
+    }
 
     public void setRarity(String rarity) {
         this.rarity = rarity;
