@@ -5,7 +5,7 @@ public class RevelationSkill extends Skill {
     private int questionMarks;
 
     public RevelationSkill(String name, String description, int emptyRevealed, int questionMarks) {
-        super(name, description, "revelación");
+        super(name, description, ESkillType.EXPERT);
         this.emptyRevealed = emptyRevealed;
         this.questionMarks = questionMarks;
     }

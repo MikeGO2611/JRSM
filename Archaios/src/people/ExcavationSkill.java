@@ -5,7 +5,7 @@ public class ExcavationSkill extends Skill {
     private float multiplier;
 
     public ExcavationSkill(String name, String description, int extraActions, float multiplier) {
-        super(name, description, "excavación");
+        super(name, description, ESkillType.EXCAVATION);
         this.extraActions = extraActions;
         this.multiplier = multiplier;
     }
