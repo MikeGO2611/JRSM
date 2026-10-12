@@ -52,4 +52,9 @@ public class UserInput {
         return userInput;
 
     }
+
+
+    public static String getUserString(){
+        return console.readLine();
+    }
 }
