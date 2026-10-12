@@ -11,7 +11,7 @@ public class SpecialistSkillMenu implements IOperation {
 
     @Override
     public void operation() {
-        // TODO Auto-generated method stub
+        // TODO Cuando las clases skill estén hechas
         throw new UnsupportedOperationException("Unimplemented method 'operation'");
     }
 

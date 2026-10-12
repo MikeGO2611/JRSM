@@ -61,7 +61,7 @@ final public class MenuGenerator {
     private static String generateMenu(String title, Character ch, List<IOperation> entryCollection){
         StringBuilder sb = new StringBuilder();
 
-        sb.append(generateTitle(title, ch) + '\n');
+        sb.append(generateTitle(title, ch, 20) + '\n');
 
         for(int i = 0; i < entryCollection.size(); i++){
             sb.append((i + 1) + ". " + entryCollection.get(i).getName() + '\n');
@@ -76,20 +76,26 @@ final public class MenuGenerator {
      * Genera un título decorándolo con caracteres.
      * @param title el título
      * @param ch el caracter de decoración
+     * @param repetition el número de veces que aparece el caracter de cada lado
      * @return el título generado
      */
-    private static String generateTitle(String title, Character ch){
+    public static String generateTitle(String title, Character ch, int repetition){
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0; i < 20; i++){
-            sb.append(ch);
-        }
+        sb.append(generateDivisor(ch, repetition));
         
         sb.append(" " + title + " ");
 
-        for(int i = 0; i < 20; i++){
-            sb.append(ch);
-        }
+        sb.append(generateDivisor(ch, repetition));
+
+        return sb.toString();
+    }
+
+    public static String generateDivisor(Character ch, int repetition){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.repeat(ch, repetition);
 
         return sb.toString();
     }
