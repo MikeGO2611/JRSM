@@ -27,7 +27,6 @@ public abstract class Skill {
     public void addDependency(Skill skill) { this.dependencies.add(skill); }
     public void addIncompatibility(Skill skill) { this.incompatibilities.add(skill); }
 
-    // Métodos de bonos acordados en el UML con valores base por defecto
     public int getBonusRandomTreasures() { return 0; }
     public Map<ETreasureRarity, Integer> getBonusTreasures() { return new HashMap<>(); }
     public float getBonusTreasurePercentage() { return 1.0f; }
