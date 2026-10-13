@@ -1,4 +1,4 @@
-package people;
+package skills;
 
 public class ExcavationSkill extends Skill {
     private int extraActions;

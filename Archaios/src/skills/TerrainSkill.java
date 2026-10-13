@@ -1,4 +1,4 @@
-package people;
+package skills;
 
 import java.util.List;
 

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+import skills.Skill;
+import skills.SkillService;
+import skills.ESkillType;
 
 public class Archeologist {
     private String name = null;

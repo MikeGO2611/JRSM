@@ -1,8 +1,9 @@
-package people;
+package skills;
 
 import helpers.UtilsHelper;
 import java.util.ArrayList;
 import java.util.List;
+import people.Archeologist;
 
 public class SkillService {
 

@@ -1,4 +1,4 @@
-package people;
+package skills;
 
 public class RevelationSkill extends Skill {
     private int emptyRevealed;

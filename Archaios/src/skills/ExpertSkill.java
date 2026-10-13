@@ -1,4 +1,4 @@
-package people;
+package skills;
 
 public class ExpertSkill extends Skill {
     private int establishedCost;
