@@ -27,6 +27,38 @@ public class Archeologist {
         this.terrainShapes.add(ETerrainShape.CUADRADO);
     }
 
+    public void archeologistInformation(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("--------------------").append(this.name).append("--------------------\n");
+        sb.append("Nivel: ").append(this.level).append("\n");
+
+        if (this.level == 5){
+            if (this.specialization != null){
+                sb.append("Especialización: ").append(this.specialization).append("\n");
+            }
+            sb.append("Exp: ").append(this.exp).append("\n");
+        }else {
+            sb.append("Exp: ").append(this.exp).append("/").append(this.maxExp).append("\n");
+        }
+
+        sb.append("Terrenos:\n");
+        sb.append("  - Pequeños\n");
+        if (this.level >= 2) {
+            sb.append("  - Mediano\n");
+        }
+        if (this.level >= 4) {
+            sb.append("  - Grande\n");
+        }
+
+        sb.append("Habilidades:\n");
+        for (Skill skill : this.skillCollection) {
+            sb.append("  ").append(skill.getName()).append("\n");
+            sb.append("   ").append(skill.getDescription()).append("\n");
+        }
+
+        System.out.print(sb.toString());
+    }
+
     public String getName() {
         return this.name;
     }
