@@ -1,10 +1,30 @@
 package regions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import regions.Countries.Greece;
 
 public class Atlas {
-    private List<Region> regionCollection = new ArrayList<Region>();
+    private static Map<String, Region> regionCollection = new HashMap<>();
 
-    // TODO Cuando esté la clase Region
+    static {
+        regionCollection.put("Greece", new Greece());
+    }
+
+    public static Region getRegion(String name){
+        return regionCollection.get(name);
+    }
+
+    public static List<Region> getRegionCollection() {
+        List<Region> regionList = new ArrayList<>();
+        
+        regionCollection.forEach((name, region) -> {
+            regionList.add(region);
+        });
+
+        return regionList;
+    }
 }

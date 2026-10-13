@@ -34,6 +34,7 @@ public class Treasure {
         this.rarity = rarity;
         this.parts = parts;
         this.points = points;
+        this.description = description;
     }
 
     public String getName() {
