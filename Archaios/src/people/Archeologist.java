@@ -118,15 +118,33 @@ public class Archeologist {
         }
     }
 
-    public void addSkill() {
+    public void addSkill(List<Skill> allSkills) {
+        List<Skill> options = SkillService.selectThreeSkills(this, allSkills);
+        if (options.isEmpty()) {
+            return;
+        }
+
         Scanner scn = new Scanner(System.in);
         System.out.println("El arqueólogo " + this.name + " ha subido al nivel " + this.level);
-        System.out.println("Puede aprender una de estas tres habilidades:");
-        System.out.println("Habilidad 1");
-        System.out.println("Habilidad 2");
-        System.out.println("Habilidad 3");
-        System.out.print("Habilidad a aprender: ");
-        String skill = scn.nextLine();
+        System.out.println("Puede aprender una de estas habilidades:");
+
+        for (int i = 0; i < options.size(); i++) {
+            Skill s = options.get(i);
+            System.out.println((i + 1) + ". " + s.getName() + " - " + s.getDescription());
+        }
+
+        int choice = -1;
+        while (choice < 1 || choice > options.size()) {
+            System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
+            if (scn.hasNextInt()) {
+                choice = scn.nextInt();
+            } else {
+                scn.next();
+            }
+        }
+
+        Skill selectedSkill = options.get(choice - 1);
+        addSkill(selectedSkill);
     }
 
     public void extrasExpSpecialization() {
@@ -137,7 +155,7 @@ public class Archeologist {
         this.extraRTreasure = this.exp / 200;
     }
 
-    public void addExp(int expGained) {
+    public void addExp(int expGained, List<Skill> allSkills) {
         int levelInicial = this.level;
         this.exp += expGained;
 
@@ -156,7 +174,7 @@ public class Archeologist {
 
         int levelsGained = this.level - levelInicial;
         for (int i = 0; i < levelsGained; i++) {
-            addSkill();
+            addSkill(allSkills);
         }
     }
 
