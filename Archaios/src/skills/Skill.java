@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 import treasures.ETreasureRarity;
 import excavation.ETerrainShape;
+import repositories.ICode;
 
-public abstract class Skill {
+public abstract class Skill implements ICode {
     private String name;
     private String description;
     private ESkillType type;
@@ -37,4 +38,9 @@ public abstract class Skill {
     public int getRevelationEmpty() { return 0; }
     public int getRevelationTreasure() { return 0; }
     public List<ETerrainShape> getBonusTerrainShapes() { return new ArrayList<>(); }
+
+    @Override
+    public String getCode() {
+        return this.name;
+    }
 }
