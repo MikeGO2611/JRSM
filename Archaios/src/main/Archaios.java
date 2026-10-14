@@ -4,7 +4,7 @@ import menu.Menu;
 
 public class Archaios {
     private static String idUser;
-    private static String idGroup;
+    private static String idGroup = "2DAM2627";
     private static String playName;
     //private static Stats statistics;
     
