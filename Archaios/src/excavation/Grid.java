@@ -1,24 +1,12 @@
-
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Representa la cuadrícula de excavación, manejando sus dimensiones, 
- * el estado de las casillas y la generación de coordenadas.
- */
 public class Grid {
     private final int rows;
     private final int cols;
     private final char[][] cells;
     private final List<String> columnHeaders;
 
-    /**
-     * Constructor para inicializar una nueva rejilla.
-     *
-     * @param rows Número de filas.
-     * @param cols Número de columnas.
-     */
     public Grid(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -49,32 +37,45 @@ public class Grid {
         }
     }
 
-    /**
-     * Obtiene el número total de casillas en la rejilla.
-     *
-     * @return El número total de casillas.
-     */
+    public int getRows() { return rows; }
+    public int getCols() { return cols; }
+    
     public int getTotalCells() {
         return rows * cols;
     }
+    
+    public char getCell(int row, int col) {
+        return this.cells[row][col];
+    }
 
-    /**
-     * Actualiza el estado de una casilla específica tras ser excavada.
-     *
-     * @param row    Índice de la fila.
-     * @param col    Índice de la columna.
-     * @param symbol Símbolo a establecer ('x', 'C', 'I', 'R').
-     */
     public void digCell(int row, int col, char symbol) {
         this.cells[row][col] = symbol;
     }
 
-    /**
-     * Imprime el estado actual de la rejilla.
-     *
-     * @param revealAll Si es true, muestra todos los tesoros ocultos.
-     */
     public void printGrid(boolean revealAll) {
-        // Implementación de la impresión
+        System.out.print("   "); 
+        for (String header : columnHeaders) {
+            System.out.print(header + " ");
+        }
+        System.out.println();
+
+        for (int i = 0; i < rows; i++) {
+            int rowNum = i + 1;
+            if (rowNum < 10) {
+                System.out.print(rowNum + "  ");
+            } else {
+                System.out.print(rowNum + " ");
+            }
+
+            for (int j = 0; j < cols; j++) {
+                char cellValue = cells[i][j];
+                if (!revealAll && cellValue != '?' && cellValue != 'x' && cellValue != 'C' && cellValue != 'I' && cellValue != 'R') {
+                    System.out.print(". ");
+                } else {
+                    System.out.print(cellValue + " ");
+                }
+            }
+            System.out.println();
+        }
     }
 }

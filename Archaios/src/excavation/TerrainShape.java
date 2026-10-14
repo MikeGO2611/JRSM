@@ -1,4 +1,3 @@
-
 public enum TerrainShape {
     ROW("Fila"),
     HORIZONTAL("Horizontal"),

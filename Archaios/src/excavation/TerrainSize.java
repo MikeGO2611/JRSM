@@ -1,8 +1,3 @@
-
-
-/**
- * Enum para representar los tipos de terreno base y su bono de experiencia.
- */
 public enum TerrainSize {
     SMALL("Pequeño", 2),
     MEDIUM("Mediano", 5),

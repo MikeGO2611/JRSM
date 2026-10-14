@@ -1,8 +1,3 @@
-
-
-/**
- * Enum para la rareza de los tesoros y su probabilidad base.
- */
 public enum Rarity {
     COMMON('C', 60),
     UNCOMMON('I', 30),
