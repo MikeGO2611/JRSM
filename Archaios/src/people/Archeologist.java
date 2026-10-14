@@ -8,6 +8,8 @@ import java.util.Map;
 import skills.Skill;
 import skills.SkillService;
 import skills.ESkillType;
+import excavation.ETerrainShape;
+import treasures.ETreasureRarity;
 
 public class Archeologist {
     private String name = null;
@@ -27,7 +29,7 @@ public class Archeologist {
     public Archeologist(String name, String rarity) {
         this.name = name;
         this.rarity = rarity;
-        this.terrainShapes.add(ETerrainShape.CUADRADO);
+        this.terrainShapes.add(ETerrainShape.SQUARE);
     }
 
     public void archeologistInformation(){
@@ -60,6 +62,16 @@ public class Archeologist {
         }
 
         System.out.print(sb.toString());
+    }
+
+    public int getDismissPoints() {
+        int points = this.level * 10;
+        if ("infrecuente".equalsIgnoreCase(this.rarity)) {
+            points += 10;
+        } else if ("raro".equalsIgnoreCase(this.rarity)) {
+            points += 20;
+        }
+        return points;
     }
 
     public String getName() {

@@ -1,6 +1,7 @@
 package skills;
 import java.util.HashMap;
 import java.util.Map;
+import treasures.ETreasureRarity;
 
 public class TreasureSkill extends Skill {
     private int randomTreasures;
