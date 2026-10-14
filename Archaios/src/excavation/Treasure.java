@@ -1,5 +1,2 @@
-package excavation;
 
-public class Treasure {
-    
-}
+public class Treasure {}
