@@ -85,14 +85,7 @@ public class Archeologist {
      * @return Puntos totales obtenidos tras la rescisión.
      */
     public int getDismissPoints() {
-        int points = this.level * 10;
-        int initialSkills = this.skillCollection.size() - this.level;
-        if (initialSkills == 1) {
-            points += 10; 
-        } else if (initialSkills >= 2) {
-            points += 20; 
-        }
-        return points;
+        return this.skillCollection.size()*10;
     }
 
     /**
