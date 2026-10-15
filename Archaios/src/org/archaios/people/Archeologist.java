@@ -11,6 +11,7 @@ import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.commons.repositories.ICode;
 import org.archaios.excavation.ETerrainShape;
+import org.archaios.excavation.ETerrainType;
 
 /**
  * Representa a un arqueólogo en el juego, gestionando su progreso,
@@ -46,7 +47,7 @@ public class Archeologist {
 
     /**
      * Imprime por consola la ficha detallada del arqueólogo con su nivel,
-     * experiencia, especialización, tamaños de terreno y habilidades aprendidas.
+     * experiencia, especialización, tamaños de terreno, formas y habilidades aprendidas.
      */
     public void archeologistInformation() {
         StringBuilder sb = new StringBuilder();
@@ -62,13 +63,14 @@ public class Archeologist {
             sb.append("Exp: ").append(this.exp).append("/").append(this.maxExp).append("\n");
         }
 
-        sb.append("Terrenos:\n");
-        sb.append("  - Pequeños\n");
-        if (this.level >= 2) {
-            sb.append("  - Mediano\n");
+        sb.append("Tamaños de terreno:\n");
+        for (ETerrainType type : getTerrainTypes()) {
+            sb.append("  - ").append(type.name()).append("\n");
         }
-        if (this.level >= 4) {
-            sb.append("  - Grande\n");
+
+        sb.append("Formas de terreno:\n");
+        for (ETerrainShape shape : this.terrainShapes) {
+            sb.append("  - ").append(shape.name()).append("\n");
         }
 
         sb.append("Habilidades:\n");
@@ -81,12 +83,30 @@ public class Archeologist {
     }
 
     /**
+     * Obtiene la lista de tamaños de terreno que el arqueólogo puede excavar
+     * según su nivel actual.
+     * 
+     * @return Lista de tamaños (SMALL, MEDIUM, BIG) disponibles.
+     */
+    public List<ETerrainType> getTerrainTypes() {
+        List<ETerrainType> types = new ArrayList<>();
+        types.add(ETerrainType.SMALL);
+        if (this.level >= 2) {
+            types.add(ETerrainType.MEDIUM);
+        }
+        if (this.level >= 4) {
+            types.add(ETerrainType.BIG);
+        }
+        return types;
+    }
+
+    /**
      * Calcula los puntos de compensación al licenciar al arqueólogo.
      * 
      * @return Puntos totales obtenidos tras la rescisión.
      */
     public int getDismissPoints() {
-        return this.skillCollection.size()*10;
+        return this.skillCollection.size() * 10;
     }
 
     /**
