@@ -18,7 +18,7 @@ public class ArcheologistMenu implements IOperation {
      * Inicializa el menú con sus entradas.
      */
     public ArcheologistMenu(){
-        entryCollection.add(new ListArcheologists());
+        entryCollection.add(new ShowArcheologists());
         entryCollection.add(new HireArcheologists());
         entryCollection.add(new LicenseArcheologist());
     }
@@ -36,7 +36,7 @@ public class ArcheologistMenu implements IOperation {
      * Muestra un submenú con las opciones para los arqueólogos.
      * @see HireArcheologists
      * @see LicenseArcheologist
-     * @see ListArcheologists
+     * @see ShowArcheologists
      * @see commons.operations.IOperation#operation()
      */
     @Override

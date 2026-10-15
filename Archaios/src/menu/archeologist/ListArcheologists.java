@@ -1,18 +1,16 @@
 package menu.archeologist;
 
-import commons.operations.IOperation;
+import menu.MenuGenerator;
+import people.Archeologist;
 
-public class ListArcheologists implements IOperation{
+public class ListArcheologists {
+    public static Archeologist selectArcheologist(){
+        Archeologist selectedArcheologist = null;
 
-    @Override
-    public String getName() {
-        return "Ver Arqueólogos";
+        MenuGenerator.generateTitle("Arqueólogos", '-', 20);
+        
+        System.out.println("0. Volver");
+
+        return selectedArcheologist;
     }
-
-    @Override
-    public void operation() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'operation'");
-    }
-
 }
