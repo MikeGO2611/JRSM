@@ -2,7 +2,7 @@ package org.archaios.treasures;
 
 /**
  * Clase Treasure
- * Contiene los atributos necesarios para ser almacenado
+ * Contiene los atributos necesarios para ser almacenado.
  * @author Rubén Hernández
  */
 public class Treasure {
@@ -16,14 +16,6 @@ public class Treasure {
 
     /**
      * Constructor que genera el código del tesoro a partir de region, type y codeNumber.
-     * @param name
-     * @param region
-     * @param type
-     * @param codeNumber
-     * @param parts
-     * @param points
-     * @param rarity
-     * @param description
      */
 
     public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int points,
@@ -37,30 +29,51 @@ public class Treasure {
         this.description = description;
     }
 
+    /**
+     * @return nombre del tesoro.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return descripción del tesoro.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * @return código del tesoro.
+     */
     public String getCode() {
         return idCode;
     }
 
+    /**
+     * @return tipo del tesoro.
+     */
     public ETreasureType getType() {
         return type;
     }
 
+    /**
+     * @return rareza del tesoro.
+     */
     public ETreasureRarity getRarity() {
         return rarity;
     }
 
+    /**
+     * @return cantidad de partes del tesoro.
+     */
     public int getParts() {
         return parts;
     }
 
+    /**
+     * @return puntos del tesoro.
+     */
     public int getPoints() {
         return points;
     }
