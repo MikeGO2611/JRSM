@@ -9,7 +9,6 @@ import java.util.Scanner;
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
-import org.archaios.commons.repositories.ICode;
 import org.archaios.excavation.ETerrainShape;
 
 /**

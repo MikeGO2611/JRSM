@@ -8,7 +8,10 @@ import org.archaios.commons.input.UserInput;
 import org.archaios.commons.statistics.PlayerArcheologists;
 import org.archaios.menu.MenuGenerator;
 
-public class ListArcheologists {
+/**
+ * Utilidades para gestionar los arqueólogos.
+ */
+public class ArcheologistMenuUtils {
     public static Archeologist selectArcheologist(){
         Archeologist selectedArcheologist = null;
         List<Archeologist> archeologistCollection = PlayerArcheologists.getArcheologistCollection();

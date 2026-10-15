@@ -1,6 +1,7 @@
 package org.archaios.menu.archeologist;
 
 import org.archaios.commons.operations.IOperation;
+import org.archaios.people.Archeologist;
 
 public class ShowArcheologists implements IOperation{
 
@@ -11,7 +12,11 @@ public class ShowArcheologists implements IOperation{
 
     @Override
     public void operation() {
-        ListArcheologists.selectArcheologist();
+        Archeologist selectedArcheologist = ArcheologistMenuUtils.selectArcheologist();
+
+        if(selectedArcheologist != null){
+            selectedArcheologist.archeologistInformation();
+        }
     }
 
 }
