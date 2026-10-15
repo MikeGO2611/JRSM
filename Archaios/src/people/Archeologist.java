@@ -23,7 +23,6 @@ public class Archeologist {
     private int maxExp = 50;
     private int level = 0;
     private String specialization = null;
-    private String rarity;
     private List<Skill> skillCollection = new ArrayList<>();
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
     private int extraActions = 0;
@@ -33,15 +32,13 @@ public class Archeologist {
     private int extraRTreasure = 0;
 
     /**
-     * Construye un nuevo arqueólogo con su nombre y rareza.
+     * Construye un nuevo arqueólogo con su nombre.
      * Inicializa la forma de terreno básica cuadrada.
      * 
      * @param name Nombre del arqueólogo.
-     * @param rarity Rareza inicial del arqueólogo.
      */
-    public Archeologist(String name, String rarity) {
+    public Archeologist(String name) {
         this.name = name;
-        this.rarity = rarity;
         this.terrainShapes.add(ETerrainShape.SQUARE);
     }
 
@@ -82,18 +79,12 @@ public class Archeologist {
     }
 
     /**
-     * Calcula los puntos de compensación al licenciar al arqueólogo según su nivel y rareza.
+     * Calcula los puntos de compensación al licenciar al arqueólogo según su nivel.
      * 
-     * @return Puntos obtenidos tras el despido.
+     * @return Puntos obtenidos tras el despido (10 por nivel).
      */
     public int getDismissPoints() {
-        int points = this.level * 10;
-        if ("infrecuente".equalsIgnoreCase(this.rarity)) {
-            points += 10;
-        } else if ("raro".equalsIgnoreCase(this.rarity)) {
-            points += 20;
-        }
-        return points;
+        return this.level * 10;
     }
 
     /**
@@ -139,24 +130,6 @@ public class Archeologist {
      */
     public int getMaxExp() {
         return this.maxExp;
-    }
-
-    /**
-     * Obtiene la rareza del arqueólogo.
-     * 
-     * @return Rareza del arqueólogo.
-     */
-    public String getRarity() {
-        return this.rarity;
-    }
-
-    /**
-     * Modifica la rareza del arqueólogo.
-     * 
-     * @param rarity Nueva rareza.
-     */
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
     }
 
     /**
@@ -241,7 +214,6 @@ public class Archeologist {
             System.out.println((i + 1) + ". " + s.getName() + " - " + s.getDescription());
         }
 
-        // Validación de la entrada del usuario en consola
         int choice = -1;
         while (choice < 1 || choice > options.size()) {
             System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
@@ -279,7 +251,6 @@ public class Archeologist {
         int levelInicial = this.level;
         this.exp += expGained;
 
-        // Comprobación de subida de nivel iterativa
         while (this.level < 5 && this.exp >= this.maxExp) {
             this.exp -= this.maxExp;
             this.level++;
@@ -289,7 +260,6 @@ public class Archeologist {
             }
         }
 
-        // Si ya es nivel 5, la experiencia sobrante computa para bonos de especialización
         if (this.level == 5) {
             extrasExpSpecialization();
         }
