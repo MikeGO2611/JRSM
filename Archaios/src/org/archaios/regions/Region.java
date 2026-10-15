@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.archaios.repositories.ICode;
+import org.archaios.commons.repositories.ICode;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 

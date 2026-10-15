@@ -22,7 +22,7 @@ public class Excavation {
     private boolean isFinished;
     private Scanner scanner;
 
-    public void start(Region region, Archeologist archeologist, Terrain terrain) {
+    public void start(Region region, Archeologist archeologist, ETerrainSize terrainSize) {
         this.region = region;
         this.archeologist = archeologist;
         this.terrain = terrain;

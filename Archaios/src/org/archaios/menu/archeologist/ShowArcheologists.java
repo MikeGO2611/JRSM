@@ -11,8 +11,7 @@ public class ShowArcheologists implements IOperation{
 
     @Override
     public void operation() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'operation'");
+        ListArcheologists.selectArcheologist();
     }
 
 }

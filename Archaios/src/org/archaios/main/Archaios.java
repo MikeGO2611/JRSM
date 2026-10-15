@@ -1,7 +1,8 @@
 package org.archaios.main;
 import org.archaios.commons.input.UserInput;
-
+import org.archaios.commons.statistics.PlayerArcheologists;
 import org.archaios.menu.Menu;
+import org.archaios.people.Archeologist;
 
 public class Archaios {
     private static String idUser;
@@ -27,7 +28,7 @@ public class Archaios {
 
     private static void init(){
 
-        // Comprobación de partidas guardadas, de momento será false siempre
+        // Comprobación de partidas guardadas, de momento será true siempre
         if(true){
             System.out.print("Introduce tu código personal único: ");
             idUser = UserInput.getUserString();
@@ -39,6 +40,8 @@ public class Archaios {
 
             System.out.print("Introduce el nombre del arqueólogo: ");
             String archeologistName = UserInput.getUserString();
+            Archeologist firstArcheologist = new Archeologist(archeologistName);
+            PlayerArcheologists.addArcheologist(firstArcheologist);
         }
         
     }

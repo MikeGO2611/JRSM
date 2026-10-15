@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.archaios.repositories.ICode;
 import org.archaios.treasures.ETreasureRarity;
-
+import org.archaios.commons.repositories.ICode;
 import org.archaios.excavation.ETerrainShape;
 
 /**
