@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Excavation {
@@ -84,21 +85,27 @@ public class Excavation {
         
         if(totalCells == 225) targetTreasureCount = 22; 
         
+        Random rand = new Random();
+        boolean[][] occupied = new boolean[rows][cols];
         int count = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (count < targetTreasureCount) {
-                    Treasure t = new Treasure();
-                    t.setRow(i);
-                    t.setCol(j);
-                    
-                    if(count % 5 == 0) t.setRarity(Rarity.RARE);
-                    else if(count % 2 == 0) t.setRarity(Rarity.UNCOMMON);
-                    else t.setRarity(Rarity.COMMON);
-                    
-                    this.hiddenTreasures.add(t);
-                    count++;
-                }
+        
+        while (count < targetTreasureCount) {
+            int r = rand.nextInt(rows);
+            int c = rand.nextInt(cols);
+            
+            if (!occupied[r][c]) {
+                occupied[r][c] = true;
+                
+                Treasure t = new Treasure();
+                t.setRow(r);
+                t.setCol(c);
+                
+                if(count % 5 == 0) t.setRarity(Rarity.RARE);
+                else if(count % 2 == 0) t.setRarity(Rarity.UNCOMMON);
+                else t.setRarity(Rarity.COMMON);
+                
+                this.hiddenTreasures.add(t);
+                count++;
             }
         }
     }
@@ -129,7 +136,7 @@ public class Excavation {
                 continue;
             }
             
-            String[] coords = input.trim().split("\s+");
+            String[] coords = input.trim().split("\\s+");
             
             for(String coord : coords) {
                 if(remainingActions <= 0) break;
