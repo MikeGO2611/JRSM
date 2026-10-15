@@ -18,6 +18,7 @@ import treasures.ETreasureRarity;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
+    public static final int MAX_LEVEL = 5;
     private String name = null;
     private int exp = 0;
     private int maxExp = 50;
@@ -51,7 +52,7 @@ public class Archeologist {
         sb.append("--------------------").append(this.name).append("--------------------\n");
         sb.append("Nivel: ").append(this.level).append("\n");
 
-        if (this.level == 5) {
+        if (this.level == MAX_LEVEL) {
             if (this.specialization != null) {
                 sb.append("Especialización: ").append(this.specialization).append("\n");
             }
@@ -108,7 +109,7 @@ public class Archeologist {
     /**
      * Obtiene el nivel actual del arqueólogo.
      * 
-     * @return Nivel (entre 0 y 5).
+     * @return Nivel (entre 0 y MAX_LEVEL).
      */
     public int getLevel() {
         return this.level;
@@ -142,7 +143,7 @@ public class Archeologist {
     }
 
     /**
-     * Asigna la especialización al alcanzar nivel 5.
+     * Asigna la especialización al alcanzar el nivel máximo.
      * 
      * @param specialization Nombre de la región asignada.
      */
@@ -230,7 +231,7 @@ public class Archeologist {
 
     /**
      * Recalcula las bonificaciones pasivas otorgadas por el excedente de experiencia
-     * tras haber alcanzado el nivel 5.
+     * tras haber alcanzado el nivel máximo.
      */
     public void extrasExpSpecialization() {
         this.extraActions = this.exp / 25;
@@ -242,7 +243,7 @@ public class Archeologist {
 
     /**
      * Incrementa la experiencia del arqueólogo, procesa las subidas de nivel pertinentes
-     * e inicia la selección de habilidades por cada nivel ganado.
+     * (hasta el tope de MAX_LEVEL) e inicia la selección de habilidades por cada nivel ganado.
      * 
      * @param expGained Puntos de experiencia ganados.
      * @param allSkills Catálogo total de habilidades disponibles.
@@ -251,16 +252,17 @@ public class Archeologist {
         int levelInicial = this.level;
         this.exp += expGained;
 
-        while (this.level < 5 && this.exp >= this.maxExp) {
+        // Comprobación de subida de nivel iterativa hasta el tope
+        while (this.level < MAX_LEVEL && this.exp >= this.maxExp) {
             this.exp -= this.maxExp;
             this.level++;
             this.maxExp += 50;
-            if (this.level == 5) {
+            if (this.level == MAX_LEVEL) {
                 break;
             }
         }
 
-        if (this.level == 5) {
+        if (this.level == MAX_LEVEL) {
             extrasExpSpecialization();
         }
 
@@ -353,7 +355,7 @@ public class Archeologist {
 
     /**
      * Acumula y clasifica los tesoros garantizados por rareza obtenidos tanto por
-     * especialización de nivel 5 como por habilidades.
+     * especialización de nivel máximo como por habilidades.
      * 
      * @return Mapa con la cantidad mínima de tesoros agrupada por rareza.
      */
