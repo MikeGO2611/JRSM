@@ -17,10 +17,19 @@ import org.archaios.excavation.ETerrainShape;
  * @author Javier Búa Martínez
  */
 public abstract class Skill implements ICode {
+    /** Nombre identificativo de la habilidad. */
     private String name;
+
+    /** Descripción detallada del efecto de la habilidad. */
     private String description;
+
+    /** Categoría o tipo de la habilidad. */
     private ESkillType type;
+
+    /** Lista de habilidades requeridas previamente para poder aprender esta. */
     private List<Skill> dependencies = new ArrayList<>();
+
+    /** Lista de habilidades incompatibles con esta. */
     private List<Skill> incompatibilities = new ArrayList<>();
 
     /**

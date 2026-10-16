@@ -20,18 +20,43 @@ import org.archaios.excavation.ETerrainType;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
+    /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
+
+    /** Nombre identificativo del arqueólogo. */
     private String name = null;
+
+    /** Puntos de experiencia acumulados en el nivel actual. */
     private int exp = 0;
+
+    /** Experiencia necesaria para subir al siguiente nivel. */
     private int maxExp = 50;
+
+    /** Nivel actual del arqueólogo (de 0 a MAX_LEVEL). */
     private int level = 0;
+
+    /** Región asignada como especialización al alcanzar el nivel máximo. */
     private String specialization = null;
+
+    /** Colección de habilidades aprendidas por el arqueólogo. */
     private List<Skill> skillCollection = new ArrayList<>();
+
+    /** Formas geométricas de terreno que el arqueólogo puede excavar. */
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
+
+    /** Acciones adicionales otorgadas por el excedente de experiencia a nivel máximo. */
     private int extraActions = 0;
+
+    /** Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo. */
     private int extraRandomTreasure = 0;
+
+    /** Tesoros comunes garantizados por excedente de experiencia a nivel máximo. */
     private int extraCTreasure = 0;
+
+    /** Tesoros infrecuentes garantizados por excedente de experiencia a nivel máximo. */
     private int extraITreasure = 0;
+
+    /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     private int extraRTreasure = 0;
 
     /**

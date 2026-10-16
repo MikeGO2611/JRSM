@@ -7,7 +7,10 @@ package org.archaios.skills;
  * @author Javier Búa Martínez
  */
 public class RevelationSkill extends Skill {
+    /** Cantidad de casillas vacías descubiertas al inicio del terreno. */
     private int emptyRevealed;
+
+    /** Cantidad de pistas con interrogación de tesoro descubiertas. */
     private int questionMarks;
 
     /**

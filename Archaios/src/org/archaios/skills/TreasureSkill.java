@@ -12,9 +12,12 @@ import org.archaios.treasures.ETreasureRarity;
  * @author Javier Búa Martínez
  */
 public class TreasureSkill extends Skill {
+    /** Cantidad de tesoros aleatorios adicionales garantizados. */
     private int randomTreasures;
-    private Map<ETreasureRarity, Integer> bonusTreasures = new HashMap<>();
 
+    /** Mapa con las cantidades garantizadas de tesoros agrupadas por rareza. */
+    private Map<ETreasureRarity, Integer> bonusTreasures = new HashMap<>();
+    
     /**
      * Construye una nueva habilidad de tesoro configurando los extras garantizados.
      * 

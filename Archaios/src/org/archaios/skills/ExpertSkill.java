@@ -7,9 +7,16 @@ package org.archaios.skills;
  * @author Javier Búa Martínez
  */
 public class ExpertSkill extends Skill {
+    /** Coste fijo de extracción asignado al tipo de terreno correspondiente. */
     private int establishedCost;
+
+    /** Tipo de terreno al que se aplica el coste fijo de excavación. */
     private String costTerrainType;
+
+    /** Cantidad de casillas de terreno eliminadas automáticamente al inicio. */
     private int removedTerrainAmount;
+
+    /** Tipo de terreno que se ve afectado por la eliminación de casillas. */
     private String removedTerrainType;
 
     /**
