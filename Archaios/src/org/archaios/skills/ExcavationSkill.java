@@ -27,21 +27,13 @@ public class ExcavationSkill extends Skill {
         this.multiplier = multiplier;
     }
 
-    /**
-     * Obtiene la cantidad de acciones adicionales fijas que aporta la habilidad.
-     * 
-     * @return Acciones extra.
-     */
+    /** @return Acciones extra. */
     @Override
     public int getBonusActions() {
         return extraActions;
     }
 
-    /**
-     * Obtiene el multiplicador porcentual de acciones que aplica la habilidad.
-     * 
-     * @return Multiplicador de acciones.
-     */
+    /** @return Multiplicador de acciones. */
     @Override
     public float getBonusActionsPercentage() {
         return multiplier;

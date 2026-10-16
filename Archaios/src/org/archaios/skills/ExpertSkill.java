@@ -37,38 +37,22 @@ public class ExpertSkill extends Skill {
         this.removedTerrainType = removedTerrainType;
     }
 
-    /**
-     * Obtiene el coste fijo establecido para excavar en el terreno asociado.
-     * 
-     * @return Coste fijado por la habilidad.
-     */
+    /** @return Coste fijado por la habilidad. */
     public int getEstablishedCost() {
         return this.establishedCost;
     }
 
-    /**
-     * Obtiene el tipo de terreno sobre el que actúa el coste establecido.
-     * 
-     * @return Nombre o identificador del tipo de terreno.
-     */
+    /** @return Nombre o identificador del tipo de terreno. */
     public String getCostTerrainType() {
         return this.costTerrainType;
     }
 
-    /**
-     * Obtiene la cantidad de casillas que se eliminan de dicho terreno.
-     * 
-     * @return Número de casillas eliminadas.
-     */
+    /** @return Número de casillas eliminadas. */
     public int getRemovedTerrainAmount() {
         return this.removedTerrainAmount;
     }
 
-    /**
-     * Obtiene el tipo de terreno que se ve afectado por la eliminación de casillas.
-     * 
-     * @return Nombre o identificador del tipo de terreno eliminado.
-     */
+    /** @return Nombre o identificador del tipo de terreno eliminado. */
     public String getRemovedTerrainType() {
         return this.removedTerrainType;
     }

@@ -27,21 +27,13 @@ public class RevelationSkill extends Skill {
         this.questionMarks = questionMarks;
     }
 
-    /**
-     * Obtiene la cantidad de casillas vacías reveladas.
-     * 
-     * @return Número de casillas vacías descubiertas.
-     */
+    /** @return Número de casillas vacías descubiertas. */
     @Override
     public int getRevelationEmpty() {
         return emptyRevealed;
     }
 
-    /**
-     * Obtiene la cantidad de pistas de interrogación o pistas de tesoro reveladas.
-     * 
-     * @return Número de pistas desveladas.
-     */
+    /** @return Número de pistas desveladas. */
     @Override
     public int getRevelationTreasure() {
         return questionMarks;

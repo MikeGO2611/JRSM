@@ -25,11 +25,7 @@ public class TerrainSkill extends Skill {
         this.shapes = shapes;
     }
 
-    /**
-     * Devuelve las formas de terreno asociadas a esta habilidad.
-     * 
-     * @return Lista de formas de terreno desbloqueadas.
-     */
+    /** @return Lista de formas de terreno desbloqueadas. */
     @Override
     public List<ETerrainShape> getBonusTerrainShapes() {
         return shapes;

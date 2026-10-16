@@ -44,21 +44,13 @@ public class TreasureSkill extends Skill {
         }
     }
 
-    /**
-     * Obtiene la cantidad de tesoros aleatorios adicionales que aporta la habilidad.
-     * 
-     * @return Número de tesoros aleatorios extra.
-     */
+    /** @return Número de tesoros aleatorios extra. */
     @Override
     public int getBonusRandomTreasures() {
         return this.randomTreasures;
     }
 
-    /**
-     * Devuelve el mapa con los tesoros garantizados por rareza.
-     * 
-     * @return Mapa asociando cada rareza con su cantidad garantizada.
-     */
+    /** @return Mapa asociando cada rareza con su cantidad garantizada. */
     @Override
     public Map<ETreasureRarity, Integer> getBonusTreasures() {
         return this.bonusTreasures;
