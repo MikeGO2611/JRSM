@@ -1,6 +1,6 @@
 package org.archaios.main;
 import org.archaios.commons.input.UserInput;
-import org.archaios.commons.statistics.PlayerArcheologists;
+import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.Menu;
 import org.archaios.people.Archeologist;
 
@@ -41,7 +41,7 @@ public class Archaios {
             System.out.print("Introduce el nombre del arqueólogo: ");
             String archeologistName = UserInput.getUserString();
             Archeologist firstArcheologist = new Archeologist(archeologistName);
-            PlayerArcheologists.addArcheologist(firstArcheologist);
+            Stats.addArcheologist(firstArcheologist);
         }
         
     }

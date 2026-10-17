@@ -38,7 +38,7 @@ public class Menu {
      * Inicio del menú principal.
      */
     public void start(){
-        MenuGenerator.askUserMenuOption(
+        MenuGenerator.askUserMenuOptionCheats(
                 "Archaios", 
                 '=',
                 entryCollection, 

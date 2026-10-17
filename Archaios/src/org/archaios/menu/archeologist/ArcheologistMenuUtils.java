@@ -5,7 +5,7 @@ import org.archaios.people.Archeologist;
 import java.util.List;
 
 import org.archaios.commons.input.UserInput;
-import org.archaios.commons.statistics.PlayerArcheologists;
+import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.MenuGenerator;
 
 /**
@@ -14,7 +14,7 @@ import org.archaios.menu.MenuGenerator;
 public class ArcheologistMenuUtils {
     public static Archeologist selectArcheologist(){
         Archeologist selectedArcheologist = null;
-        List<Archeologist> archeologistCollection = PlayerArcheologists.getArcheologistCollection();
+        List<Archeologist> archeologistCollection = Stats.getArcheologistCollection();
 
         System.out.println(MenuGenerator.generateTitle("Arqueólogos", '-', 20));
         for(int i = 0; i < archeologistCollection.size(); i++){

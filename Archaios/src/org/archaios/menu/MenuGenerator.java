@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
+import org.archaios.commons.statistics.Stats;
+import org.archaios.people.Archeologist;
 
 /**
  * Utilidad para generar menús en base a entradas.
@@ -36,6 +38,38 @@ final public class MenuGenerator {
             
             if(userInput != 0) entryCollection.get(userInput - 1).operation();
             else userExit = true;
+        }
+    }
+
+    public static void askUserMenuOptionCheats(String title, Character ch, List<IOperation> entryCollection, String exitOption, String errorMessage){
+        boolean userExit = false;
+        while (!userExit) {
+            // Para ocultar el estado de la consola anterior:
+            //System.out.print("\033[H\033[2J");
+
+            printMenu(title, ch, entryCollection, exitOption);
+            String userInput = UserInput.getUserString();
+
+            if(userInput.matches("[0-9]+")){
+                int userInputInt = Integer.parseInt(userInput);
+                if (userInputInt >= 0 && userInputInt <= entryCollection.size()){
+                    if(userInputInt != 0) entryCollection.get(userInputInt - 1).operation();
+                    else userExit = true;
+                } else {
+                    System.out.println("Operación no válida.");
+                }
+            } else {
+                switch (userInput) {
+                    case "add_archeologist":
+                        Archeologist testArcheologist = new Archeologist("Test Archeologist " + Stats.getArcheologistCollectionCount());
+                        Stats.addArcheologist(testArcheologist);
+                        System.out.println("Añadido " + testArcheologist.getName());
+                        break;
+                
+                    default:
+                        break;
+                }
+            }
         }
     }
 
