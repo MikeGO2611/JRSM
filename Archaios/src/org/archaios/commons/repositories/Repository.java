@@ -5,16 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Clase Repository
+ * Almacén de diferentes objetos (genérico).
+ * @author Rubén Hernández
+ */
 public class Repository<T extends ICode> {
-   //Mapa clave valor de los elementos del repositorio.
+   /**
+    * Mapa clave valor de los elementos del repositorio.
+    **/
    private Map<String, T> elements = new HashMap<String,T>();
 
+   /**
+    * @return Mapa de elementos.
+    */
    public Map<String, T> getElements() {
       return this.elements;
    }
 
    /**
-    * Getter de todos los elementos.
     * @return Devuelve todos los valores de la lista elementos.
     */
    public List<T> getAllElements() {

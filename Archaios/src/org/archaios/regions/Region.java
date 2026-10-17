@@ -8,25 +8,46 @@ import org.archaios.commons.repositories.ICode;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 
+/**
+ * Clase Region
+ * Contiene los atributos necesarios para ser almacenado y métodos para obtener tesoros.
+ * @author Rubén Hernández
+ */
 public abstract class Region implements ICode {
     private final String code;
     private final String name;
-    // Lista de tesoros de la región
+    /**
+     * Lista de tesoros de la región.
+     */ 
     protected List<Treasure> treasures = new ArrayList<>();
 
+    /**
+     * Constructor de región, dado un código y un nombre.
+     * @param code
+     * @param name
+     */
     public Region(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
+    /**
+     * @return código de la región.
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * @return nombre de la región.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return devuelve una lista de todos los tesoros de la región.
+     */
     public List<Treasure> getAllTreasures() {
         return treasures;
     }
@@ -48,7 +69,7 @@ public abstract class Region implements ICode {
 
     /**
      * Getter de un tesoro aleatorio, independientemente de la rareza.
-     * @return Tesoro aleatorio
+     * @return Tesoro aleatorio.
      */
     public Treasure getRandomTreasure() {
         Random random = new Random();
