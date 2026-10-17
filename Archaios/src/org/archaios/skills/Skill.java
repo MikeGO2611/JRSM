@@ -17,10 +17,19 @@ import org.archaios.excavation.ETerrainShape;
  * @author Javier Búa Martínez
  */
 public abstract class Skill implements ICode {
+    /** Nombre identificativo de la habilidad. */
     private String name;
+
+    /** Descripción detallada del efecto de la habilidad. */
     private String description;
+
+    /** Categoría o tipo de la habilidad. */
     private ESkillType type;
+
+    /** Lista de habilidades requeridas previamente para poder aprender esta. */
     private List<Skill> dependencies = new ArrayList<>();
+
+    /** Lista de habilidades incompatibles con esta. */
     private List<Skill> incompatibilities = new ArrayList<>();
 
     /**
@@ -36,37 +45,27 @@ public abstract class Skill implements ICode {
         this.type = type;
     }
 
-    /**
-     * @return Nombre de la habilidad.
-     */
+    /** @return Nombre de la habilidad. */
     public String getName() {
         return name;
     }
 
-    /**
-     * @return Descripción de la habilidad.
-     */
+    /** @return Descripción de la habilidad. */
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @return Tipo o categoría de la habilidad.
-     */
+    /** @return Tipo o categoría de la habilidad. */
     public ESkillType getType() {
         return type;
     }
 
-    /**
-     * @return Lista de habilidades requeridas previamente.
-     */
+    /** @return Lista de habilidades requeridas previamente. */
     public List<Skill> getDependencies() {
         return dependencies;
     }
 
-    /**
-     * @return Lista de habilidades incompatibles con esta.
-     */
+    /** @return Lista de habilidades incompatibles con esta. */
     public List<Skill> getIncompatibilities() {
         return incompatibilities;
     }
@@ -89,83 +88,47 @@ public abstract class Skill implements ICode {
         this.incompatibilities.add(skill);
     }
 
-    /**
-     * Bonificación por defecto de tesoros aleatorios.
-     * 
-     * @return Cantidad de tesoros aleatorios extra.
-     */
+    /** @return Cantidad de tesoros aleatorios extra. */
     public int getBonusRandomTreasures() {
         return 0;
     }
 
-    /**
-     * Bonificación por defecto de tesoros por rareza.
-     * 
-     * @return Mapa de tesoros por rareza.
-     */
+    /** @return Mapa de tesoros por rareza. */
     public Map<ETreasureRarity, Integer> getBonusTreasures() {
         return new HashMap<>();
     }
 
-    /**
-     * Porcentaje multiplicador de tesoros extra por defecto.
-     * 
-     * @return Multiplicador de tesoros.
-     */
+    /** @return Multiplicador de tesoros. */
     public float getBonusTreasurePercentage() {
         return 1.0f;
     }
 
-    /**
-     * Acciones extra por defecto.
-     * 
-     * @return Cantidad de acciones adicionales.
-     */
+    /** @return Cantidad de acciones adicionales. */
     public int getBonusActions() {
         return 0;
     }
 
-    /**
-     * Multiplicador de acciones por defecto.
-     * 
-     * @return Multiplicador de acciones.
-     */
+    /** @return Multiplicador de acciones. */
     public float getBonusActionsPercentage() {
         return 1.0f;
     }
 
-    /**
-     * Casillas vacías reveladas por defecto.
-     * 
-     * @return Cantidad de casillas vacías descubiertas.
-     */
+    /** @return Cantidad de casillas vacías descubiertas. */
     public int getRevelationEmpty() {
         return 0;
     }
 
-    /**
-     * Pistas de tesoro reveladas por defecto.
-     * 
-     * @return Cantidad de pistas descubiertas.
-     */
+    /** @return Cantidad de pistas descubiertas. */
     public int getRevelationTreasure() {
         return 0;
     }
 
-    /**
-     * Formas de terreno desbloqueadas por defecto.
-     * 
-     * @return Lista de formas de terreno disponibles.
-     */
+    /** @return Lista de formas de terreno disponibles. */
     public List<ETerrainShape> getBonusTerrainShapes() {
         return new ArrayList<>();
     }
 
-    /**
-     * Obtiene el código identificativo único para el repositorio.
-     * 
-     * @return Nombre de la habilidad como identificador.
-     */
+    /** @return Nombre de la habilidad como identificador. */
     @Override
     public String getCode() {
         return this.name;

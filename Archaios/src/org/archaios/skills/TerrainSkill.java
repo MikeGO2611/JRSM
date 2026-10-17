@@ -10,6 +10,7 @@ import org.archaios.excavation.ETerrainShape;
  * @author Javier Búa Martínez
  */
 public class TerrainSkill extends Skill {
+    /** Lista de formas geométricas de terreno que desbloquea esta habilidad. */
     private List<ETerrainShape> shapes;
 
     /**
@@ -24,11 +25,7 @@ public class TerrainSkill extends Skill {
         this.shapes = shapes;
     }
 
-    /**
-     * Devuelve las formas de terreno asociadas a esta habilidad.
-     * 
-     * @return Lista de formas de terreno desbloqueadas.
-     */
+    /** @return Lista de formas de terreno desbloqueadas. */
     @Override
     public List<ETerrainShape> getBonusTerrainShapes() {
         return shapes;
