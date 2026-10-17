@@ -6,6 +6,7 @@ import org.archaios.excavation.Excavation;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.menu.archeologist.ArcheologistMenuUtils;
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Countries.Greece;
 
 /**
  * Menú con las opciones de excavación.
@@ -26,8 +27,7 @@ public class ExcavateMenu implements IOperation {
         // Elegir region
         // Elegir tamaño
         
-        Excavation excavation = new Excavation();
-        excavation.start(null, selectedArcheologist, ETerrainSize.SMALL);
+        Excavation excavation = new Excavation(selectedArcheologist, new Greece(), ETerrainSize.SMALL);
 
     }
 
