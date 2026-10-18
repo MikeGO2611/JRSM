@@ -30,7 +30,7 @@ public class StatsRegionsMenu implements IOperation{
         for (TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
             System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
             System.out.println("Veces visitada: " + terrainStatEntry.getVisits());
-            System.out.println( "Tesoros encontrados: " + terrainStatEntry.getTreasures().size() + "/" + terrainStatEntry.getRegion().getAllTreasures());
+            System.out.println( "Tesoros encontrados: " + terrainStatEntry.getTreasures().size() + "/" + terrainStatEntry.getRegion().getAllTreasures().size());
             System.out.println("Total de tesoros excavados: " + terrainStatEntry.getTreasureDigCount());
         }
     }
