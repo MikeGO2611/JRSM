@@ -31,7 +31,7 @@ public class Excavation {
     /**
      * El tipo y tamaño del terreno configurado para esta excavación.
      */
-    private Terrain terrain;
+    private ETerrainSize terrain;
 
     /**
      * Número de acciones (intentos) restantes que el jugador puede realizar.
@@ -52,7 +52,7 @@ public class Excavation {
      * @param region       La región del mundo donde se excava.
      * @param terrain      El terreno seleccionado con su respectivo tamaño.
      */
-    public Excavation(Archeologist archeologist, Region region, Terrain terrain) {
+    public Excavation(Archeologist archeologist, Region region, ETerrainSize terrain) {
         this.archeologist = archeologist;
         this.region = region;
         this.terrain = terrain;
@@ -72,12 +72,9 @@ public class Excavation {
         int totalCells = grid.getTotalCells();
         // Intentos base: 25% del tamaño de la rejilla
         double baseAttempts = totalCells * 0.25; 
-        
-        // Espacio preparado para incluir extras del arqueólogo
-        // double extra = archeologist.getBonusAttempts(); 
-        // double factor = archeologist.getSkillsFactor();
-        
-        this.remainingAttempts = (int) Math.ceil(baseAttempts); 
+        double attemptsWithMultiplier = baseAttempts * archeologist.getTotalActionsMultiplier();
+        this.remainingAttempts = (int) Math.ceil(attemptsWithMultiplier)
+                + archeologist.getTotalBonusActions();
     }
 
     /**
