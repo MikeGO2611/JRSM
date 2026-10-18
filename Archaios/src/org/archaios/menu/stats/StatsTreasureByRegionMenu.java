@@ -30,12 +30,16 @@ public class StatsTreasureByRegionMenu implements IOperation{
      */
     @Override
     public void operation() {
-        for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
-            System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
+        if(Stats.getTerrainStatEntryCollection().size() > 0){
+            for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
+                System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
 
-            List<Treasure> treasureCollection = terrainStatEntry.getTreasures();
+                List<Treasure> treasureCollection = terrainStatEntry.getTreasures();
 
-            StatsTreasureUtils.printTreasures(treasureCollection);
+                StatsTreasureUtils.printTreasures(treasureCollection);
+            }
+        } else {
+            System.out.println("No hay datos para mostrar. ¡A excavar!");
         }
     }
 

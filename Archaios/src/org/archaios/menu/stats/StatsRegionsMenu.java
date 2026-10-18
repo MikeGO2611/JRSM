@@ -27,11 +27,16 @@ public class StatsRegionsMenu implements IOperation{
      */
     @Override
     public void operation() {
-        for (TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
-            System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
-            System.out.println("Veces visitada: " + terrainStatEntry.getVisits());
-            System.out.println( "Tesoros encontrados: " + terrainStatEntry.getTreasures().size() + "/" + terrainStatEntry.getRegion().getAllTreasures().size());
-            System.out.println("Total de tesoros excavados: " + terrainStatEntry.getTreasureDigCount());
+        if(Stats.getTerrainStatEntryCollection().size() > 0) {
+            for (TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
+                System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
+                System.out.println("Veces visitada: " + terrainStatEntry.getVisits());
+                System.out.println( "Tesoros encontrados: " + terrainStatEntry.getTreasures().size() + "/" + terrainStatEntry.getRegion().getAllTreasures().size());
+                System.out.println("Total de tesoros excavados: " + terrainStatEntry.getTreasureDigCount());
+            }
+        }
+        else {
+            System.out.println("No hay datos para mostrar. ¡A excavar!");
         }
     }
 
