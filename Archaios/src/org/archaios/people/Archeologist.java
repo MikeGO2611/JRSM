@@ -10,7 +10,7 @@ import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.excavation.ETerrainShape;
-import org.archaios.excavation.ETerrainType;
+import org.archaios.excavation.ETerrainSize;
 
 /**
  * Representa a un arqueólogo en el juego, gestionando su progreso,
@@ -88,7 +88,7 @@ public class Archeologist {
         }
 
         sb.append("Tamaños de terreno:\n");
-        for (ETerrainType type : getTerrainTypes()) {
+        for (ETerrainSize type : getTerrainTypes()) {
             sb.append("  - ").append(type.name()).append("\n");
         }
 
@@ -107,14 +107,14 @@ public class Archeologist {
     }
 
     /** @return Lista de tamaños (SMALL, MEDIUM, BIG) disponibles. */
-    public List<ETerrainType> getTerrainTypes() {
-        List<ETerrainType> types = new ArrayList<>();
-        types.add(ETerrainType.SMALL);
+    public List<ETerrainSize> getTerrainTypes() {
+        List<ETerrainSize> types = new ArrayList<>();
+        types.add(ETerrainSize.SMALL);
         if (this.level >= 2) {
-            types.add(ETerrainType.MEDIUM);
+            types.add(ETerrainSize.MEDIUM);
         }
         if (this.level >= 4) {
-            types.add(ETerrainType.BIG);
+            types.add(ETerrainSize.LARGE);
         }
         return types;
     }
@@ -227,6 +227,7 @@ public class Archeologist {
 
         Skill selectedSkill = options.get(choice - 1);
         addSkill(selectedSkill);
+        scn.close();
     }
 
     /**

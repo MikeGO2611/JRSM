@@ -34,4 +34,7 @@ public enum ETerrainSize {
     public int getExpBonus() {
         return expBonus;
     }
+    
+    /** @return Devuelve el nombre en español */
+    public String getName() { return this.name; }
 }
