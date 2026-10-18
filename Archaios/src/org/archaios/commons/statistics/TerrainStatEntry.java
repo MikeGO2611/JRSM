@@ -42,6 +42,8 @@ public class TerrainStatEntry {
                     foundTreasureCollection.add(treasure);
                 }
             }
+
+            sortTreasures();
         }
     }
 
@@ -55,5 +57,17 @@ public class TerrainStatEntry {
 
     public List<Treasure> getTreasures(){
         return foundTreasureCollection;
+    }
+
+    private void sortTreasures(){
+        foundTreasureCollection.sort(
+            (Treasure t1, Treasure t2) -> {
+                if(!t1.getName().equals(t2.getName())){
+                    return t1.getName().compareTo(t2.getName());
+                } else {
+                    return t1.getCode().compareTo(t2.getCode());
+                }
+            }
+        );
     }
 }

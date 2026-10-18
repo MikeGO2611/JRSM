@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.archaios.commons.input.UserInput;
+import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.main.Archaios;
@@ -322,6 +323,7 @@ public class Excavation {
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
         
+        archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
         Stats.addPoints(pointsEarned);
         Stats.addTerrainStatEntry(region, foundTreasures);
     }
