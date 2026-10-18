@@ -1,7 +1,10 @@
 package org.archaios.menu.archeologist;
 
+import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.menu.MenuGenerator;
+import org.archaios.people.Archeologist;
 
 public class LicenseArcheologist implements IOperation {
 
@@ -14,7 +17,29 @@ public class LicenseArcheologist implements IOperation {
     public void operation() {
         System.out.println("Cuando licencias un arqueólogo te deshaces de él a cambio de puntos.");
         if(Stats.getArcheologistCollectionCount() > 1){
-            throw new UnsupportedOperationException("Unimplemented method 'operation'");
+            System.out.println(MenuGenerator.generateTitle("Arqueólogos", '-', 20));
+            for (int i = 0; i < Stats.getArcheologistCollectionCount(); i++)
+            {
+                Archeologist archeologist = Stats.getArcheologistCollection().get(i);
+                System.out.println((i + 1) + ". " + archeologist.getName());
+                System.out.println("\t Puntos: " +archeologist.getDismissPoints());
+            }
+            System.out.println("0. Volver");
+            System.out.print("Selecciona un arqueólogo para licenciar: ");
+            int userInput = UserInput.getUserIntegerInRange(0, Stats.getArcheologistCollectionCount(), "Opción no válida");
+
+            if(userInput != 0){
+                Archeologist selectedArcheologist = Stats.getArcheologistCollection().get(userInput - 1);
+                System.out.println("Seguro que quieres licenciar a " + selectedArcheologist.getName() + " por " + selectedArcheologist.getDismissPoints() + " puntos?");
+                System.out.println("0. No");
+                System.out.println("0. Sí");
+                int userConfirmation = UserInput.getUserIntegerInRange(0, 2, "Opción no válida");
+                if(userConfirmation == 1){
+                    Stats.addPoints(selectedArcheologist.getDismissPoints());
+                    Stats.removeArcheologist(selectedArcheologist);
+                    System.out.println("Arqueólogo licenciado.");
+                }
+            }
         } else {
             System.out.println("No puedes licenciar tu último arqueólogo.");
         }
