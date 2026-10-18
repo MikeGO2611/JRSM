@@ -45,7 +45,7 @@ public class ExcavateMenu implements IOperation {
 
         for (int i = 0; i < terrainSizeCollection.size(); i++) {
             ETerrainSize terrainSize = terrainSizeCollection.get(i);
-            System.out.println((i + 1) + ". " + terrainSize.toString());
+            System.out.println((i + 1) + ". " + terrainSize.getName());
         }
 
         int userInput = UserInput.getUserIntegerInRange(0, terrainSizeCollection.size(), "Opción no válida.");
