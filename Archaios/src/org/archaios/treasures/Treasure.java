@@ -5,7 +5,7 @@ package org.archaios.treasures;
  * Contiene los atributos necesarios para ser almacenado.
  * @author Rubén Hernández
  */
-public class Treasure {
+public class Treasure implements ICode {
     private String name;
     private String description;
     private String idCode;
