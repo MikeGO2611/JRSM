@@ -6,6 +6,7 @@ import java.util.List;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 
 /**
@@ -72,12 +73,31 @@ final public class MenuGenerator {
                             System.out.println("Añadido " + testArcheologist.getName());
                         }
 
-                } else if(userInput.contains("add_points")){
+                } 
+                else if(userInput.contains("add_points")){
                     List<String> command = Arrays.asList(userInput.split("\s"));
                     if(command.size() == 2){
                         int points = Integer.parseInt(command.get(1));
                         Stats.addPoints(points);
                         System.out.println(points + " puntos añadidos.");
+                    }
+                }
+                else if(userInput.contains("add_exp")){
+                    List<String> command = Arrays.asList(userInput.split("\s"));
+                    if(command.size() > 2){
+                        int exp = Integer.parseInt(command.get(1));
+                        StringBuilder sb = new StringBuilder();
+                        for(int i = 2; i < command.size(); i++){
+                            sb.append(command.get(i) + " ");
+                        }
+                        String archeologistName = sb.toString().trim();
+
+                        for(Archeologist archeologist : Stats.getArcheologistCollection()){
+                            if(archeologist.getName().contains(archeologistName)){
+                                archeologist.addExp(exp, Archaios.skillRepository.getAllElements());
+                                System.out.println("Añadidos " + exp + " puntos de experiencia a " + archeologist.getName());
+                            }
+                        }
                     }
                 }
             }
