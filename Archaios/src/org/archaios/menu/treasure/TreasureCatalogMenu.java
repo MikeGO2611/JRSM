@@ -11,11 +11,21 @@ import org.archaios.treasures.Treasure;
 
 public class TreasureCatalogMenu implements IOperation {
 
+
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Catálogo de tesoros";
     }
 
+    /**
+     * Mostrar los tesoros posibles de cada región.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         List<Region> regionCollection = Atlas.getRegionCollection();

@@ -133,6 +133,12 @@ public class Skills extends Repository<Skill> {
         super.addElement(espDemolicionesA);
     }
 
+    /**
+     * Devuelve un número determinado de habilidades aleatorias.
+     * @param archeologist Archeologist al que se le comparará la compatibilidad de las habilidades
+     * @param count int Número inferior o igual a tres de habilidades a devolver.
+     * @return List<Skill> compatibles con el arqueólogo.
+     */
     public List<Skill> getRandomCompatibleSkills(Archeologist archeologist, int count){
         List<Skill> skillList = SkillService.selectThreeSkills(archeologist, getAllElements());
         while (skillList.size() > count) {

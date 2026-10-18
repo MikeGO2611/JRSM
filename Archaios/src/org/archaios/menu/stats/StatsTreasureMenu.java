@@ -8,8 +8,10 @@ import org.archaios.menu.MenuGenerator;
 
 public class StatsTreasureMenu implements IOperation{
 
+    /** Opciones del menú de estadísticas */
     private List<IOperation> entryCollection = new ArrayList<>();
 
+    /** Inicializa las opciones del menú. */
     public StatsTreasureMenu(){
         entryCollection.add(new StatsTreasureByRegionMenu());
         entryCollection.add(new StatsTreasureByTypeMenu());
@@ -25,6 +27,10 @@ public class StatsTreasureMenu implements IOperation{
         return "Ver tesoros";
     }
 
+    /**
+     * Muestra los menús de estadística para los tesoros.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         MenuGenerator.askUserMenuOption(getName(), ':', entryCollection, "0. Volver", "Opción no válida.");

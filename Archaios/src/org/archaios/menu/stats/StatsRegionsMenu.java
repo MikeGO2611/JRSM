@@ -21,11 +21,16 @@ public class StatsRegionsMenu implements IOperation{
         return "Ver regiones";
     }
 
+    /**
+     * Muestra las estadísticas de cada región
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         for (TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
             System.out.println(MenuGenerator.generateTitle(terrainStatEntry.getRegion().getName(), '-', 20));
             System.out.println("Veces visitada: " + terrainStatEntry.getVisits());
+            System.out.println( "Tesoros encontrados: " + terrainStatEntry.getTreasures().size() + "/" + terrainStatEntry.getRegion().getAllTreasures());
             System.out.println("Total de tesoros excavados: " + terrainStatEntry.getTreasureDigCount());
         }
     }

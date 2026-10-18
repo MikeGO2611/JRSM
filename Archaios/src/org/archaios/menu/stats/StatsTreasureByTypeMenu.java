@@ -19,6 +19,10 @@ public class StatsTreasureByTypeMenu implements IOperation{
         return "Por tipo";
     }
 
+    /**
+     * Muestra las estadísticas de los tesoros por tipo.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){

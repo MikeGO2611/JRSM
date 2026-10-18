@@ -24,6 +24,10 @@ public class StatsTreasureByRegionMenu implements IOperation{
         return "Por región";
     }
 
+    /**
+     * Muestra las estadísticas de los tesoros por región.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
