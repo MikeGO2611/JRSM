@@ -39,6 +39,7 @@ public class Excavation {
      */
     private ETerrainSize terrain;
 
+    /** Forma geométrica de la cuadrícula utilizada en esta excavación. */
     private ETerrainShape terrainShape;
 
     /**
@@ -51,6 +52,7 @@ public class Excavation {
      */
     private List<Treasure> foundTreasures;
 
+    /** Indica si ya se concedieron los puntos y la experiencia de finalización. */
     private boolean completionRewardsApplied;
 
     /**
@@ -138,6 +140,12 @@ public class Excavation {
         }
     }
 
+    /**
+     * Define la cantidad mínima de tesoros de cada rareza según el tamaño del terreno.
+     *
+     * @return mapa de rarezas y cantidades mínimas correspondientes
+     * @throws IllegalStateException si el tamaño de terreno no está contemplado
+     */
     private Map<ETreasureRarity, Integer> getTerrainMinimums() {
         Map<ETreasureRarity, Integer> minimums = new EnumMap<>(ETreasureRarity.class);
         switch (terrain) {
@@ -159,10 +167,22 @@ public class Excavation {
         return minimums;
     }
 
+    /**
+     * Comprueba si una rareza puede aparecer en el tamaño de terreno seleccionado.
+     *
+     * @param rarity rareza que se quiere generar
+     * @return {@code false} para tesoros raros en terrenos pequeños; {@code true} en los demás casos
+     */
     private boolean canGenerate(ETreasureRarity rarity) {
         return terrain != ETerrainSize.SMALL || rarity != ETreasureRarity.RARE;
     }
 
+    /**
+     * Selecciona una rareza aleatoria aplicando las probabilidades del terreno y las habilidades.
+     *
+     * @param random generador de números aleatorios que se utilizará
+     * @return rareza seleccionada
+     */
     private ETreasureRarity chooseRandomRarity(Random random) {
         int uncommonChance = 30;
         int rareChance = terrain == ETerrainSize.SMALL ? 0 : 10;
@@ -206,6 +226,13 @@ public class Excavation {
         return ETreasureRarity.RARE;
     }
 
+    /**
+     * Elige un tesoro de la rareza indicada y lo coloca en una celda libre al azar.
+     *
+     * @param random generador de números aleatorios que se utilizará
+     * @param rarity rareza del tesoro que se colocará
+     * @throws IllegalStateException si la región no contiene tesoros de esa rareza
+     */
     private void placeTreasure(Random random, ETreasureRarity rarity) {
         if (!canGenerate(rarity)) {
             return;
@@ -289,6 +316,10 @@ public class Excavation {
         return foundTreasures;
     }
 
+    /**
+     * Ejecuta la interacción completa de la excavación hasta agotar los intentos
+     * y muestra los resultados obtenidos.
+     */
     public void excavate() {
         System.out.println("Excavación iniciada. Puedes introducir varias coordenadas separadas por espacios, por ejemplo 1A 2A 3A.");
         System.out.println("Forma del terreno: " + terrainShape.getName());
@@ -335,6 +366,13 @@ public class Excavation {
         printResults();
     }
 
+    /**
+     * Convierte una coordenada escrita como fila y letras de columna en índices de la cuadrícula.
+     *
+     * @param value coordenada introducida, por ejemplo {@code 1A} o {@code 2AA}
+     * @return arreglo con los índices de fila y columna, ambos desde cero, o {@code null}
+     *         si la coordenada no es válida
+     */
     private int[] parseCoordinate(String value) {
         String input = value.toUpperCase();
         int letterStart = 0;
@@ -378,6 +416,9 @@ public class Excavation {
         return null;
     }
 
+    /**
+     * Muestra el resumen de tesoros y concede las recompensas de la excavación.
+     */
     private void printResults() {
         System.out.println("Excavación terminada (" + terrainShape.getName() + ")");
         grid.printGrid();

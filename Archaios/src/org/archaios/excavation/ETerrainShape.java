@@ -16,6 +16,7 @@ public enum ETerrainShape {
     /** Terreno organizado en una disposición cuadrada. */
     SQUARE("Cuadrado");
 
+    /** Nombre localizado de la forma del terreno. */
     private final String name;
 
     /**

@@ -23,8 +23,10 @@ public class Grid {
      */
     private Treasure[][] hiddenTreasures;
 
+    /** Indica las celdas vacías cuya ubicación se ha revelado mediante habilidades. */
     private boolean[][] revealedEmptyCells;
 
+    /** Indica las celdas con tesoros cuya ubicación se ha revelado mediante habilidades. */
     private boolean[][] revealedTreasureLocations;
 
     /**
@@ -48,6 +50,13 @@ public class Grid {
         this(rows, cols, ETerrainShape.SQUARE);
     }
 
+    /**
+     * Crea una cuadrícula con las dimensiones y la disposición indicadas.
+     *
+     * @param rows número base de filas
+     * @param cols número base de columnas
+     * @param shape forma que determina la distribución de las celdas
+     */
     public Grid(int rows, int cols, ETerrainShape shape) {
         int[] dimensions = getDimensions(rows, cols, shape);
         this.rows = dimensions[0];
@@ -59,6 +68,14 @@ public class Grid {
         initializeGrid();
     }
 
+    /**
+     * Calcula las dimensiones finales de la cuadrícula para el tamaño y la forma elegidos.
+     *
+     * @param baseRows número base de filas
+     * @param baseCols número base de columnas
+     * @param shape forma de la cuadrícula
+     * @return arreglo con el número final de filas y columnas
+     */
     private int[] getDimensions(int baseRows, int baseCols, ETerrainShape shape) {
         if (baseRows == 5 && baseCols == 5) {
             switch (shape) {
@@ -185,10 +202,18 @@ public class Grid {
         printGrid(false);
     }
 
+    /**
+     * Imprime la cuadrícula mostrando también el contenido de las celdas aún sin excavar.
+     */
     public void printFullyRevealedGrid() {
         printGrid(true);
     }
 
+    /**
+     * Imprime la cuadrícula, opcionalmente revelando el contenido de todas sus celdas.
+     *
+     * @param revealAll indica si se deben mostrar los tesoros y vacíos aún ocultos
+     */
     private void printGrid(boolean revealAll) {
         List<String> letters = getColumnLetters();
         System.out.print("   ");
@@ -218,6 +243,13 @@ public class Grid {
         }
     }
 
+    /**
+     * Cuenta las celdas que contienen tesoros de la rareza especificada,
+     * tanto ocultos como ya descubiertos.
+     *
+     * @param rarity rareza de los tesoros que se contarán
+     * @return número de tesoros de esa rareza presentes en la cuadrícula
+     */
     public int countTreasures(ETreasureRarity rarity) {
         String symbol = rarity.getCode();
         int count = 0;
@@ -233,12 +265,25 @@ public class Grid {
         return count;
     }
 
+    /**
+     * Revela al azar la cantidad indicada de celdas vacías y ubicaciones de tesoros.
+     *
+     * @param emptyCellCount número de celdas vacías que se revelarán
+     * @param treasureLocationCount número de ubicaciones de tesoros que se revelarán
+     */
     public void revealSkillClues(int emptyCellCount, int treasureLocationCount) {
         Random random = new Random();
         revealRandomCells(emptyCellCount, false, random);
         revealRandomCells(treasureLocationCount, true, random);
     }
 
+    /**
+     * Selecciona y marca al azar celdas aún sin excavar del tipo solicitado.
+     *
+     * @param count cantidad máxima de celdas que se marcarán
+     * @param treasureLocations {@code true} para ubicar tesoros; {@code false} para revelar vacíos
+     * @param random generador de números aleatorios que se utilizará
+     */
     private void revealRandomCells(int count, boolean treasureLocations, Random random) {
         List<int[]> candidates = new ArrayList<>();
         for (int row = 0; row < rows; row++) {
@@ -263,6 +308,13 @@ public class Grid {
         }
     }
 
+    /**
+     * Obtiene el símbolo que representa la rareza de un tesoro en la cuadrícula.
+     *
+     * @param treasure tesoro cuyo símbolo se quiere obtener
+     * @return símbolo correspondiente a su rareza
+     * @throws IllegalArgumentException si la rareza no está reconocida
+     */
     private String getTreasureSymbol(Treasure treasure) {
         switch (treasure.getRarity()) {
             case COMMON: return "C";
@@ -285,6 +337,13 @@ public class Grid {
         }
     }
 
+    /**
+     * Comprueba si una coordenada válida contiene un tesoro oculto.
+     *
+     * @param row índice de fila, desde cero
+     * @param col índice de columna, desde cero
+     * @return {@code true} si la posición es válida y contiene un tesoro
+     */
     boolean hasHiddenTreasure(int row, int col) {
         return row >= 0 && row < rows && col >= 0 && col < cols
                 && hiddenTreasures[row][col] != null;
