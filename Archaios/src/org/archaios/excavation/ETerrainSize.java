@@ -6,24 +6,30 @@ package org.archaios.excavation;
  */
 public enum ETerrainSize {
     /** Terreno pequeño con una bonificación de experiencia baja. */
-    SMALL("Pequeño", 2),
+    SMALL("Pequeño", 2, 5, 5),
     /** Terreno mediano con una bonificación de experiencia moderada. */
-    MEDIUM("Mediano", 5),
+    MEDIUM("Mediano", 5, 10, 10),
     /** Terreno grande con una bonificación de experiencia alta. */
-    LARGE("Grande", 10);
+    LARGE("Grande", 10, 15, 15);
 
     private final String name;
     private final int expBonus;
+    private final int rows;
+    private final int cols;
 
     /**
      * Crea un tamaño de terreno.
      *
      * @param name el nombre visible asociado a este tamaño
      * @param expBonus la bonificación de experiencia otorgada por este tamaño de terreno
+     * @param rows el número de filas de la cuadrícula
+     * @param cols el número de columnas de la cuadrícula
      */
-    ETerrainSize(String name, int expBonus) {
+    ETerrainSize(String name, int expBonus, int rows, int cols) {
         this.name = name;
         this.expBonus = expBonus;
+        this.rows = rows;
+        this.cols = cols;
     }
 
     /**
@@ -33,5 +39,13 @@ public enum ETerrainSize {
      */
     public int getExpBonus() {
         return expBonus;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
     }
 }
