@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Random;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.statistics.Stats;
-import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Region;

@@ -1,11 +1,8 @@
 package org.archaios.commons.repositories;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.archaios.excavation.ETerrainShape;
-import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.skills.ExcavationSkill;
 import org.archaios.skills.ExpertSkill;
