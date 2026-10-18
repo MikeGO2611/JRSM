@@ -1,10 +1,11 @@
 package org.archaios.excavation;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import org.archaios.commons.input.UserInput;
-import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.main.Archaios;
@@ -60,15 +61,16 @@ public class Excavation {
      * @param archeologist El arqueólogo que liderará la excavación.
      * @param region       La región del mundo donde se excava.
      * @param terrain      El terreno seleccionado con su respectivo tamaño.
+     * @param terrainShape La forma seleccionada para el terreno.
      */
-    public Excavation(Archeologist archeologist, Region region, ETerrainSize terrain) {
+    public Excavation(Archeologist archeologist, Region region, ETerrainSize terrain,
+            ETerrainShape terrainShape) {
         this.archeologist = archeologist;
         this.region = region;
         this.terrain = terrain;
         this.foundTreasures = new ArrayList<>();
 
-        ETerrainShape[] shapes = ETerrainShape.values();
-        this.terrainShape = shapes[new Random().nextInt(shapes.length)];
+        this.terrainShape = terrainShape;
         this.grid = new Grid(terrain.getRows(), terrain.getCols(), terrainShape);
         
         calculateAttempts();
@@ -91,54 +93,143 @@ public class Excavation {
                 + archeologist.getTotalBonusActions();
     }
 
-    /**
-     * Distribuye los tesoros disponibles de la región en la cuadrícula de forma aleatoria.
-     * Ocupa un 10% del total de las celdas y ajusta las probabilidades de rareza 
-     * (60% Común, 30% Infrecuente, 10% Raro) considerando limitaciones del terreno.
-     */
+    /** Distribuye los mínimos del terreno, los tesoros base y las bonificaciones del arqueólogo. */
     private void distributeTreasures() {
         int totalCells = grid.getTotalCells();
-        int totalTreasures = (int) Math.ceil(totalCells * 0.10);
-        if (totalTreasures < 1) totalTreasures = 1;
-
+        int maxTreasures = totalCells / 2;
+        Map<ETreasureRarity, Integer> terrainMinimums = getTerrainMinimums();
+        int minimumTotal = terrainMinimums.values().stream().mapToInt(Integer::intValue).sum();
+        int baseTreasures = Math.max(Math.max(1, (int) Math.ceil(totalCells * 0.10)), minimumTotal);
+        baseTreasures = Math.min(baseTreasures, maxTreasures);
         Random random = new Random();
-        
-        for (int i = 0; i < totalTreasures; i++) {
-            int row, col;
-            do {
-                row = random.nextInt(grid.getRows());
-                col = random.nextInt(grid.getCols());
-            } while (isPositionOccupied(row, col)); // Evitar asignar 2 tesoros en la misma celda
 
-            int chance = random.nextInt(100);
-            ETreasureRarity rarity;
-            
-            if (chance < 60) {
-                rarity = ETreasureRarity.COMMON;
-            } else if (chance < 90) {
-                rarity = ETreasureRarity.UNCOMMON;
-            } else {
-                if (grid.getTotalCells() <= 25) { 
-                    rarity = ETreasureRarity.UNCOMMON;
-                } else {
-                    rarity = ETreasureRarity.RARE;
-                }
-            }
-
-            List<Treasure> allTreasures = region.getAllTreasures();
-            List<Treasure> possibleTreasures = new ArrayList<>();
-            
-            for (Treasure t : allTreasures) {
-                if (t.getRarity() == rarity) {
-                    possibleTreasures.add(t);
-                }
-            }
-
-            if (!possibleTreasures.isEmpty()) {
-                Treasure treasure = possibleTreasures.get(random.nextInt(possibleTreasures.size()));
-                grid.setHiddenTreasure(row, col, treasure);
+        for (ETreasureRarity rarity : ETreasureRarity.values()) {
+            int minimum = terrainMinimums.getOrDefault(rarity, 0);
+            for (int i = 0; i < minimum; i++) {
+                placeTreasure(random, rarity);
             }
         }
+
+        int randomBaseTreasures = baseTreasures - minimumTotal;
+        for (int i = 0; i < randomBaseTreasures; i++) {
+            placeTreasure(random, chooseRandomRarity(random));
+        }
+
+        int remainingCapacity = maxTreasures - baseTreasures;
+        Map<ETreasureRarity, Integer> skillTreasures = archeologist.getTotalBonusTreasures();
+        ETreasureRarity[] bonusOrder = {
+                ETreasureRarity.RARE, ETreasureRarity.UNCOMMON, ETreasureRarity.COMMON
+        };
+        for (ETreasureRarity rarity : bonusOrder) {
+            if (!canGenerate(rarity)) {
+                continue;
+            }
+            int bonus = skillTreasures.getOrDefault(rarity, 0);
+            for (int i = 0; i < bonus && remainingCapacity > 0; i++) {
+                placeTreasure(random, rarity);
+                remainingCapacity--;
+            }
+        }
+
+        int randomBonusTreasures = archeologist.getTotalRandomTreasures();
+        for (int i = 0; i < randomBonusTreasures && remainingCapacity > 0; i++) {
+            placeTreasure(random, chooseRandomRarity(random));
+            remainingCapacity--;
+        }
+    }
+
+    private Map<ETreasureRarity, Integer> getTerrainMinimums() {
+        Map<ETreasureRarity, Integer> minimums = new EnumMap<>(ETreasureRarity.class);
+        switch (terrain) {
+            case SMALL:
+                minimums.put(ETreasureRarity.COMMON, 1);
+                break;
+            case MEDIUM:
+                minimums.put(ETreasureRarity.COMMON, 3);
+                minimums.put(ETreasureRarity.UNCOMMON, 1);
+                break;
+            case LARGE:
+                minimums.put(ETreasureRarity.COMMON, 5);
+                minimums.put(ETreasureRarity.UNCOMMON, 3);
+                minimums.put(ETreasureRarity.RARE, 1);
+                break;
+            default:
+                throw new IllegalStateException("Tamaño de terreno desconocido: " + terrain);
+        }
+        return minimums;
+    }
+
+    private boolean canGenerate(ETreasureRarity rarity) {
+        return terrain != ETerrainSize.SMALL || rarity != ETreasureRarity.RARE;
+    }
+
+    private ETreasureRarity chooseRandomRarity(Random random) {
+        int uncommonChance = 30;
+        int rareChance = terrain == ETerrainSize.SMALL ? 0 : 10;
+        if (terrain == ETerrainSize.SMALL) {
+            uncommonChance += 10;
+        }
+        for (org.archaios.skills.Skill skill : archeologist.getSkillList()) {
+            switch (skill.getName()) {
+                case "Especialista U":
+                    uncommonChance += 10;
+                    break;
+                case "Especialista R":
+                    if (terrain != ETerrainSize.SMALL) {
+                        rareChance += 10;
+                    }
+                    break;
+                case "Especialista M":
+                    uncommonChance += 5;
+                    if (terrain != ETerrainSize.SMALL) {
+                        rareChance += 5;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        int chanceTotal = uncommonChance + rareChance;
+        if (chanceTotal > 100) {
+            uncommonChance = (int) Math.round((double) uncommonChance * 100 / chanceTotal);
+            rareChance = 100 - uncommonChance;
+        }
+        int commonChance = 100 - uncommonChance - rareChance;
+        int chance = random.nextInt(100);
+        if (chance < commonChance) {
+            return ETreasureRarity.COMMON;
+        }
+        if (chance < commonChance + uncommonChance) {
+            return ETreasureRarity.UNCOMMON;
+        }
+        return ETreasureRarity.RARE;
+    }
+
+    private void placeTreasure(Random random, ETreasureRarity rarity) {
+        if (!canGenerate(rarity)) {
+            return;
+        }
+
+        List<Treasure> possibleTreasures = new ArrayList<>();
+        for (Treasure treasure : region.getAllTreasures()) {
+            if (treasure.getRarity() == rarity) {
+                possibleTreasures.add(treasure);
+            }
+        }
+        if (possibleTreasures.isEmpty()) {
+            throw new IllegalStateException("La región no tiene tesoros de rareza " + rarity + ".");
+        }
+
+        int row;
+        int col;
+        do {
+            row = random.nextInt(grid.getRows());
+            col = random.nextInt(grid.getCols());
+        } while (isPositionOccupied(row, col));
+
+        Treasure treasure = possibleTreasures.get(random.nextInt(possibleTreasures.size()));
+        grid.setHiddenTreasure(row, col, treasure);
     }
 
     /**
