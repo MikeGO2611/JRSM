@@ -2,6 +2,7 @@ package org.archaios.excavation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 
@@ -22,6 +23,10 @@ public class Grid {
      */
     private Treasure[][] hiddenTreasures;
 
+    private boolean[][] revealedEmptyCells;
+
+    private boolean[][] revealedTreasureLocations;
+
     /**
      * Número de filas de la cuadrícula.
      */
@@ -40,11 +45,39 @@ public class Grid {
      * @param cols Número de columnas del terreno.
      */
     public Grid(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
-        this.cells = new String[rows][cols];
-        this.hiddenTreasures = new Treasure[rows][cols];
+        this(rows, cols, ETerrainShape.SQUARE);
+    }
+
+    public Grid(int rows, int cols, ETerrainShape shape) {
+        int[] dimensions = getDimensions(rows, cols, shape);
+        this.rows = dimensions[0];
+        this.cols = dimensions[1];
+        this.cells = new String[this.rows][this.cols];
+        this.hiddenTreasures = new Treasure[this.rows][this.cols];
+        this.revealedEmptyCells = new boolean[this.rows][this.cols];
+        this.revealedTreasureLocations = new boolean[this.rows][this.cols];
         initializeGrid();
+    }
+
+    private int[] getDimensions(int baseRows, int baseCols, ETerrainShape shape) {
+        int totalCells = baseRows * baseCols;
+        switch (shape) {
+            case ROW:
+                return new int[] { 1, totalCells };
+            case COLUMN:
+                return new int[] { totalCells, 1 };
+            case HORIZONTAL:
+                int horizontalRows = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
+                int horizontalCols = (int) Math.ceil((double) totalCells / horizontalRows);
+                return new int[] { horizontalRows, horizontalCols };
+            case VERTICAL:
+                int verticalCols = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
+                int verticalRows = (int) Math.ceil((double) totalCells / verticalCols);
+                return new int[] { verticalRows, verticalCols };
+            case SQUARE:
+            default:
+                return new int[] { baseRows, baseCols };
+        }
     }
 
     /**
@@ -103,6 +136,14 @@ public class Grid {
      * incluyendo las coordenadas alfabéticas (columnas) y numéricas (filas).
      */
     public void printGrid() {
+        printGrid(false);
+    }
+
+    public void printFullyRevealedGrid() {
+        printGrid(true);
+    }
+
+    private void printGrid(boolean revealAll) {
         List<String> letters = getColumnLetters();
         System.out.print("   ");
         for (String letter : letters) {
@@ -113,9 +154,75 @@ public class Grid {
         for (int i = 0; i < rows; i++) {
             System.out.printf("%2d ", (i + 1));
             for (int j = 0; j < cols; j++) {
-                System.out.print(cells[i][j] + " ");
+                String cell = cells[i][j];
+                if (revealAll && ".".equals(cell)) {
+                    cell = hiddenTreasures[i][j] == null
+                            ? "x"
+                            : getTreasureSymbol(hiddenTreasures[i][j]);
+                } else if (".".equals(cell)) {
+                    if (revealedEmptyCells[i][j]) {
+                        cell = "E";
+                    } else if (revealedTreasureLocations[i][j]) {
+                        cell = "?";
+                    }
+                }
+                System.out.print(cell + " ");
             }
             System.out.println();
+        }
+    }
+
+    public int countTreasures(ETreasureRarity rarity) {
+        String symbol = rarity.getCode();
+        int count = 0;
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (symbol.equals(cells[row][col])
+                        || (hiddenTreasures[row][col] != null
+                                && hiddenTreasures[row][col].getRarity() == rarity)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public void revealSkillClues(int emptyCellCount, int treasureLocationCount) {
+        Random random = new Random();
+        revealRandomCells(emptyCellCount, false, random);
+        revealRandomCells(treasureLocationCount, true, random);
+    }
+
+    private void revealRandomCells(int count, boolean treasureLocations, Random random) {
+        List<int[]> candidates = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (!".".equals(cells[row][col])) {
+                    continue;
+                }
+                if (treasureLocations ? hiddenTreasures[row][col] != null
+                        : hiddenTreasures[row][col] == null) {
+                    candidates.add(new int[] { row, col });
+                }
+            }
+        }
+
+        for (int i = 0; i < count && !candidates.isEmpty(); i++) {
+            int[] position = candidates.remove(random.nextInt(candidates.size()));
+            if (treasureLocations) {
+                revealedTreasureLocations[position[0]][position[1]] = true;
+            } else {
+                revealedEmptyCells[position[0]][position[1]] = true;
+            }
+        }
+    }
+
+    private String getTreasureSymbol(Treasure treasure) {
+        switch (treasure.getRarity()) {
+            case COMMON: return "C";
+            case UNCOMMON: return "I";
+            case RARE: return "R";
+            default: throw new IllegalArgumentException("Rareza de tesoro desconocida.");
         }
     }
 
@@ -130,6 +237,11 @@ public class Grid {
         if (row >= 0 && row < rows && col >= 0 && col < cols) {
             this.hiddenTreasures[row][col] = treasure;
         }
+    }
+
+    boolean hasHiddenTreasure(int row, int col) {
+        return row >= 0 && row < rows && col >= 0 && col < cols
+                && hiddenTreasures[row][col] != null;
     }
 
     /**
@@ -148,12 +260,7 @@ public class Grid {
 
         Treasure found = hiddenTreasures[row][col];
         if (found != null) {
-            ETreasureRarity rarity = found.getRarity();
-            switch (rarity) {
-                case COMMON: cells[row][col] = "C"; break;
-                case UNCOMMON: cells[row][col] = "I"; break;
-                case RARE: cells[row][col] = "R"; break;
-            }
+            cells[row][col] = getTreasureSymbol(found);
             hiddenTreasures[row][col] = null; // Eliminar para evitar múltiples recolecciones
         } else {
             cells[row][col] = "x"; // Casilla vacía
