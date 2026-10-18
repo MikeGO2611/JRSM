@@ -87,7 +87,7 @@ public class Stats {
         boolean alreadyExists = false;
 
         for (TerrainStatEntry terrainStatEntry : terrainStatEntryCollection) {
-            if(terrainStatEntry.getRegion() == region){
+            if(terrainStatEntry.getRegion().equals(region)){
                 alreadyExists = true;
                 terrainStatEntry.addTreasures(foundTreasureCollection);
             }
