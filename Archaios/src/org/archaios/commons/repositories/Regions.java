@@ -1,5 +1,10 @@
 package org.archaios.commons.repositories;
 import org.archaios.regions.Region;
+
+/**
+ * Clase que extiende de Repository para usar solo con regiones.
+ * @author Rubén Hernández
+ */
 public class Regions extends Repository<Region> {
 
     public Regions() {
