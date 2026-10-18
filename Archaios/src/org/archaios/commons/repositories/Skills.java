@@ -17,6 +17,7 @@ import org.archaios.skills.TreasureSkill;
 
 /**
  * Clase que extiende de Repository para usar solo con habilidades.
+ * @author Rubén Hernández
  */
 public class Skills extends Repository<Skill> {
 
