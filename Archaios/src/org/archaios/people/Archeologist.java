@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import org.archaios.commons.input.UserInput;
 
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
@@ -106,7 +106,7 @@ public class Archeologist {
         System.out.print(sb.toString());
     }
 
-    /** @return Lista de tamaños (SMALL, MEDIUM, BIG) disponibles. */
+    /** @return Lista de tamaños (SMALL, MEDIUM, LARGE) disponibles. */
     public List<ETerrainSize> getTerrainTypes() {
         List<ETerrainSize> types = new ArrayList<>();
         types.add(ETerrainSize.SMALL);
@@ -195,8 +195,7 @@ public class Archeologist {
     }
 
     /**
-     * Presenta tres opciones válidas al usuario y permite seleccionar por consola
-     * la habilidad que el arqueólogo aprenderá al subir de nivel.
+     * Permite seleccionar y aprender una habilidad de entre las disponibles.
      * 
      * @param allSkills Colección completa de habilidades del juego.
      */
@@ -206,7 +205,6 @@ public class Archeologist {
             return;
         }
 
-        Scanner scn = new Scanner(System.in);
         System.out.println("El arqueólogo " + this.name + " ha subido al nivel " + this.level);
         System.out.println("Puede aprender una de estas habilidades:");
 
@@ -215,19 +213,16 @@ public class Archeologist {
             System.out.println((i + 1) + ". " + s.getName() + " - " + s.getDescription());
         }
 
-        int choice = -1;
-        while (choice < 1 || choice > options.size()) {
-            System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
-            if (scn.hasNextInt()) {
-                choice = scn.nextInt();
-            } else {
-                scn.next();
-            }
-        }
+        System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
+        
+        int choice = UserInput.getUserIntegerInRange(
+            1, 
+            options.size(), 
+            "Opción no válida. Introduce un número del 1 al " + options.size() + ": "
+        );
 
         Skill selectedSkill = options.get(choice - 1);
         addSkill(selectedSkill);
-        scn.close();
     }
 
     /**
