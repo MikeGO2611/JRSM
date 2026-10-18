@@ -1,5 +1,6 @@
 package org.archaios.main;
 import org.archaios.commons.input.UserInput;
+import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.Menu;
 import org.archaios.people.Archeologist;
@@ -8,7 +9,8 @@ public class Archaios {
     private static String idUser;
     private static String idGroup = "2DAM2627";
     private static String playName;
-    //private static Stats statistics;
+
+    public static Skills skillRepository;
     
     public static void main(String[] args) {
         preInit();
@@ -23,7 +25,7 @@ public class Archaios {
     }
     
     private static void preInit(){
-        
+        skillRepository = new Skills();
     }
 
     private static void init(){
