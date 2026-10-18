@@ -24,7 +24,7 @@ public class ArcheologistMenu implements IOperation {
     }
 
     /**
-     * Devuelve el nombre del menú
+     * Devuelve el nombre del menú.
      * @return el nombre de la operación.
      * @see org.archaios.commons.operations.IOperation#getName()
      */

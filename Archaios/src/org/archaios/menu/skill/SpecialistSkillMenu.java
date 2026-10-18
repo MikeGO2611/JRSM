@@ -11,17 +11,29 @@ import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.skills.ExpertSkill;
 import org.archaios.skills.Skill;
-import org.archaios.skills.TerrainSkill;
 
+/**
+ * Menú encargado de mostrar la lista de habilidades de especialista.
+ * @author Miguel González Obenza
+ */
 public class SpecialistSkillMenu implements IOperation {
-    
-    List<Skill> specialistSkillCollection = new ArrayList<Skill>();
+    /** Lista con las habilidades que aplican a especialista */
+    private List<Skill> specialistSkillCollection = new ArrayList<Skill>();
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Especialista";
     }
 
+    /**
+     * Muestra un listado con las habilidades de especialista, y permite al jugador ver más detalles de cada una.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         initSkillList();
@@ -49,6 +61,9 @@ public class SpecialistSkillMenu implements IOperation {
 
     }
 
+    /**
+     * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
+     */
     private void initSkillList(){
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 

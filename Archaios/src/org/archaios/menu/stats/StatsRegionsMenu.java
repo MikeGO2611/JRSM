@@ -5,8 +5,17 @@ import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.menu.MenuGenerator;
 
+/**
+ * Mostrar las estadísticas de cada región.
+ * @author Miguel González Obenza
+ */
 public class StatsRegionsMenu implements IOperation{
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Ver regiones";

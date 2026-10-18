@@ -77,7 +77,7 @@ final public class MenuGenerator {
                     if(command.size() == 2){
                         int points = Integer.parseInt(command.get(1));
                         Stats.addPoints(points);
-                        System.out.println(points + " puntos añadidods.");
+                        System.out.println(points + " puntos añadidos.");
                     }
                 }
             }

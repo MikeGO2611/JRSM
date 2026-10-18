@@ -12,11 +12,20 @@ import org.archaios.people.Archeologist;
  */
 public class LicenseMenu implements IOperation{
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Licencias";
     }
 
+    /**
+     * Abre el menú de obtener licencias para un arqueólogo.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         System.out.println(MenuGenerator.generateTitle(getName(), ':', 20));
@@ -31,7 +40,8 @@ public class LicenseMenu implements IOperation{
                 System.out.println("Las licencias cuestan 20 puntos.");
 
                 if(Stats.getPoints() >= 20){
-                    throw new UnsupportedOperationException("No se ha implementado esta opción.");
+                    // TODO No me quedó claro que hacer.
+                    System.err.println("Aún no implementado.");
                 } else {
                     System.out.println("No tienes suficientes puntos para comprar una licencia a este arqueólogo.");
                 }

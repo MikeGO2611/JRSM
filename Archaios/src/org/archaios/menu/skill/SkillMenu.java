@@ -12,8 +12,12 @@ import org.archaios.menu.MenuGenerator;
  */
 public class SkillMenu implements IOperation {
 
+    /** Las opciones que se pueden escoger de este menú. */
     private List<IOperation> entryCollection = new ArrayList<>();
 
+    /**
+     * Constructor que inicializa la lista de opciones con las opciones posibles.
+     */
     public SkillMenu(){
         entryCollection.add(new TreasureSkillMenu());
         entryCollection.add(new ExcavationSkillMenu());

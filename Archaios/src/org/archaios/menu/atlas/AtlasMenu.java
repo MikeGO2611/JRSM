@@ -16,11 +16,20 @@ import org.archaios.treasures.Treasure;
  */
 public class AtlasMenu implements IOperation{
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Atlas";
     }
 
+    /**    (non-Javadoc)
+     * Pide al usuario que seleccione una región, y muestra todos los tesoros posibles en ella.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         List<Region> regionCollection = Atlas.getRegionCollection();

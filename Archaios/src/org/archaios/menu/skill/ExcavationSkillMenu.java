@@ -13,15 +13,28 @@ import org.archaios.skills.ExcavationSkill;
 import org.archaios.skills.RevelationSkill;
 import org.archaios.skills.Skill;
 
+/**
+ * Menú encargado de mostrar la lista de habilidades de excavación.
+ * @author Miguel González Obenza
+ */
 public class ExcavationSkillMenu implements IOperation {
+    /** Lista con las habilidades que aplican a excavación */
+    private List<Skill> excavationSkillCollection = new ArrayList<Skill>();
 
-    List<Skill> excavationSkillCollection = new ArrayList<Skill>();
-
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Excavación";
     }
 
+    /**
+     * Muestra un listado con las habilidades de excavación, y permite al jugador ver más detalles de cada una.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         initSkillList();
@@ -49,6 +62,9 @@ public class ExcavationSkillMenu implements IOperation {
 
     }
 
+    /**
+     * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
+     */
     private void initSkillList(){
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 

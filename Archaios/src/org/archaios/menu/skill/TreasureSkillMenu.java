@@ -12,15 +12,29 @@ import org.archaios.menu.MenuGenerator;
 import org.archaios.skills.Skill;
 import org.archaios.skills.TreasureSkill;
 
+/**
+ * Menú encargado de mostrar la lista de habilidades de tesoro.
+ * @author Miguel González Obenza
+ */
 public class TreasureSkillMenu implements IOperation {
     
+    /** Lista con las habilidades que aplican a tesoro */
     List<Skill> treasureSkillCollection = new ArrayList<Skill>();
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Tesoro";
     }
 
+    /**
+     * Muestra un listado con las habilidades de tesoro, y permite al jugador ver más detalles de cada una.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         initSkillList();
@@ -48,6 +62,9 @@ public class TreasureSkillMenu implements IOperation {
 
     }
 
+    /**
+     * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
+     */
     private void initSkillList(){
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 

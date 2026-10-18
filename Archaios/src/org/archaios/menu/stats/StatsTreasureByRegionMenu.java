@@ -8,8 +8,17 @@ import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.treasures.Treasure;
 
+/**
+ * Mostrar los tesoros por región.
+ * @author Miguel González
+ */
 public class StatsTreasureByRegionMenu implements IOperation{
 
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Por región";

@@ -12,8 +12,10 @@ import org.archaios.menu.MenuGenerator;
  */
 public class StatsMenu implements IOperation{
 
+    /** Opciones del menú de estadísticas */
     private List<IOperation> entryCollection = new ArrayList<>();
 
+    /** Inicialización de las opciones del menú. */
     public StatsMenu(){
         entryCollection.add(new StatsRegionsMenu());
         entryCollection.add(new StatsTreasureMenu());

@@ -11,17 +11,30 @@ import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.skills.Skill;
 import org.archaios.skills.TerrainSkill;
-import org.archaios.skills.TreasureSkill;
 
+/**
+ * Menú encargado de mostrar la lista de habilidades de terreno.
+ * @author Miguel González Obenza
+ */
 public class TerrainSkillMenu implements IOperation {
-    
-    List<Skill> terrainSkillCollection = new ArrayList<Skill>();
 
+    /** Lista con las habilidades que aplican a terreno */
+    List<Skill> terrainSkillCollection = new ArrayList<Skill>();
+    
+    /**
+     * Devuelve el nombre del menú.
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Terreno";
     }
 
+    /**
+     * Muestra un listado con las habilidades de terreno, y permite al jugador ver más detalles de cada una.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         initSkillList();
@@ -49,6 +62,9 @@ public class TerrainSkillMenu implements IOperation {
 
     }
 
+    /**
+     * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
+     */
     private void initSkillList(){
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 
