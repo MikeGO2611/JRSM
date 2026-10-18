@@ -60,6 +60,52 @@ public class Grid {
     }
 
     private int[] getDimensions(int baseRows, int baseCols, ETerrainShape shape) {
+        if (baseRows == 5 && baseCols == 5) {
+            switch (shape) {
+                case ROW:
+                    return new int[] { 5, 3 };
+                case HORIZONTAL:
+                    return new int[] { 10, 2 };
+                case COLUMN:
+                    return new int[] { 3, 5 };
+                case VERTICAL:
+                    return new int[] { 2, 10 };
+                case SQUARE:
+                default:
+                    return new int[] { 5, 5 };
+            }
+        }
+        if (baseRows == 10 && baseCols == 10) {
+            switch (shape) {
+                case ROW:
+                    return new int[] { 20, 5 };
+                case HORIZONTAL:
+                    return new int[] { 30, 3 };
+                case COLUMN:
+                    return new int[] { 5, 20 };
+                case VERTICAL:
+                    return new int[] { 3, 30 };
+                case SQUARE:
+                default:
+                    return new int[] { 10, 10 };
+            }
+        }
+        if (baseRows == 15 && baseCols == 15) {
+            switch (shape) {
+                case ROW:
+                    return new int[] { 20, 10 };
+                case HORIZONTAL:
+                    return new int[] { 40, 5 };
+                case COLUMN:
+                    return new int[] { 10, 20 };
+                case VERTICAL:
+                    return new int[] { 5, 40 };
+                case SQUARE:
+                default:
+                    return new int[] { 15, 15 };
+            }
+        }
+
         int totalCells = baseRows * baseCols;
         switch (shape) {
             case ROW:
