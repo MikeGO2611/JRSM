@@ -39,14 +39,16 @@ public class TreasureCatalogMenu implements IOperation {
 
         int userInput = UserInput.getUserIntegerInRange(0, regionCollection.size(), "Opción no válida");
 
-        Region selectedRegion = regionCollection.get(userInput - 1);
-        System.out.println(MenuGenerator.generateTitle(selectedRegion.getName(), '-', 20));
+        if(userInput != 0){
+            Region selectedRegion = regionCollection.get(userInput - 1);
+            System.out.println(MenuGenerator.generateTitle(selectedRegion.getName(), '-', 20));
 
-        List<Treasure> regionTreasureCollection = selectedRegion.getAllTreasures();
+            List<Treasure> regionTreasureCollection = selectedRegion.getAllTreasures();
 
-        for (int i = 0; i < regionTreasureCollection.size(); i++) {
-            Treasure treasure = regionTreasureCollection.get(i);
-            System.out.println(i + ". " + treasure.getName());
+            for (int i = 0; i < regionTreasureCollection.size(); i++) {
+                Treasure treasure = regionTreasureCollection.get(i);
+                System.out.println(i + ". " + treasure.getName());
+            }
         }
     }
 

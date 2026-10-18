@@ -2,6 +2,11 @@ package org.archaios.commons.input;
 
 import java.io.Console;
 import java.io.IOError;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.archaios.commons.statistics.Stats;
+import org.archaios.people.Archeologist;
 
 /**
  * Utilidad para gestionar el input del usuario.
@@ -59,5 +64,26 @@ public class UserInput {
      */
     public static String getUserString(){
         return console.readLine();
+    }
+
+    /**
+     * Pide al usuario un nombre de arqueólogo y comprueba si es único.
+     * @return String con el nombre único
+     */
+    public static String getUserUniqueArcheologistName(){
+        String archeologistName = getUserString();
+
+        List<String> archeologistNameCollection = new ArrayList<>();
+
+        for (Archeologist archeologist : Stats.getArcheologistCollection()) {
+            archeologistNameCollection.add(archeologist.getName().trim());
+        }
+
+        while (archeologistNameCollection.contains(archeologistName.trim())) {
+            System.out.print("El nombre ya existe, elige otro: ");
+            archeologistName = getUserString();
+        }
+
+        return archeologistName;
     }
 }

@@ -1,5 +1,8 @@
 package org.archaios.menu.stats;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
@@ -30,12 +33,15 @@ public class StatsTreasureByTypeMenu implements IOperation{
                 String type = treasureType.toString().substring(0, 1).toUpperCase() + treasureType.toString().substring(1);
                 System.out.println(MenuGenerator.generateTitle(type, '-', 20));
 
+                List<Treasure> treasureCollection = new ArrayList<>();
+
                 for(Treasure treasure : terrainStatEntry.getTreasures()){
                     if(treasure.getType() == treasureType){
-                        System.out.println("- " + treasure.getName());
-                        System.out.println("- " + treasure.getCode());
+                        treasureCollection.add(treasure);
                     }
                 }
+                
+                StatsTreasureUtils.printTreasures(treasureCollection);
             }
         }
     }

@@ -71,7 +71,7 @@ public class HireArcheologists implements IOperation{
                 }
 
                 System.out.println("Nombre del nuevo arqueólogo: ");
-                String archeologistName = UserInput.getUserString();
+                String archeologistName = UserInput.getUserUniqueArcheologistName();
                 randomArcheologist.setName(archeologistName);
                 Stats.addArcheologist(randomArcheologist);
 
