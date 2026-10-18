@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Region;
+import org.archaios.treasures.Treasure;
 
 /**
  * Clase que contiene las estadísticas y los datos del jugador.
@@ -15,11 +17,7 @@ public class Stats {
     private static int points = 0;
     /** Lista de arqueólogos del jugador. */
     private static List<Archeologist> archeologistCollection = new ArrayList<Archeologist>();
-
-    public static void getPlaceStats(){
-        // TODO implementar 
-        throw new UnsupportedOperationException("No implementado");
-    }
+    private static List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<TerrainStatEntry>();
 
     /**
      * Añade un arqueólogo a la lista del jugador,
@@ -75,5 +73,29 @@ public class Stats {
      */
     public static void addPoints(int points){
         Stats.points += points;
+    }
+
+    public static List<TerrainStatEntry> getTerrainStatEntryCollection(){
+        return terrainStatEntryCollection;
+    }
+
+    public static void addTerrainStatEntry(TerrainStatEntry terrainStatEntry){
+        terrainStatEntryCollection.add(terrainStatEntry);
+    }
+
+    public static void addTerrainStatEntry(Region region, List<Treasure> foundTreasureCollection){
+        boolean alreadyExists = false;
+
+        for (TerrainStatEntry terrainStatEntry : terrainStatEntryCollection) {
+            if(terrainStatEntry.getRegion() == region){
+                alreadyExists = true;
+                terrainStatEntry.addTreasures(foundTreasureCollection);
+            }
+        }
+
+        if(!alreadyExists){
+            TerrainStatEntry terrainStatEntry = new TerrainStatEntry(region, foundTreasureCollection, foundTreasureCollection.size());
+            terrainStatEntryCollection.add(terrainStatEntry);
+        }
     }
 }

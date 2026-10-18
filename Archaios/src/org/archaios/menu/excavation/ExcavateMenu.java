@@ -1,5 +1,8 @@
 package org.archaios.menu.excavation;
 
+import java.util.List;
+
+import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.excavation.ETerrainSize;
 import org.archaios.excavation.Excavation;
@@ -28,11 +31,19 @@ public class ExcavateMenu implements IOperation {
             return;
         }
 
-        // Elegir region
-        // Elegir tamaño
+        List<ETerrainSize> terrainSizeCollection = selectedArcheologist.getTerrainTypes();
+        System.out.println(MenuGenerator.generateTitle("Terrenos", ':', 20));
 
-        ETerrainSize terrain = ETerrainSize.SMALL;
-        Excavation excavation = new Excavation(selectedArcheologist, new Greece(), terrain);
+        for (int i = 0; i < terrainSizeCollection.size(); i++) {
+            ETerrainSize terrainSize = terrainSizeCollection.get(i);
+            System.out.println((i + 1) + ". " + terrainSize.toString());
+        }
+
+        int userInput = UserInput.getUserIntegerInRange(0, terrainSizeCollection.size(), "Opción no válida.");
+        ETerrainSize selectedTerrainSize = terrainSizeCollection.get(userInput - 1);
+
+
+        Excavation excavation = new Excavation(selectedArcheologist, new Greece(), selectedTerrainSize);
         excavation.excavate();
     }
 }
