@@ -1,5 +1,6 @@
 package org.archaios.menu;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.archaios.commons.input.UserInput;
@@ -59,15 +60,25 @@ final public class MenuGenerator {
                     System.out.println("Operación no válida.");
                 }
             } else {
-                switch (userInput) {
-                    case "add_archeologist":
-                        Archeologist testArcheologist = new Archeologist("Test Archeologist " + Stats.getArcheologistCollectionCount());
-                        Stats.addArcheologist(testArcheologist);
-                        System.out.println("Añadido " + testArcheologist.getName());
-                        break;
-                
-                    default:
-                        break;
+                if(userInput.contains("add_archeologist")){
+                        List<String> command = Arrays.asList(userInput.split("\s"));
+                        if(command.size() > 1){
+                            StringBuilder sb = new StringBuilder();
+                            for(int i = 1; i < command.size(); i++){
+                                sb.append(command.get(i) + " ");
+                            }
+                            Archeologist testArcheologist = new Archeologist(sb.toString().trim());
+                            Stats.addArcheologist(testArcheologist);
+                            System.out.println("Añadido " + testArcheologist.getName());
+                        }
+
+                } else if(userInput.contains("add_points")){
+                    List<String> command = Arrays.asList(userInput.split("\s"));
+                    if(command.size() == 2){
+                        int points = Integer.parseInt(command.get(1));
+                        Stats.addPoints(points);
+                        System.out.println(points + " puntos añadidods.");
+                    }
                 }
             }
         }

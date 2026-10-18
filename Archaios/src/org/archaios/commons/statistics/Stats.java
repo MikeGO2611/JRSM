@@ -18,6 +18,10 @@ public class Stats {
         archeologistCollection.add(archeologist);
     }
 
+    public static void removeArcheologist(Archeologist archeologist){
+        archeologistCollection.remove(archeologist);
+    }
+
     public static List<Archeologist> getArcheologistCollection(){
         return archeologistCollection;
     }
@@ -32,5 +36,9 @@ public class Stats {
 
     public static void setPoints(int points){
         Stats.points = points;
+    }
+
+    public static void addPoints(int points){
+        Stats.points += points;
     }
 }

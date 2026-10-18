@@ -1,11 +1,17 @@
 package org.archaios.commons.repositories;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import org.archaios.excavation.ETerrainShape;
+import org.archaios.main.Archaios;
+import org.archaios.people.Archeologist;
 import org.archaios.skills.ExcavationSkill;
 import org.archaios.skills.ExpertSkill;
 import org.archaios.skills.RevelationSkill;
 import org.archaios.skills.Skill;
+import org.archaios.skills.SkillService;
 import org.archaios.skills.TerrainSkill;
 import org.archaios.skills.TreasureSkill;
 
@@ -125,6 +131,16 @@ public class Skills extends Repository<Skill> {
         super.addElement(espMarI);
         super.addElement(espMarII);
         super.addElement(espDemolicionesA);
+    }
+
+    public List<Skill> getRandomCompatibleSkills(Archeologist archeologist, int count){
+        List<Skill> skillList = SkillService.selectThreeSkills(archeologist, getAllElements());
+        while (skillList.size() > count) {
+            skillList.removeLast();
+        }
+
+
+        return skillList;
     }
 
 }
