@@ -53,7 +53,10 @@ public class UserInput {
 
     }
 
-
+    /**
+     * Pide al usuario un texto String
+     * @return String pedido al usuario.
+     */
     public static String getUserString(){
         return console.readLine();
     }

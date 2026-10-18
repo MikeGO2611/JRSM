@@ -15,7 +15,7 @@ import org.archaios.people.Archeologist;
  */
 final public class MenuGenerator {
 
-    // Definiendo el constructor como un método privado se impide la instanciación de la clase.
+    // Definiendo el constructor como un método privado se impide la instanciación de la clase sin necesidad de hacerla abstracta.
     private MenuGenerator(){
 
     }
@@ -101,7 +101,7 @@ final public class MenuGenerator {
      * @param title el título del menú
      * @param ch el decorador que rodea el título del menú
      * @param entryCollection la colección de entradas del menú
-     * @return el menú generado
+     * @return String el menú generado
      */
     private static String generateMenu(String title, Character ch, List<IOperation> entryCollection){
         StringBuilder sb = new StringBuilder();
@@ -122,7 +122,7 @@ final public class MenuGenerator {
      * @param title el título
      * @param ch el caracter de decoración
      * @param repetition el número de veces que aparece el caracter de cada lado
-     * @return el título generado
+     * @return String el título generado
      */
     public static String generateTitle(String title, Character ch, int repetition){
         StringBuilder sb = new StringBuilder();
@@ -136,6 +136,12 @@ final public class MenuGenerator {
         return sb.toString();
     }
 
+    /**
+     * Genera un divisor sin título, solo con caracteres.
+     * @param ch Character empleado para decorar el divisor
+     * @param repetition int veces que se repite el caracter
+     * @return String el divisor
+     */
     public static String generateDivisor(Character ch, int repetition){
 
         StringBuilder sb = new StringBuilder();

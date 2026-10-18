@@ -10,8 +10,13 @@ import org.archaios.menu.MenuGenerator;
 
 /**
  * Utilidades para gestionar los arqueólogos.
+ * @author Miguel González Obenza
  */
 public class ArcheologistMenuUtils {
+    /**
+     * Pide al jugador que elija un arqueólogo, y lo devuelve.
+     * @return Archeologist arqueólogo elegido por el jugador.
+     */
     public static Archeologist selectArcheologist(){
         Archeologist selectedArcheologist = null;
         List<Archeologist> archeologistCollection = Stats.getArcheologistCollection();

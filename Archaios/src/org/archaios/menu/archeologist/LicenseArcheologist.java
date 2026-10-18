@@ -5,14 +5,28 @@ import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
-
+/**
+ * Menú para licenciar arqueólogos.
+ * @see org.archaios.menu.archeologist.ArcheologistMenu
+ * @author Miguel González Obenza
+ */
 public class LicenseArcheologist implements IOperation {
-
+    
+    /**
+     * Devuelve el nombre del menú
+     * @return el nombre de la operación.
+     * @see org.archaios.commons.operations.IOperation#getName()
+     */
     @Override
     public String getName() {
         return "Licenciar";
     }
 
+    /**
+     * Pregunta al usuario si quiere licenciar a un arqueólogo y cual.
+     * Si el usuario solo tiene un arqueólogo, no se permite licenciarlo.
+     * @see org.archaios.commons.operations.IOperation#operation()
+     */
     @Override
     public void operation() {
         System.out.println("Cuando licencias un arqueólogo te deshaces de él a cambio de puntos.");

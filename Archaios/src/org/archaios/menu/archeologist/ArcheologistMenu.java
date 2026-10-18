@@ -8,10 +8,10 @@ import org.archaios.menu.MenuGenerator;
 
 /**
  * Menú con las opciones para gestionar los arqueólogos.
+ * @author Miguel González Obenza
  */
 public class ArcheologistMenu implements IOperation {
-
-    
+    /** Lista con las operaciones del menú */
     private List<IOperation> entryCollection = new ArrayList<>();
 
     /**
@@ -24,8 +24,9 @@ public class ArcheologistMenu implements IOperation {
     }
 
     /**
+     * Devuelve el nombre del menú
      * @return el nombre de la operación.
-     * @see commons.operations.IOperation#getName()
+     * @see org.archaios.commons.operations.IOperation#getName()
      */
     @Override
     public String getName() {
