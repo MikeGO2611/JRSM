@@ -12,9 +12,13 @@ public enum ETerrainSize {
     /** Terreno grande con una bonificación de experiencia alta. */
     LARGE("Grande", 10, 15, 15);
 
+    /** Nombre localizado del tamaño del terreno. */
     private final String name;
+    /** Experiencia adicional otorgada por completar una excavación de este tamaño. */
     private final int expBonus;
+    /** Número base de filas de la cuadrícula para este tamaño. */
     private final int rows;
+    /** Número base de columnas de la cuadrícula para este tamaño. */
     private final int cols;
 
     /**
@@ -41,13 +45,27 @@ public enum ETerrainSize {
         return expBonus;
     }
     
-    /** @return Devuelve el nombre en español */
+    /**
+     * Devuelve el nombre localizado del tamaño.
+     *
+     * @return nombre en español
+     */
     public String getName() { return this.name; }
 
+    /**
+     * Devuelve el número base de filas asociado al tamaño.
+     *
+     * @return número de filas
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * Devuelve el número base de columnas asociado al tamaño.
+     *
+     * @return número de columnas
+     */
     public int getCols() {
         return cols;
     }

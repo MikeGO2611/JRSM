@@ -5,12 +5,19 @@ package org.archaios.excavation;
  * Un terreno define su tamaño, forma, dimensiones y umbrales de rareza.
  */
 public class Terrain {
+    /** Categoría de tamaño a la que pertenece el terreno. */
     private final ETerrainSize size;
+    /** Forma de disposición de las celdas del terreno. */
     private final ETerrainShape shape;
+    /** Número de filas del terreno. */
     private final int rows;
+    /** Número de columnas del terreno. */
     private final int cols;
+    /** Cantidad mínima de tesoros comunes del terreno. */
     private final int minCommon;
+    /** Cantidad mínima de tesoros poco comunes del terreno. */
     private final int minUncommon;
+    /** Cantidad mínima de tesoros raros del terreno. */
     private final int minRare;
 
     /**
