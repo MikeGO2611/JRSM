@@ -18,6 +18,8 @@ import org.archaios.skills.SkillService;
  */
 public class HireArcheologists implements IOperation{
 
+    final private int HIRE_COST = 50; 
+
     /**
      * Devuelve el nombre del menú.
      * @return el nombre de la operación.
@@ -37,7 +39,7 @@ public class HireArcheologists implements IOperation{
         System.out.println("Puntos disponibles: " + Stats.getPoints());
         System.out.println("Cada arqueólogo cuesta 50 puntos.");
 
-        if(Stats.getPoints() >= 50){
+        if(Stats.getPoints() >= HIRE_COST){
             System.out.println("¿Estás seguro de que quieres contratar a un arqueólogo aleatorio por 50 puntos?");
             System.out.println("0. No");
             System.out.println("1. Sí");
@@ -74,6 +76,7 @@ public class HireArcheologists implements IOperation{
                 String archeologistName = UserInput.getUserUniqueArcheologistName();
                 randomArcheologist.setName(archeologistName);
                 Stats.addArcheologist(randomArcheologist);
+                Stats.addPoints(-HIRE_COST);
 
                 System.out.println("Arqueólogo " + randomArcheologist.getName() + " añadido.");
             }
