@@ -455,8 +455,5 @@ public class Excavation {
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
         
-        archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
-        Stats.addPoints(pointsEarned);
-        Stats.addTerrainStatEntry(region, foundTreasures);
     }
 }
