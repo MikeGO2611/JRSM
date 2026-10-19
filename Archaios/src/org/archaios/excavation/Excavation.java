@@ -1,251 +1,420 @@
 package org.archaios.excavation;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
-
+import org.archaios.commons.input.UserInput;
+import org.archaios.commons.statistics.Stats;
+import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Region;
+import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 
+/**
+ * Controla el proceso lógico de una excavación, gestionando el arqueólogo a cargo, 
+ * el terreno, la distribución de los tesoros y los turnos/intentos restantes.
+ */
 public class Excavation {
-    private Region region;
-    private Archeologist archeologist;
-    private Terrain terrain;
+    /**
+     * La cuadrícula física en la que se desarrolla la excavación.
+     */
     private Grid grid;
-    
-    private List<Treasure> hiddenTreasures;
-    private List<Treasure> foundTreasures;
-    
-    private int remainingActions;
-    private boolean isFinished;
-    private Scanner scanner;
 
-    public void start(Region region, Archeologist archeologist, ETerrainSize terrainSize) {
-        this.region = region;
+    /**
+     * El arqueólogo asignado que está realizando la excavación.
+     */
+    private Archeologist archeologist;
+
+    /**
+     * La región en la que se desarrolla la excavación.
+     */
+    private Region region;
+
+    /**
+     * El tipo y tamaño del terreno configurado para esta excavación.
+     */
+    private ETerrainSize terrain;
+
+    private ETerrainShape terrainShape;
+
+    /**
+     * Número de acciones (intentos) restantes que el jugador puede realizar.
+     */
+    private int remainingAttempts;
+
+    /**
+     * Lista de tesoros que han sido desenterrados exitosamente en la excavación actual.
+     */
+    private List<Treasure> foundTreasures;
+
+    private boolean completionRewardsApplied;
+
+    /**
+     * Constructor de Excavation.
+     * Inicializa los componentes, calcula el número de intentos permitidos 
+     * y esconde los tesoros en la cuadrícula de forma aleatoria.
+     *
+     * @param archeologist El arqueólogo que liderará la excavación.
+     * @param region       La región del mundo donde se excava.
+     * @param terrain      El terreno seleccionado con su respectivo tamaño.
+     * @param terrainShape La forma seleccionada para el terreno.
+     */
+    public Excavation(Archeologist archeologist, Region region, ETerrainSize terrain,
+            ETerrainShape terrainShape) {
         this.archeologist = archeologist;
+        this.region = region;
         this.terrain = terrain;
+        this.foundTreasures = new ArrayList<>();
+
+        this.terrainShape = terrainShape;
+        this.grid = new Grid(terrain.getRows(), terrain.getCols(), terrainShape);
         
-        int rows = 0;
-        int cols = 0;
-        
-        switch (terrain.getSize()) {
+        calculateAttempts();
+        distributeTreasures();
+        grid.revealSkillClues(
+                archeologist.getRevelationEmpty(),
+                archeologist.getRevelationTreasure());
+    }
+
+    /**
+     * Calcula el número de acciones iniciales basado en el tamaño de la cuadrícula
+     * y los modificadores o bonificaciones del arqueólogo (habilidades).
+     */
+    private void calculateAttempts() {
+        int totalCells = grid.getTotalCells();
+        // Intentos base: 25% del tamaño de la rejilla
+        double baseAttempts = totalCells * 0.25; 
+        double attemptsWithMultiplier = baseAttempts * archeologist.getTotalActionsMultiplier();
+        this.remainingAttempts = (int) Math.ceil(attemptsWithMultiplier)
+                + archeologist.getTotalBonusActions();
+    }
+
+    /** Distribuye los mínimos del terreno, los tesoros base y las bonificaciones del arqueólogo. */
+    private void distributeTreasures() {
+        int totalCells = grid.getTotalCells();
+        int maxTreasures = totalCells / 2;
+        Map<ETreasureRarity, Integer> terrainMinimums = getTerrainMinimums();
+        int minimumTotal = terrainMinimums.values().stream().mapToInt(Integer::intValue).sum();
+        int baseTreasures = Math.max(Math.max(1, (int) Math.ceil(totalCells * 0.10)), minimumTotal);
+        baseTreasures = Math.min(baseTreasures, maxTreasures);
+        Random random = new Random();
+
+        for (ETreasureRarity rarity : ETreasureRarity.values()) {
+            int minimum = terrainMinimums.getOrDefault(rarity, 0);
+            for (int i = 0; i < minimum; i++) {
+                placeTreasure(random, rarity);
+            }
+        }
+
+        int randomBaseTreasures = baseTreasures - minimumTotal;
+        for (int i = 0; i < randomBaseTreasures; i++) {
+            placeTreasure(random, chooseRandomRarity(random));
+        }
+
+        int remainingCapacity = maxTreasures - baseTreasures;
+        Map<ETreasureRarity, Integer> skillTreasures = archeologist.getTotalBonusTreasures();
+        ETreasureRarity[] bonusOrder = {
+                ETreasureRarity.RARE, ETreasureRarity.UNCOMMON, ETreasureRarity.COMMON
+        };
+        for (ETreasureRarity rarity : bonusOrder) {
+            if (!canGenerate(rarity)) {
+                continue;
+            }
+            int bonus = skillTreasures.getOrDefault(rarity, 0);
+            for (int i = 0; i < bonus && remainingCapacity > 0; i++) {
+                placeTreasure(random, rarity);
+                remainingCapacity--;
+            }
+        }
+
+        int randomBonusTreasures = archeologist.getTotalRandomTreasures();
+        for (int i = 0; i < randomBonusTreasures && remainingCapacity > 0; i++) {
+            placeTreasure(random, chooseRandomRarity(random));
+            remainingCapacity--;
+        }
+    }
+
+    private Map<ETreasureRarity, Integer> getTerrainMinimums() {
+        Map<ETreasureRarity, Integer> minimums = new EnumMap<>(ETreasureRarity.class);
+        switch (terrain) {
             case SMALL:
-                switch (terrain.getShape()) {
-                    case ROW: rows = 3; cols = 5; break;
-                    case HORIZONTAL: rows = 2; cols = 10; break;
-                    case COLUMN: rows = 5; cols = 3; break;
-                    case VERTICAL: rows = 10; cols = 2; break;
-                    case SQUARE: rows = 5; cols = 5; break;
-                }
+                minimums.put(ETreasureRarity.COMMON, 1);
                 break;
             case MEDIUM:
-                switch (terrain.getShape()) {
-                    case ROW: rows = 5; cols = 20; break;
-                    case HORIZONTAL: rows = 3; cols = 30; break;
-                    case COLUMN: rows = 20; cols = 5; break;
-                    case VERTICAL: rows = 30; cols = 3; break;
-                    case SQUARE: rows = 10; cols = 10; break;
-                }
+                minimums.put(ETreasureRarity.COMMON, 3);
+                minimums.put(ETreasureRarity.UNCOMMON, 1);
                 break;
             case LARGE:
-                switch (terrain.getShape()) {
-                    case ROW: rows = 10; cols = 20; break;
-                    case HORIZONTAL: rows = 5; cols = 40; break;
-                    case COLUMN: rows = 20; cols = 10; break;
-                    case VERTICAL: rows = 40; cols = 5; break;
-                    case SQUARE: rows = 15; cols = 15; break;
-                }
+                minimums.put(ETreasureRarity.COMMON, 5);
+                minimums.put(ETreasureRarity.UNCOMMON, 3);
+                minimums.put(ETreasureRarity.RARE, 1);
                 break;
+            default:
+                throw new IllegalStateException("Tamaño de terreno desconocido: " + terrain);
         }
-
-        this.grid = new Grid(rows, cols); 
-        this.scanner = new Scanner(System.in);
-        
-        this.hiddenTreasures = new ArrayList<>();
-        this.foundTreasures = new ArrayList<>();
-        this.isFinished = false;
-
-        calculateActions(rows * cols);
-        generateTreasures(rows, cols);
-        
-        if (rows == 15 && cols == 15) {
-            grid.digCell(11, 10, '?'); 
-            grid.digCell(12, 14, '?'); 
-            grid.digCell(14, 1, '?');  
-        }
-
-        runGameLoop();
+        return minimums;
     }
 
-    private void calculateActions(int totalCells) {
-        double baseActions = totalCells * 0.25;
-        this.remainingActions = (int) Math.max(1, Math.ceil(baseActions));
-        if(totalCells == 225) this.remainingActions = 86;
+    private boolean canGenerate(ETreasureRarity rarity) {
+        return terrain != ETerrainSize.SMALL || rarity != ETreasureRarity.RARE;
     }
 
-    private void generateTreasures(int rows, int cols) {
-        int totalCells = rows * cols;
-        int targetTreasureCount = Math.max(1, (int) Math.ceil(totalCells * 0.10));
-        
-        if(totalCells == 225) targetTreasureCount = 22; 
-        
-        Random rand = new Random();
-        boolean[][] occupied = new boolean[rows][cols];
-        int count = 0;
-        
-        while (count < targetTreasureCount) {
-            int r = rand.nextInt(rows);
-            int c = rand.nextInt(cols);
-            
-            if (!occupied[r][c]) {
-                occupied[r][c] = true;
-                
-                Treasure t = new Treasure();
-                t.setRow(r);
-                t.setCol(c);
-                
-                if(count % 5 == 0) t.setRarity(Rarity.RARE);
-                else if(count % 2 == 0) t.setRarity(Rarity.UNCOMMON);
-                else t.setRarity(Rarity.COMMON);
-                
-                this.hiddenTreasures.add(t);
-                count++;
+    private ETreasureRarity chooseRandomRarity(Random random) {
+        int uncommonChance = 30;
+        int rareChance = terrain == ETerrainSize.SMALL ? 0 : 10;
+        if (terrain == ETerrainSize.SMALL) {
+            uncommonChance += 10;
+        }
+        for (org.archaios.skills.Skill skill : archeologist.getSkillList()) {
+            switch (skill.getName()) {
+                case "Especialista U":
+                    uncommonChance += 10;
+                    break;
+                case "Especialista R":
+                    if (terrain != ETerrainSize.SMALL) {
+                        rareChance += 10;
+                    }
+                    break;
+                case "Especialista M":
+                    uncommonChance += 5;
+                    if (terrain != ETerrainSize.SMALL) {
+                        rareChance += 5;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
+
+        int chanceTotal = uncommonChance + rareChance;
+        if (chanceTotal > 100) {
+            uncommonChance = (int) Math.round((double) uncommonChance * 100 / chanceTotal);
+            rareChance = 100 - uncommonChance;
+        }
+        int commonChance = 100 - uncommonChance - rareChance;
+        int chance = random.nextInt(100);
+        if (chance < commonChance) {
+            return ETreasureRarity.COMMON;
+        }
+        if (chance < commonChance + uncommonChance) {
+            return ETreasureRarity.UNCOMMON;
+        }
+        return ETreasureRarity.RARE;
     }
-    
-    private Treasure getTreasureAt(int row, int col) {
-        for(Treasure t : hiddenTreasures) {
-            if(t.getRow() == row && t.getCol() == col) {
-                return t;
+
+    private void placeTreasure(Random random, ETreasureRarity rarity) {
+        if (!canGenerate(rarity)) {
+            return;
+        }
+
+        List<Treasure> possibleTreasures = new ArrayList<>();
+        for (Treasure treasure : region.getAllTreasures()) {
+            if (treasure.getRarity() == rarity) {
+                possibleTreasures.add(treasure);
             }
         }
+        if (possibleTreasures.isEmpty()) {
+            throw new IllegalStateException("La región no tiene tesoros de rareza " + rarity + ".");
+        }
+
+        int row;
+        int col;
+        do {
+            row = random.nextInt(grid.getRows());
+            col = random.nextInt(grid.getCols());
+        } while (isPositionOccupied(row, col));
+
+        Treasure treasure = possibleTreasures.get(random.nextInt(possibleTreasures.size()));
+        grid.setHiddenTreasure(row, col, treasure);
+    }
+
+    /**
+     * Comprueba si una celda específica ya tiene un tesoro escondido durante
+     * la fase de distribución.
+     *
+     * @param row La fila a comprobar.
+     * @param col La columna a comprobar.
+     * @return true si la posición ya tiene un tesoro, false en caso contrario.
+     */
+    private boolean isPositionOccupied(int row, int col) {
+        return grid.hasHiddenTreasure(row, col);
+    }
+
+    /**
+     * Ejecuta un intento de excavación por parte del jugador en las coordenadas dadas.
+     * Si encuentra un tesoro, lo añade a la lista de tesoros encontrados de la excavación.
+     * Descuenta una acción del total disponible.
+     *
+     * @param row La fila donde el jugador quiere excavar.
+     * @param col La columna donde el jugador quiere excavar.
+     */
+    public void digPosition(int row, int col) {
+        if (remainingAttempts <= 0) return;
+
+        Treasure found = grid.dig(row, col);
+        if (found != null) {
+            foundTreasures.add(found);
+        }
+        remainingAttempts--;
+    }
+
+    /**
+     * Comprueba si la excavación ha concluido debido a que el jugador se quedó sin intentos.
+     *
+     * @return true si no quedan intentos disponibles, false en caso contrario.
+     */
+    public boolean isFinished() {
+        return remainingAttempts <= 0;
+    }
+
+    /**
+     * Imprime por pantalla el estado actual del proceso de excavación, mostrando
+     * cuántas acciones quedan y dibujando la cuadrícula.
+     */
+    public void printExcavationState() {
+        System.out.println("Acciones restantes: " + remainingAttempts);
+        grid.printGrid();
+    }
+
+    /**
+     * Obtiene la lista de tesoros que han sido desenterrados exitosamente hasta el momento.
+     *
+     * @return Lista de objetos Treasure.
+     */
+    public List<Treasure> getFoundTreasures() {
+        return foundTreasures;
+    }
+
+    public void excavate() {
+        System.out.println("Excavación iniciada. Puedes introducir varias coordenadas separadas por espacios, por ejemplo 1A 2A 3A.");
+        System.out.println("Forma del terreno: " + terrainShape.getName());
+        if (archeologist.getRevelationEmpty() > 0 || archeologist.getRevelationTreasure() > 0) {
+            System.out.println("Pistas de habilidades: E = casilla vacía revelada; ? = tesoro localizado.");
+        }
+
+        while (!isFinished()) {
+            printExcavationState();
+
+            System.out.print("Coordenadas: ");
+            String[] coordinates = UserInput.getUserString().trim().split("\\s+");
+            boolean dugAtLeastOne = false;
+
+            for (String input : coordinates) {
+                int[] coordinate = parseCoordinate(input);
+                if (coordinate == null) {
+                    System.out.println("Coordenada no válida: " + input + ". Usa el formato fila+columna, por ejemplo 1A.");
+                    continue;
+                }
+
+                int foundBeforeDig = foundTreasures.size();
+                digPosition(coordinate[0], coordinate[1]);
+                dugAtLeastOne = true;
+
+                if (foundTreasures.size() > foundBeforeDig) {
+                    Treasure treasure = foundTreasures.get(foundTreasures.size() - 1);
+                    System.out.println("¡Has encontrado: " + treasure.getName() + "!");
+                } else {
+                    System.out.println("No había ningún tesoro en esa casilla.");
+                }
+
+                if (isFinished()) {
+                    break;
+                }
+            }
+
+            if (!dugAtLeastOne) {
+                System.out.println("Introduce al menos una coordenada válida.");
+            }
+        }
+
+        printExcavationState();
+        printResults();
+    }
+
+    private int[] parseCoordinate(String value) {
+        String input = value.toUpperCase();
+        int letterStart = 0;
+        while (letterStart < input.length()
+                && Character.isDigit(input.charAt(letterStart))) {
+            letterStart++;
+        }
+
+        if (letterStart == 0 || letterStart == input.length()) {
+            return null;
+        }
+
+        try {
+            int row = Integer.parseInt(input.substring(0, letterStart));
+            String letters = input.substring(letterStart);
+            int column = 0;
+            boolean valid = row >= 1 && row <= grid.getRows();
+
+            for (int i = 0; valid && i < letters.length(); i++) {
+                char letter = letters.charAt(i);
+                if (letter < 'A' || letter > 'Z') {
+                    valid = false;
+                    break;
+                }
+
+                int digit = letter - 'A' + 1;
+                if (column > (grid.getCols() - digit) / 26) {
+                    valid = false;
+                    break;
+                }
+                column = column * 26 + digit;
+            }
+
+            if (valid && column >= 1 && column <= grid.getCols()) {
+                return new int[] { row - 1, column - 1 };
+            }
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
         return null;
     }
 
-    private void runGameLoop() {
-        while (!isFinished && remainingActions > 0 && foundTreasures.size() < hiddenTreasures.size()) {
-            
-            System.out.println("::::::::::::::: Excavación en " + (region.getName() != null ? region.getName() : "Grecia") + " :::::::::::::::");
-            
-            grid.printGrid(false);
-            
-            System.out.println("Número de acciones restantes: " + remainingActions);
-            System.out.println("Tesoros: " + hiddenTreasures.size());
-            
-            System.out.print("Conjunto de coordenadas a excavar separadas por espacios: ");
-            String input = scanner.nextLine();
-            
-            if (input == null || input.trim().isEmpty()) {
-                continue;
-            }
-            
-            String[] coords = input.trim().split("\\s+");
-            
-            for(String coord : coords) {
-                if(remainingActions <= 0) break;
-                
-                try {
-                    String letters = coord.replaceAll("[0-9]", "").toUpperCase();
-                    String numbers = coord.replaceAll("[^0-9]", "");
-                    
-                    if(letters.isEmpty() || numbers.isEmpty()) {
-                        System.out.println("Coordenada inválida: " + coord);
-                        continue;
-                    }
-                    
-                    int col = 0;
-                    for (int i = 0; i < letters.length(); i++) {
-                        col *= 26;
-                        col += letters.charAt(i) - 'A' + 1;
-                    }
-                    col -= 1; 
-                    
-                    int row = Integer.parseInt(numbers) - 1;
-                    
-                    if(row >= 0 && row < grid.getRows() && col >= 0 && col < grid.getCols()) {
-                        Treasure found = getTreasureAt(row, col);
-                        if(found != null) {
-                            if(!foundTreasures.contains(found)) {
-                                foundTreasures.add(found);
-                                grid.digCell(row, col, found.getRarity().getSymbol());
-                            }
-                        } else {
-                            grid.digCell(row, col, 'x');
-                        }
-                    } else {
-                        System.out.println("Coordenada fuera de límites: " + coord);
-                    }
-                } catch(Exception e) {
-                     System.out.println("Error procesando coordenada: " + coord);
-                }
-                
-                remainingActions--;
-            }
-        }
-        finish();
-    }
+    private void printResults() {
+        System.out.println("Excavación terminada (" + terrainShape.getName() + ")");
+        grid.printGrid();
+        grid.printFullyRevealedGrid();
 
-    private void finish() {
-        this.isFinished = true;
-        System.out.println("\nExcavación terminada");
-        
-        grid.printGrid(false);
-        
-        for(Treasure t : hiddenTreasures) {
-            if(!foundTreasures.contains(t)) {
-                grid.digCell(t.getRow(), t.getCol(), t.getRarity().getSymbol());
-            }
-        }
-        
-        for(int i=0; i<grid.getRows(); i++){
-             for(int j=0; j<grid.getCols(); j++){
-                 if(grid.getCell(i, j) == '.' || grid.getCell(i, j) == '?') {
-                     grid.digCell(i, j, 'x');
-                 }
-             }
-        }
-        
-        System.out.println();
-        grid.printGrid(true);
-        
         System.out.println("Se han encontrado:");
-        
-        int commonFound = 0, commonTotal = 0;
-        int uncommonFound = 0, uncommonTotal = 0;
-        int rareFound = 0, rareTotal = 0;
-        
-        for(Treasure t : hiddenTreasures) {
-            if(t.getRarity() == Rarity.COMMON) commonTotal++;
-            else if(t.getRarity() == Rarity.UNCOMMON) uncommonTotal++;
-            else if(t.getRarity() == Rarity.RARE) rareTotal++;
+        for (ETreasureRarity rarity : ETreasureRarity.values()) {
+            long foundCount = foundTreasures.stream()
+                    .filter(treasure -> treasure.getRarity() == rarity)
+                    .count();
+            System.out.println(foundCount + "/" + grid.countTreasures(rarity)
+                    + " tesoros " + rarity + ".");
         }
-        for(Treasure t : foundTreasures) {
-            if(t.getRarity() == Rarity.COMMON) commonFound++;
-            else if(t.getRarity() == Rarity.UNCOMMON) uncommonFound++;
-            else if(t.getRarity() == Rarity.RARE) rareFound++;
+
+        System.out.println("-------------------- Tesoros encontrados --------------------");
+        int pointsEarned = 0;
+        for (Treasure treasure : foundTreasures) {
+            System.out.println(treasure.getName());
+            System.out.println(treasure.getDescription());
+            System.out.println("Código: " + treasure.getCode());
+            System.out.println(treasure.getType() + " " + treasure.getRarity());
+            System.out.println("----------------------------------------");
+            pointsEarned += treasure.getPoints();
         }
-        
-        System.out.println(commonFound + "/" + commonTotal + " tesoros comunes.");
-        System.out.println(uncommonFound + "/" + uncommonTotal + " tesoros infrecuentes.");
-        if (rareTotal > 0) System.out.println(rareFound + "/" + rareTotal + " tesoros raros.");
-        
-        System.out.println("----------------- Tesoros encontrados -----------------");
-        if(foundTreasures.isEmpty()) {
-            System.out.println("Ninguno.");
-        } else {
-            for(Treasure t : foundTreasures) {
-                System.out.println("Tesoro en Fila " + (t.getRow()+1) + ", Columna " + (t.getCol()+1));
-                System.out.println("Rareza: " + t.getRarity().name());
-                System.out.println("-----------------");
-            }
+
+        int experienceEarned = terrain.getExpBonus() + pointsEarned;
+        if (!completionRewardsApplied) {
+            Stats.addPoints(pointsEarned);
+            archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
+            completionRewardsApplied = true;
         }
+
+        System.out.println("Puntos conseguidos: " + pointsEarned);
+        System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
+                + experienceEarned + " puntos de experiencia.");
         
-        System.out.println("Error de conexión con el Museo."); 
-        int expGained = terrain.getSize().getExpBonus(); 
-        System.out.println("Puntos conseguidos: " + expGained);
-        System.out.println("El arqueólogo ha conseguido " + expGained + " puntos de experiencia extra.");
+        archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
+        Stats.addPoints(pointsEarned);
+        Stats.addTerrainStatEntry(region, foundTreasures);
     }
 }

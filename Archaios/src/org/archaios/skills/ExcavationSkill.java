@@ -7,7 +7,10 @@ package org.archaios.skills;
  * @author Javier Búa Martínez
  */
 public class ExcavationSkill extends Skill {
+    /** Cantidad fija de acciones adicionales que otorga la habilidad. */
     private int extraActions;
+
+    /** Multiplicador aplicado sobre el total de acciones disponibles. */
     private float multiplier;
 
     /**
@@ -24,21 +27,13 @@ public class ExcavationSkill extends Skill {
         this.multiplier = multiplier;
     }
 
-    /**
-     * Obtiene la cantidad de acciones adicionales fijas que aporta la habilidad.
-     * 
-     * @return Acciones extra.
-     */
+    /** @return Acciones extra. */
     @Override
     public int getBonusActions() {
         return extraActions;
     }
 
-    /**
-     * Obtiene el multiplicador porcentual de acciones que aplica la habilidad.
-     * 
-     * @return Multiplicador de acciones.
-     */
+    /** @return Multiplicador de acciones. */
     @Override
     public float getBonusActionsPercentage() {
         return multiplier;

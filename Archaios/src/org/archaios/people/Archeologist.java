@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+import org.archaios.commons.input.UserInput;
 
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
-import org.archaios.commons.repositories.ICode;
 import org.archaios.excavation.ETerrainShape;
+import org.archaios.excavation.ETerrainSize;
 
 /**
  * Representa a un arqueólogo en el juego, gestionando su progreso,
@@ -19,18 +19,43 @@ import org.archaios.excavation.ETerrainShape;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
+    /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
+
+    /** Nombre identificativo del arqueólogo. */
     private String name = null;
+
+    /** Puntos de experiencia acumulados en el nivel actual. */
     private int exp = 0;
+
+    /** Experiencia necesaria para subir al siguiente nivel. */
     private int maxExp = 50;
+
+    /** Nivel actual del arqueólogo (de 0 a MAX_LEVEL). */
     private int level = 0;
+
+    /** Región asignada como especialización al alcanzar el nivel máximo. */
     private String specialization = null;
+
+    /** Colección de habilidades aprendidas por el arqueólogo. */
     private List<Skill> skillCollection = new ArrayList<>();
+
+    /** Formas geométricas de terreno que el arqueólogo puede excavar. */
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
+
+    /** Acciones adicionales otorgadas por el excedente de experiencia a nivel máximo. */
     private int extraActions = 0;
+
+    /** Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo. */
     private int extraRandomTreasure = 0;
+
+    /** Tesoros comunes garantizados por excedente de experiencia a nivel máximo. */
     private int extraCTreasure = 0;
+
+    /** Tesoros infrecuentes garantizados por excedente de experiencia a nivel máximo. */
     private int extraITreasure = 0;
+
+    /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     private int extraRTreasure = 0;
 
     /**
@@ -46,7 +71,7 @@ public class Archeologist {
 
     /**
      * Imprime por consola la ficha detallada del arqueólogo con su nivel,
-     * experiencia, especialización, tamaños de terreno y habilidades aprendidas.
+     * experiencia, especialización, tamaños de terreno, formas y habilidades aprendidas.
      */
     public void archeologistInformation() {
         StringBuilder sb = new StringBuilder();
@@ -62,13 +87,14 @@ public class Archeologist {
             sb.append("Exp: ").append(this.exp).append("/").append(this.maxExp).append("\n");
         }
 
-        sb.append("Terrenos:\n");
-        sb.append("  - Pequeños\n");
-        if (this.level >= 2) {
-            sb.append("  - Mediano\n");
+        sb.append("Tamaños de terreno:\n");
+        for (ETerrainSize type : getTerrainTypes()) {
+            sb.append("  - ").append(type.name()).append("\n");
         }
-        if (this.level >= 4) {
-            sb.append("  - Grande\n");
+
+        sb.append("Formas de terreno:\n");
+        for (ETerrainShape shape : this.terrainShapes) {
+            sb.append("  - ").append(shape.name()).append("\n");
         }
 
         sb.append("Habilidades:\n");
@@ -80,99 +106,65 @@ public class Archeologist {
         System.out.print(sb.toString());
     }
 
-    /**
-     * Calcula los puntos de compensación al licenciar al arqueólogo.
-     * 
-     * @return Puntos totales obtenidos tras la rescisión.
-     */
-    public int getDismissPoints() {
-        int points = this.level * 10;
-        int initialSkills = this.skillCollection.size() - this.level;
-        if (initialSkills == 1) {
-            points += 10; 
-        } else if (initialSkills >= 2) {
-            points += 20; 
+    /** @return Lista de tamaños (SMALL, MEDIUM, LARGE) disponibles. */
+    public List<ETerrainSize> getTerrainTypes() {
+        List<ETerrainSize> types = new ArrayList<>();
+        types.add(ETerrainSize.SMALL);
+        if (this.level >= 2) {
+            types.add(ETerrainSize.MEDIUM);
         }
-        return points;
+        if (this.level >= 4) {
+            types.add(ETerrainSize.LARGE);
+        }
+        return types;
     }
 
-    /**
-     * Obtiene el nombre del arqueólogo.
-     * 
-     * @return Nombre del arqueólogo.
-     */
+    /** @return Puntos totales obtenidos tras la rescisión. */
+    public int getDismissPoints() {
+        return this.skillCollection.size() * 10;
+    }
+
+    /** @return Nombre del arqueólogo. */
     public String getName() {
         return this.name;
     }
 
-    /**
-     * Establece el nombre del arqueólogo.
-     * 
-     * @param name Nuevo nombre.
-     */
+    /** @param name Nuevo nombre. */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Obtiene el nivel actual del arqueólogo.
-     * 
-     * @return Nivel (entre 0 y MAX_LEVEL).
-     */
+    /** @return Nivel (entre 0 y MAX_LEVEL). */
     public int getLevel() {
         return this.level;
     }
 
-    /**
-     * Obtiene la experiencia acumulada actual.
-     * 
-     * @return Puntos de experiencia.
-     */
+    /** @return Puntos de experiencia. */
     public int getExp() {
         return this.exp;
     }
 
-    /**
-     * Obtiene la experiencia requerida para el siguiente nivel.
-     * 
-     * @return Límite de experiencia del nivel actual.
-     */
+    /** @return Límite de experiencia del nivel actual. */
     public int getMaxExp() {
         return this.maxExp;
     }
 
-    /**
-     * Obtiene la región de especialización del arqueólogo.
-     * 
-     * @return Nombre o identificador de la especialización.
-     */
+    /** @return Nombre o identificador de la especialización. */
     public String getSpecialization() {
         return this.specialization;
     }
 
-    /**
-     * Asigna la especialización al alcanzar el nivel máximo.
-     * 
-     * @param specialization Nombre de la región asignada.
-     */
+    /** @param specialization Nombre de la región asignada. */
     public void setSpecialization(String specialization) {
         this.specialization = specialization;
     }
 
-    /**
-     * Devuelve la lista de habilidades aprendidas.
-     * 
-     * @return Lista de habilidades.
-     */
+    /** @return Lista de habilidades. */
     public List<Skill> getSkillList() {
         return this.skillCollection;
     }
 
-    /**
-     * Devuelve las formas de terreno desbloqueadas.
-     * 
-     * @return Lista de formas de terreno disponibles.
-     */
+    /** @return Lista de formas de terreno disponibles. */
     public List<ETerrainShape> getTerrainShapes() {
         return this.terrainShapes;
     }
@@ -203,8 +195,7 @@ public class Archeologist {
     }
 
     /**
-     * Presenta tres opciones válidas al usuario y permite seleccionar por consola
-     * la habilidad que el arqueólogo aprenderá al subir de nivel.
+     * Permite seleccionar y aprender una habilidad de entre las disponibles.
      * 
      * @param allSkills Colección completa de habilidades del juego.
      */
@@ -214,7 +205,6 @@ public class Archeologist {
             return;
         }
 
-        Scanner scn = new Scanner(System.in);
         System.out.println("El arqueólogo " + this.name + " ha subido al nivel " + this.level);
         System.out.println("Puede aprender una de estas habilidades:");
 
@@ -223,15 +213,13 @@ public class Archeologist {
             System.out.println((i + 1) + ". " + s.getName() + " - " + s.getDescription());
         }
 
-        int choice = -1;
-        while (choice < 1 || choice > options.size()) {
-            System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
-            if (scn.hasNextInt()) {
-                choice = scn.nextInt();
-            } else {
-                scn.next();
-            }
-        }
+        System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
+        
+        int choice = UserInput.getUserIntegerInRange(
+            1, 
+            options.size(), 
+            "Opción no válida. Introduce un número del 1 al " + options.size() + ": "
+        );
 
         Skill selectedSkill = options.get(choice - 1);
         addSkill(selectedSkill);
@@ -280,53 +268,37 @@ public class Archeologist {
         }
     }
 
-    /**
-     * @return Acciones extra otorgadas por especialización.
-     */
+    /** @return Acciones extra otorgadas por especialización. */
     public int getExtraActions() {
         return this.extraActions;
     }
 
-    /**
-     * @return Tesoros aleatorios extra otorgados por especialización.
-     */
+    /** @return Tesoros aleatorios extra otorgados por especialización. */
     public int getExtraRandomTreasure() {
         return this.extraRandomTreasure;
     }
 
-    /**
-     * @return Tesoros comunes garantizados otorgados por especialización.
-     */
+    /** @return Tesoros comunes garantizados otorgados por especialización. */
     public int getExtraCTreasure() {
         return this.extraCTreasure;
     }
 
-    /**
-     * @return Tesoros infrecuentes garantizados otorgados por especialización.
-     */
+    /** @return Tesoros infrecuentes garantizados otorgados por especialización. */
     public int getExtraITreasure() {
         return this.extraITreasure;
     }
 
-    /**
-     * @return Tesoros raros garantizados otorgados por especialización.
-     */
+    /** @return Tesoros raros garantizados otorgados por especialización. */
     public int getExtraRTreasure() {
         return this.extraRTreasure;
     }
 
-    /**
-     * @return Valor genérico de bono de habilidad.
-     */
+    /** @return Valor genérico de bono de habilidad. */
     public int getSkillBonus() {
         return -1;
     }
 
-    /**
-     * Calcula la suma total de acciones base y bonificaciones de habilidades y especialización.
-     * 
-     * @return Total de acciones extra acumuladas.
-     */
+    /** @return Total de acciones extra acumuladas. */
     public int getTotalBonusActions() {
         int total = this.extraActions;
         for (Skill s : this.skillCollection) {
@@ -335,11 +307,7 @@ public class Archeologist {
         return total;
     }
 
-    /**
-     * Calcula el multiplicador acumulado de acciones derivado de las habilidades aprendidas.
-     * 
-     * @return Multiplicador final.
-     */
+    /** @return Multiplicador final. */
     public float getTotalActionsMultiplier() {
         float multiplier = 1.0f;
         for (Skill s : this.skillCollection) {
@@ -348,11 +316,7 @@ public class Archeologist {
         return multiplier;
     }
 
-    /**
-     * Calcula la cantidad total de tesoros aleatorios adicionales.
-     * 
-     * @return Total de tesoros aleatorios extra.
-     */
+    /** @return Total de tesoros aleatorios extra. */
     public int getTotalRandomTreasures() {
         int total = this.extraRandomTreasure;
         for (Skill s : this.skillCollection) {
@@ -361,12 +325,7 @@ public class Archeologist {
         return total;
     }
 
-    /**
-     * Acumula y clasifica los tesoros garantizados por rareza obtenidos tanto por
-     * especialización de nivel máximo como por habilidades.
-     * 
-     * @return Mapa con la cantidad mínima de tesoros agrupada por rareza.
-     */
+    /** @return Mapa con la cantidad mínima de tesoros agrupada por rareza. */
     public Map<ETreasureRarity, Integer> getTotalBonusTreasures() {
         Map<ETreasureRarity, Integer> totals = new HashMap<>();
         totals.put(ETreasureRarity.COMMON, this.extraCTreasure);
@@ -384,11 +343,7 @@ public class Archeologist {
         return totals;
     }
 
-    /**
-     * Suma las casillas vacías reveladas aportadas por las habilidades de revelación.
-     * 
-     * @return Cantidad de casillas vacías que se descubren al inicio.
-     */
+    /** @return Cantidad de casillas vacías que se descubren al inicio. */
     public int getRevelationEmpty() {
         int total = 0;
         for (Skill s : this.skillCollection) {
@@ -397,11 +352,7 @@ public class Archeologist {
         return total;
     }
 
-    /**
-     * Suma las pistas de interrogación o pistas de tesoro aportadas por habilidades.
-     * 
-     * @return Cantidad de pistas otorgadas.
-     */
+    /** @return Cantidad de pistas otorgadas. */
     public int getRevelationTreasure() {
         int total = 0;
         for (Skill s : this.skillCollection) {

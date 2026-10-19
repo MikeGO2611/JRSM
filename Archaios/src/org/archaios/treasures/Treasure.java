@@ -1,11 +1,13 @@
 package org.archaios.treasures;
 
+import org.archaios.commons.repositories.ICode;
+
 /**
  * Clase Treasure
  * Contiene los atributos necesarios para ser almacenado.
  * @author Rubén Hernández
  */
-public class Treasure {
+public class Treasure implements ICode {
     private String name;
     private String description;
     private String idCode;

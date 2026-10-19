@@ -91,4 +91,26 @@ public abstract class Region implements ICode {
         Random random = new Random();
         return toReturn.get(random.nextInt(toReturn.size()));
     }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Region other = (Region) obj;
+        if (code == null) {
+            if (other.code != null)
+                return false;
+        } else if (!code.equals(other.code))
+            return false;
+        return true;
+    }
 }
