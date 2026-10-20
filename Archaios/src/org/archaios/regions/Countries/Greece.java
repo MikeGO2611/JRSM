@@ -49,7 +49,7 @@ public class Greece extends Region {
     }
 
     /**
-     * @return código necesario para Region
+     * @return código necesario para Region.
      */
     public String getCode() {
         return CODE;

@@ -1,5 +1,6 @@
 package org.archaios.commons.repositories;
 import org.archaios.regions.Region;
+import org.archaios.regions.Countries.Greece;
 
 /**
  * Clase que extiende de Repository para usar solo con regiones.
@@ -8,7 +9,9 @@ import org.archaios.regions.Region;
 public class Regions extends Repository<Region> {
 
     public Regions() {
-        super();
+        Greece grecia = new Greece();
+        
+        super.addElement(grecia);
     }
 
 }
