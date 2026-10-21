@@ -100,6 +100,9 @@ final public class MenuGenerator {
                         }
                     }
                 }
+                else {
+                    System.out.println("Operación no válida.");
+                }
             }
         }
     }

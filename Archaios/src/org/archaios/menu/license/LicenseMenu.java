@@ -40,7 +40,6 @@ public class LicenseMenu implements IOperation{
                 System.out.println("Las licencias cuestan 20 puntos.");
 
                 if(Stats.getPoints() >= 20){
-                    // TODO No me quedó claro que hacer.
                     System.err.println("Aún no implementado.");
                 } else {
                     System.out.println("No tienes suficientes puntos para comprar una licencia a este arqueólogo.");

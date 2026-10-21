@@ -1,10 +1,12 @@
 package org.archaios.main;
 
 import org.archaios.commons.input.UserInput;
+import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.Menu;
 import org.archaios.people.Archeologist;
+import org.archaios.zeraf.Zeraf;
 
 /**
  * Clase principal que sirve como entrada al programa.
@@ -21,6 +23,17 @@ public class Archaios {
 
     /** Repositorio de skills. */
     public static Skills skillRepository;
+
+    /** Repositorio de regiones */
+    public static Regions regionsRepository;
+
+    /** Zeraf, encargado de comunicarse con la librería Terra */
+    public static Zeraf zeraf;
+
+
+    // TODO Preguntar a Adrián como funciona el estado de prueba y producción, si viene dado por el museo externo, o se configura en el código o en ejecución.
+    /** Estado del museo */
+    public static MuseumState museumState;
 
     /**
      * Método main que inicia la ejecución del programa
@@ -46,7 +59,9 @@ public class Archaios {
      * Inicializa el repositorio de skills.
      */
     private static void preInit() {
+        zeraf = Zeraf.createZeraf();
         skillRepository = new Skills();
+        regionsRepository = new Regions();
     }
 
     /**
@@ -85,3 +100,4 @@ public class Archaios {
 
     }
 }
+

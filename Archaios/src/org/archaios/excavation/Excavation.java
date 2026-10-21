@@ -361,8 +361,13 @@ public class Excavation {
             }
         }
 
+        
         printExcavationState();
         printResults();
+
+        
+        // Esto tiene que recibir los tesoros encontrados en la run.
+        Archaios.zeraf.sendData(foundTreasures);
     }
 
     /**
