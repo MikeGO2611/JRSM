@@ -81,15 +81,15 @@ public class Skills extends Repository<Skill> {
         licenciaB.addIncompatibility(licenciaA);
 
         // Habilidades de especialistas
-        Skill espDesierto = new ExpertSkill("Especialista en desierto", "Establece el coste de excavar arena en 1 acción.", 1, "Arena", 0, null);
-        Skill espAgua = new ExpertSkill("Especialista en agua", "Establece el coste de excavar agua en 2 acciones.", 2, "Agua", 0, null);
-        Skill espSubmarinismo = new ExpertSkill("Especialista en submarinismo", "Establece el coste de excavar agua profunda en 2 acciones.", 2, "Agua profunda", 0, null);
-        Skill espMarI = new ExpertSkill("Especialista en mar abierto I", "Establece el coste de excavar océano en 3 acciones.", 3, "Océano", 0, null);
-        Skill espMarII = new ExpertSkill("Especialista en mar abierto II", "Establece el coste de excavar océano en 2 acciones.", 2, "Océano", 0, null);
+        //Skill espDesierto = new ExpertSkill("Especialista en desierto", "Establece el coste de excavar arena en 1 acción.", 1, "Arena", 0, null);
+        //Skill espAgua = new ExpertSkill("Especialista en agua", "Establece el coste de excavar agua en 2 acciones.", 2, "Agua", 0, null);
+        //Skill espSubmarinismo = new ExpertSkill("Especialista en submarinismo", "Establece el coste de excavar agua profunda en 2 acciones.", 2, "Agua profunda", 0, null);
+        //Skill espMarI = new ExpertSkill("Especialista en mar abierto I", "Establece el coste de excavar océano en 3 acciones.", 3, "Océano", 0, null);
+        //Skill espMarII = new ExpertSkill("Especialista en mar abierto II", "Establece el coste de excavar océano en 2 acciones.", 2, "Océano", 0, null);
 
-        espMarII.addDependency(espMarI);
+        //espMarII.addDependency(espMarI);
 
-        Skill espDemolicionesA = new ExpertSkill("Especialista en demoliciones A", "Elimina 5 casillas de terreno de piedra al iniciar.", 0, null, 5, "Piedra");
+        //Skill espDemolicionesA = new ExpertSkill("Especialista en demoliciones A", "Elimina 5 casillas de terreno de piedra al iniciar.", 0, null, 5, "Piedra");
 
         super.addElement(extraI);
         super.addElement(extraII);
@@ -122,13 +122,14 @@ public class Skills extends Repository<Skill> {
 
         super.addElement(licenciaA);
         super.addElement(licenciaB);
-
+/*
         super.addElement(espDesierto);
         super.addElement(espAgua);
         super.addElement(espSubmarinismo);
         super.addElement(espMarI);
         super.addElement(espMarII);
         super.addElement(espDemolicionesA);
+*/
     }
 
     /**
