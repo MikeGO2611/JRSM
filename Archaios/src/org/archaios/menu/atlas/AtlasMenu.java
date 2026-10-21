@@ -7,7 +7,6 @@ import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
-import org.archaios.regions.Atlas;
 import org.archaios.regions.Region;
 import org.archaios.treasures.Treasure;
 
