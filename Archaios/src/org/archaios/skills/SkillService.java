@@ -28,32 +28,14 @@ public class SkillService {
         List<Skill> options = new ArrayList<>();
 
         for (Skill skill : allSkills) {
-            boolean alreadyOwned = arch.getSkillList().contains(skill);
-            
-            if (!alreadyOwned) {
-                boolean isCompatible = true;
-                for (Skill learned : arch.getSkillList()) {
-                    if (skill.getIncompatibilities().contains(learned) || learned.getIncompatibilities().contains(skill)) {
-                        isCompatible = false;
-                        break;
-                    }
-                }
+            if (arch.getSkillList().contains(skill)) {
+                continue;
+            }
 
-                if (isCompatible) {
-                    boolean hasAllDependencies = true;
-                    for (Skill dependency : skill.getDependencies()) {
-                        if (!arch.getSkillList().contains(dependency)) {
-                            hasAllDependencies = false;
-                            break;
-                        }
-                    }
-
-                    if (hasAllDependencies) {
-                        validSkills.add(skill);
-                        if (!skill.getDependencies().isEmpty()) {
-                            upgradeSkills.add(skill);
-                        }
-                    }
+            if (!isIncompatible(arch, skill) && hasAllDependencies(arch, skill)) {
+                validSkills.add(skill);
+                if (!skill.getDependencies().isEmpty()) {
+                    upgradeSkills.add(skill);
                 }
             }
         }
@@ -63,9 +45,10 @@ public class SkillService {
             if (!randomIdx.isEmpty()) {
                 Skill upgradeChoice = upgradeSkills.get(randomIdx.get(0));
                 options.add(upgradeChoice);
-                validSkills.remove(upgradeChoice); 
+                validSkills.remove(upgradeChoice);
             }
         }
+        
         int needed = 3 - options.size();
         if (needed > 0 && !validSkills.isEmpty()) {
             int countToSelect = Math.min(needed, validSkills.size());
@@ -77,5 +60,37 @@ public class SkillService {
         }
 
         return options;
+    }
+
+    /**
+     * Comprueba si una habilidad es incompatible con alguna de las que ya posee el arqueólogo.
+     * 
+     * @param arch Arqueólogo a evaluar.
+     * @param skill Habilidad a comprobar.
+     * @return true si existe incompatibilidad, false en caso contrario.
+     */
+    private static boolean isIncompatible(Archeologist arch, Skill skill) {
+        for (Skill learned : arch.getSkillList()) {
+            if (skill.getIncompatibilities().contains(learned) || learned.getIncompatibilities().contains(skill)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba si el arqueólogo cumple con todas las dependencias requeridas por la habilidad.
+     * 
+     * @param arch Arqueólogo a evaluar.
+     * @param skill Habilidad a comprobar.
+     * @return true si cumple todas las dependencias, false en caso contrario.
+     */
+    private static boolean hasAllDependencies(Archeologist arch, Skill skill) {
+        for (Skill dependency : skill.getDependencies()) {
+            if (!arch.getSkillList().contains(dependency)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
