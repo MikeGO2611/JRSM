@@ -50,6 +50,6 @@ public class TreasureCatalogMenu implements IOperation {
                 System.out.println(i + ". " + treasure.getName());
             }
         }
-    }
+    }   
 
 }
