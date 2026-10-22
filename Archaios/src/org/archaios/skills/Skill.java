@@ -133,4 +133,20 @@ public abstract class Skill implements ICode {
     public String getCode() {
         return this.name;
     }
+
+    /**
+     * @param terrainSymbol Tipo de terreno a excavar.
+     * @return La reducción del coste al excavar.
+     */
+    public int getTerrainCost(char terrainSymbol) {
+        return -1; 
+    }
+
+    /**
+     * @param terrainSymbol Tipo de terreno a excavar.
+     * @return Cantidad de casillas que se transforman.
+     */
+    public int getRemovedTerrainAmount(char terrainSymbol) {
+        return 0;
+    }
 }

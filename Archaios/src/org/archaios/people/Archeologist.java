@@ -360,4 +360,30 @@ public class Archeologist {
         }
         return total;
     }
+
+    /**
+     * @param terrainSymbol Terreno a excavar.
+     * @return Reduccion de coste de excavar. 
+     */
+    public int getExcavationCost(char terrainSymbol) {
+        for (Skill s : this.skillCollection) {
+            int cost = s.getTerrainCost(terrainSymbol);
+            if (cost != -1) {
+                return cost; 
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * @param terrainSymbol Terreno a excavar.
+     * @return Cantidad de casillas a romper.
+     */
+    public int getDemolitionAmount(char terrainSymbol) {
+        int total = 0;
+        for (Skill s : this.skillCollection) {
+            total += s.getRemovedTerrainAmount(terrainSymbol);
+        }
+        return total; 
+    }
 }
