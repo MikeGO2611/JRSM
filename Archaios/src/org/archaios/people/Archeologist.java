@@ -19,6 +19,9 @@ import org.archaios.excavation.ETerrainSize;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
+    /** Códigos de las regiones difíciles para las que el arqueólogo tiene licencia. */
+    private List<String> licenses = new ArrayList<>();
+    
     /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
 
@@ -385,5 +388,36 @@ public class Archeologist {
             total += s.getRemovedTerrainAmount(terrainSymbol);
         }
         return total; 
+    }
+
+    /** @return Coste de la siguiente licencia. */
+    public int getNextLicenseCost(){
+        return 20 + (this.licenses.size()*10);
+    }
+
+    /**
+     * Comprueba si el arqueólogo dispone de licencia para una región concreta.
+     * 
+     * @param regionCode Código de la región.
+     * @return Devuelve si tiene la licencia para la región.
+     */
+    public boolean hasLicense(String regionCode) {
+        return this.licenses.contains(regionCode);
+    }
+
+    /**
+     * Añade una licencia de región al arqueólogo.
+     * 
+     * @param regionCode Código de la región a desbloquear.
+     */
+    public void addLicense(String regionCode) {
+        if (regionCode != null && !this.licenses.contains(regionCode)) {
+            this.licenses.add(regionCode);
+        }
+    }
+
+    /** @return Lista de los códigos de regiones con licencia. */
+    public List<String> getLicenses() {
+        return this.licenses;
     }
 }
