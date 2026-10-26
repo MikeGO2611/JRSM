@@ -393,4 +393,7 @@ public class Grid {
      * @return Total de celdas (filas * columnas).
      */
     public int getTotalCells() { return rows * cols; }
+
+    public char getTerrainAt(int row, int col) { return '·'; }
+    public void demolishStones(int amount) { }
 }

@@ -16,6 +16,7 @@ import org.archaios.treasures.Treasure;
 /**
  * Controla el proceso lógico de una excavación, gestionando el arqueólogo a cargo, 
  * el terreno, la distribución de los tesoros y los turnos/intentos restantes.
+ * @author Sergio González
  */
 public class Excavation {
     /**
@@ -76,6 +77,12 @@ public class Excavation {
         
         calculateAttempts();
         distributeTreasures();
+
+        int stonesToBreak = archeologist.getDemolitionAmount('^');
+        if (stonesToBreak > 0) {
+            grid.demolishStones(stonesToBreak);
+        }
+
         grid.revealSkillClues(
                 archeologist.getRevelationEmpty(),
                 archeologist.getRevelationTreasure());
@@ -271,21 +278,59 @@ public class Excavation {
     }
 
     /**
+     * Determina el coste en acciones de excavar una casilla según su terreno y el arqueólogo.
+     *
+     * @param terrainSymbol Símbolo del terreno en la casilla.
+     * @return Número de acciones necesarias para excavar la celda.
+     */
+    private int calculateCost(char terrainSymbol) {
+        int customCost = archeologist.getExcavationCost(terrainSymbol);
+        if (customCost != -1) {
+            return customCost;
+        }
+
+        switch (terrainSymbol) {
+            case '^':
+                return 1;
+            case '~':
+                return 1 + new Random().nextInt(2);
+            case '-':
+                return 2;
+            case '·':
+                return 1;
+            default:
+                return 1;
+        }
+    }
+
+    /**
      * Ejecuta un intento de excavación por parte del jugador en las coordenadas dadas.
      * Si encuentra un tesoro, lo añade a la lista de tesoros encontrados de la excavación.
-     * Descuenta una acción del total disponible.
+     * Descuenta las acciones correspondientes según el coste del terreno.
      *
      * @param row La fila donde el jugador quiere excavar.
      * @param col La columna donde el jugador quiere excavar.
+     * @return true si la excavación pudo llevarse a cabo; false si faltaban acciones.
      */
-    public void digPosition(int row, int col) {
-        if (remainingAttempts <= 0) return;
+    public boolean digPosition(int row, int col) {
+        if (remainingAttempts <= 0) {
+            return false;
+        }
+
+        char terrainSymbol = grid.getTerrainAt(row, col);
+        int cost = calculateCost(terrainSymbol);
+
+        if (remainingAttempts < cost) {
+            System.out.println("No tienes suficientes acciones (" + remainingAttempts + ") para excavar este terreno (cuesta " + cost + ").");
+            return false;
+        }
 
         Treasure found = grid.dig(row, col);
         if (found != null) {
             foundTreasures.add(found);
         }
-        remainingAttempts--;
+        remainingAttempts -= cost;
+        return true;
     }
 
     /**
@@ -341,14 +386,16 @@ public class Excavation {
                 }
 
                 int foundBeforeDig = foundTreasures.size();
-                digPosition(coordinate[0], coordinate[1]);
-                dugAtLeastOne = true;
+                boolean dugSuccess = digPosition(coordinate[0], coordinate[1]);
 
-                if (foundTreasures.size() > foundBeforeDig) {
-                    Treasure treasure = foundTreasures.get(foundTreasures.size() - 1);
-                    System.out.println("¡Has encontrado: " + treasure.getName() + "!");
-                } else {
-                    System.out.println("No había ningún tesoro en esa casilla.");
+                if (dugSuccess) {
+                    dugAtLeastOne = true;
+                    if (foundTreasures.size() > foundBeforeDig) {
+                        Treasure treasure = foundTreasures.get(foundTreasures.size() - 1);
+                        System.out.println("¡Has encontrado: " + treasure.getName() + "!");
+                    } else {
+                        System.out.println("No había ningún tesoro en esa casilla.");
+                    }
                 }
 
                 if (isFinished()) {
@@ -360,13 +407,9 @@ public class Excavation {
                 System.out.println("Introduce al menos una coordenada válida.");
             }
         }
-
-        
         printExcavationState();
         printResults();
 
-        
-        // Esto tiene que recibir los tesoros encontrados en la run.
         Archaios.zeraf.sendData(foundTreasures);
     }
 
@@ -452,15 +495,12 @@ public class Excavation {
         if (!completionRewardsApplied) {
             Stats.addPoints(pointsEarned);
             archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
+            Stats.addTerrainStatEntry(region, foundTreasures);
             completionRewardsApplied = true;
         }
 
         System.out.println("Puntos conseguidos: " + pointsEarned);
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
-        
-        archeologist.addExp(experienceEarned, Archaios.skillRepository.getAllElements());
-        Stats.addPoints(pointsEarned);
-        Stats.addTerrainStatEntry(region, foundTreasures);
     }
 }
