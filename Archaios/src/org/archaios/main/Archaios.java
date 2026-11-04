@@ -1,5 +1,6 @@
 package org.archaios.main;
 
+import org.archaios.commons.gson.JsonManager;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
@@ -44,6 +45,7 @@ public class Archaios {
         init();
         menu();
         end();
+        save();
     }
 
     /**
@@ -97,7 +99,8 @@ public class Archaios {
      * Guarda la partida.
      */
     private static void save() {
-
+        JsonManager.save(idUser, playName);
+        System.out.println("Saved");
     }
 }
 
