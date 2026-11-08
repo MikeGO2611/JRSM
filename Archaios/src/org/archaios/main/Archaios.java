@@ -1,13 +1,15 @@
 package org.archaios.main;
 
-import org.archaios.commons.gson.JsonManager;
 import org.archaios.commons.input.UserInput;
+import org.archaios.commons.json.JsonManager;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.menu.Menu;
 import org.archaios.people.Archeologist;
 import org.archaios.zeraf.Zeraf;
+
+import com.google.gson.annotations.Expose;
 
 /**
  * Clase principal que sirve como entrada al programa.
@@ -99,8 +101,24 @@ public class Archaios {
      * Guarda la partida.
      */
     private static void save() {
-        JsonManager.save(idUser, playName);
+        JsonManager.save();
         System.out.println("Saved");
+    }
+
+    /**
+     * Getter del ID del usuario
+     * @return int ID
+     */
+    public static String getIdUser() {
+        return idUser;
+    }
+
+    /**
+     * Getter del nombre de la partida
+     * @return String nombre de la partida
+     */
+    public static String getPlayName() {
+        return playName;
     }
 }
 

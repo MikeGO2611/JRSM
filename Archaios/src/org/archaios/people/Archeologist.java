@@ -9,6 +9,9 @@ import org.archaios.commons.input.UserInput;
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
+
+import com.google.gson.annotations.SerializedName;
+
 import org.archaios.excavation.ETerrainShape;
 import org.archaios.excavation.ETerrainSize;
 
@@ -20,46 +23,53 @@ import org.archaios.excavation.ETerrainSize;
  */
 public class Archeologist {
     /** Códigos de las regiones difíciles para las que el arqueólogo tiene licencia. */
+    @SerializedName("Licencias")
     private List<String> licenses = new ArrayList<>();
     
     /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
 
     /** Nombre identificativo del arqueólogo. */
+    @SerializedName("Nombre")
     private String name = null;
 
     /** Puntos de experiencia acumulados en el nivel actual. */
+    @SerializedName("Exp")
     private int exp = 0;
 
     /** Experiencia necesaria para subir al siguiente nivel. */
-    private int maxExp = 50;
+    transient private int maxExp = 50;
 
     /** Nivel actual del arqueólogo (de 0 a MAX_LEVEL). */
+    @SerializedName("Nv")
     private int level = 0;
 
     /** Región asignada como especialización al alcanzar el nivel máximo. */
+    @SerializedName("Especialización")
     private String specialization = null;
 
     /** Colección de habilidades aprendidas por el arqueólogo. */
+    @SerializedName("Habilidades")
     private List<Skill> skillCollection = new ArrayList<>();
 
     /** Formas geométricas de terreno que el arqueólogo puede excavar. */
+    @SerializedName("Terrenos")
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
 
     /** Acciones adicionales otorgadas por el excedente de experiencia a nivel máximo. */
-    private int extraActions = 0;
+    transient private int extraActions = 0;
 
     /** Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo. */
-    private int extraRandomTreasure = 0;
+    transient private int extraRandomTreasure = 0;
 
     /** Tesoros comunes garantizados por excedente de experiencia a nivel máximo. */
-    private int extraCTreasure = 0;
+    transient private int extraCTreasure = 0;
 
     /** Tesoros infrecuentes garantizados por excedente de experiencia a nivel máximo. */
-    private int extraITreasure = 0;
+    transient private int extraITreasure = 0;
 
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
-    private int extraRTreasure = 0;
+    transient private int extraRTreasure = 0;
 
     /**
      * Construye un nuevo arqueólogo con su nombre.
