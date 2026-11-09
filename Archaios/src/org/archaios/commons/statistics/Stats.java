@@ -53,6 +53,14 @@ public class Stats {
     }
 
     /**
+     * Setea la colección de arqueólogos directamente
+     * @param m_archeologistCollection List<Archeologist> con todos los arqueólogos
+     */
+    public static void setArcheologistCollection(List<Archeologist> m_archeologistCollection){
+        archeologistCollection = m_archeologistCollection;
+    }
+
+    /**
      * Devuelve los puntos del jugador.
      * @return int puntos del jugador.
      */

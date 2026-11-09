@@ -16,6 +16,7 @@ public class Treasure implements ICode {
     private int parts;
     private int points;
 
+
     /**
      * Constructor que genera el código del tesoro a partir de region, type y codeNumber.
      */

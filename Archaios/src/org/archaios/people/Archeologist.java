@@ -5,11 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.archaios.commons.input.UserInput;
-
+import org.archaios.commons.json.SkillAdapter;
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import org.archaios.excavation.ETerrainShape;
@@ -71,6 +72,10 @@ public class Archeologist {
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     transient private int extraRTreasure = 0;
 
+    public Archeologist(){
+        maxExp = 50;
+    }
+
     /**
      * Construye un nuevo arqueólogo con su nombre.
      * Inicializa la forma de terreno básica cuadrada.
@@ -79,7 +84,7 @@ public class Archeologist {
      */
     public Archeologist(String name) {
         this.name = name;
-        this.terrainShapes.add(ETerrainShape.SQUARE);
+        this.terrainShapes.add(ETerrainShape.S_SQUARE);
     }
 
     /**

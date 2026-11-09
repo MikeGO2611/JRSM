@@ -1,19 +1,25 @@
 package org.archaios.main;
 
 import java.io.File;
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.json.JsonManager;
 import org.archaios.commons.json.SaveJObject;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
+import org.archaios.commons.repositories.Treasures;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.menu.Menu;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Countries.Greece;
+import org.archaios.treasures.Treasure;
 import org.archaios.zeraf.Zeraf;
 
 import com.google.gson.annotations.Expose;
@@ -159,12 +165,44 @@ public class Archaios {
 
         idUser = saveJObject.getUid();
         playName = saveJObject.getPlayName();
+        Stats.setPoints(saveJObject.getPoints());
 
-        List<Archeologist> archeologistCollection = new ArrayList<>();
+        Stats.setArcheologistCollection(saveJObject.getArcheologistCollection());
 
-        
         List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<>();
 
+        Map<String, Integer> locationSaveStats = saveJObject.getSaveStats().getLocationSaveStats();
+        for(Map.Entry<String, Integer> entry : locationSaveStats.entrySet()){
+            if(entry.getKey().contains("GRC")){
+                TerrainStatEntry terrainStatEntry = new TerrainStatEntry(new Greece());
+                terrainStatEntry.setVisits(entry.getValue());
+                terrainStatEntryCollection.add(terrainStatEntry);
+            }
+        }
+
+        Map<String, Integer> treasureSaveStats = saveJObject.getSaveStats().getTreasureSaveStats();
+        Treasures treasures = new Treasures();
+        for(Map.Entry<String, Integer> entry : treasureSaveStats.entrySet()){
+            
+            Treasure treasure = treasures.getElementCode(entry.getKey());
+
+            if(treasure.getCode().contains("GRC")){
+
+                TerrainStatEntry terrainStatEntry = null;
+
+                for(TerrainStatEntry terrainStatEntryFind : terrainStatEntryCollection){
+                    if(terrainStatEntryFind.getRegion() instanceof Greece){
+                        terrainStatEntry = terrainStatEntryFind;
+                    }
+                }
+
+                terrainStatEntry.addTreasures(Arrays.asList(treasure));
+            }
+        }
+
+        for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
+            Stats.addTerrainStatEntry(terrainStatEntry);
+        }
     }
 
     /**

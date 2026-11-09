@@ -1,14 +1,11 @@
 package org.archaios.commons.json;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
-import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.treasures.Treasure;
 
@@ -74,42 +71,41 @@ public class SaveJObject {
         this.points = points;
     }
 
-}
+    public class SaveStats {
+        @SerializedName("Tesoros")
+        private Map<String, Integer> treasureSaveStats = new HashMap<>();
+        @SerializedName("Lugares")
+        private Map<String, Integer> locationSaveStats = new HashMap<>();
 
-class SaveStats {
-    @SerializedName("Tesoros")
-    private Map<String, Integer> treasureSaveStats = new HashMap<>();
-    @SerializedName("Lugares")
-    private Map<String, Integer> locationSaveStats = new HashMap<>();
+        /** Constructor que automáticamente genera la información de estadística */
+        public SaveStats() {
 
-    /** Constructor que automáticamente genera la información de estadística */
-    public SaveStats() {
+            for (TerrainStatEntry terrainStat : Stats.getTerrainStatEntryCollection()) {
+                for (Treasure treasure : terrainStat.getTreasures()) {
 
-        for (TerrainStatEntry terrainStat : Stats.getTerrainStatEntryCollection()) {
-            for (Treasure treasure : terrainStat.getTreasures()) {
+                    String treasureCode = treasure.getCode();
 
-                String treasureCode = treasure.getCode();
-
-                if(treasureSaveStats.containsKey(treasureCode)){
-                    int count = treasureSaveStats.get(treasureCode);
-                    treasureSaveStats.put(treasureCode, count + 1);
-                } else {
-                    treasureSaveStats.put(treasureCode, 1);
+                    if (treasureSaveStats.containsKey(treasureCode)) {
+                        int count = treasureSaveStats.get(treasureCode);
+                        treasureSaveStats.put(treasureCode, count + 1);
+                    } else {
+                        treasureSaveStats.put(treasureCode, 1);
+                    }
                 }
+            }
+
+            for (TerrainStatEntry terrainStat : Stats.getTerrainStatEntryCollection()) {
+                locationSaveStats.put(terrainStat.getRegion().getCode(), terrainStat.getVisits());
             }
         }
 
+        public Map<String, Integer> getTreasureSaveStats() {
+            return treasureSaveStats;
+        }
 
-        for (TerrainStatEntry terrainStat : Stats.getTerrainStatEntryCollection()) {
-            locationSaveStats.put(terrainStat.getRegion().getCode(), terrainStat.getVisits());
+        public Map<String, Integer> getLocationSaveStats() {
+            return locationSaveStats;
         }
     }
 
-    public Map<String, Integer> getTreasureSaveStats() {
-        return treasureSaveStats;
-    }
-
-    public Map<String, Integer> getLocationSaveStats() {
-        return locationSaveStats;
-    }
 }
