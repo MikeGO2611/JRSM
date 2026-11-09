@@ -1,11 +1,18 @@
 package org.archaios.main;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.json.JsonManager;
+import org.archaios.commons.json.SaveJObject;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.menu.Menu;
+import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
 import org.archaios.zeraf.Zeraf;
 
@@ -73,9 +80,48 @@ public class Archaios {
      * Pide al usuario el código persona, nombre de la partida y primer arqueólogo.
      */
     private static void init() {
+        File saveDirectory = new File("./saves");
+        boolean newSave = true;
 
-        // Comprobación de partidas guardadas, de momento será true siempre
-        if (true) {
+        if (saveDirectory.exists() && saveDirectory.isDirectory()){
+
+            List<File> saveFileCollection = new ArrayList<>();
+
+            for(File possibleSaveFile : saveDirectory.listFiles()){
+                if(possibleSaveFile.getName().endsWith(".save")){
+                    saveFileCollection.add(possibleSaveFile);
+                }
+            }
+            if(!saveFileCollection.isEmpty()){
+                System.out.println("Hay partidas guardadas, ¿quieres cargar alguna?");
+                System.out.println("0. No");
+                System.out.println("1. Sí");
+                int userInput = UserInput.getUserIntegerInRange(0, 2, "Opción no válida");
+
+                if(userInput == 1){
+                    newSave = false;
+
+                    System.out.println("¿Qué partida quieres guardar?");
+                    for(int i = 0; i < saveFileCollection.size(); i++){
+                        System.out.println((i + 1) + ". " + saveFileCollection.get(i).getName().split(".save")[0]);
+                    }
+                    System.out.println("0. Volver");
+
+                    userInput = UserInput.getUserIntegerInRange(0, saveFileCollection.size() + 1, "Opción no válida");
+
+                    if(userInput == 0){
+                        newSave = true;
+                    } else {
+                        load(saveFileCollection.get(userInput - 1));
+                    }
+
+                } else{
+                    newSave = true;
+                }
+            }
+        } 
+        
+        if(newSave){
             System.out.print("Introduce tu código personal único: ");
             idUser = UserInput.getUserString();
 
@@ -103,6 +149,22 @@ public class Archaios {
     private static void save() {
         JsonManager.save();
         System.out.println("Saved");
+    }
+
+    /**
+     * Carga la partida
+     */
+    private static void load(File saveFile) {
+        SaveJObject saveJObject = JsonManager.readFromFile(saveFile);
+
+        idUser = saveJObject.getUid();
+        playName = saveJObject.getPlayName();
+
+        List<Archeologist> archeologistCollection = new ArrayList<>();
+
+        
+        List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<>();
+
     }
 
     /**

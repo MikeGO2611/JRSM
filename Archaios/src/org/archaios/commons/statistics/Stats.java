@@ -17,6 +17,7 @@ public class Stats {
     private static int points = 0;
     /** Lista de arqueólogos del jugador. */
     private static List<Archeologist> archeologistCollection = new ArrayList<Archeologist>();
+    /** Lista de estadísticas de las regiones */
     private static List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<TerrainStatEntry>();
 
     /**
