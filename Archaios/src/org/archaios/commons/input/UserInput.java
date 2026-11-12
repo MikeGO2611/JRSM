@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.archaios.commons.statistics.Stats;
+import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 
 /**
@@ -31,7 +32,7 @@ public class UserInput {
             } catch (NumberFormatException e){
                 System.out.println("\nEl input no es un número entero válido.\n");
             } catch(IOError e){
-                System.err.println("Error de input o output.");
+                Archaios.logManager.logError("Error de IO: " + e.getMessage());
             }
         }
 
