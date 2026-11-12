@@ -13,8 +13,18 @@ import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.ETreasureType;
 import org.archaios.treasures.Treasure;
 
+/**
+ * Clase TreasureJSON 
+ * Contiene lo necesario para leer los archivos JSON
+ * quec contienen los tesoros de cada región.
+ * @author Rubén Hernández
+ */
 public class TreasureJSON {
 
+    /**
+     * Variables a leer del JSON.
+     * TreasureData
+     */
     private static class TreasureData {
         private String code;
         private String name;
@@ -25,6 +35,11 @@ public class TreasureJSON {
         private String type;
     }
 
+    /**
+     * Lee los datos recibidos y los guarda en una lista.
+     * @param filePath Ruta del archivo JSON a leer.
+     * @return Lista de tesoros de la región.
+     */
     public static List<Treasure> loadTreasures(String filePath) {
 
         Gson gson = new Gson();
