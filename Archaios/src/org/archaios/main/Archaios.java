@@ -10,6 +10,7 @@ import java.util.Map;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.json.JsonManager;
 import org.archaios.commons.json.SaveJObject;
+import org.archaios.commons.logs.LogManager;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.repositories.Treasures;
@@ -50,6 +51,9 @@ public class Archaios {
     // TODO Preguntar a Adrián como funciona el estado de prueba y producción, si viene dado por el museo externo, o se configura en el código o en ejecución.
     /** Estado del museo */
     public static MuseumState museumState;
+
+    /** Servicio de Log */
+    public static LogManager logManager;
 
     /**
      * Método main que inicia la ejecución del programa
@@ -140,6 +144,9 @@ public class Archaios {
             Stats.addArcheologist(firstArcheologist);
         }
 
+        
+        logManager = new LogManager(playName);
+        logManager.log("Inicio de la partida");
     }
 
     /**
@@ -154,7 +161,6 @@ public class Archaios {
      */
     private static void save() {
         JsonManager.save();
-        System.out.println("Saved");
     }
 
     /**
