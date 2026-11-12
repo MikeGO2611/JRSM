@@ -12,7 +12,7 @@ public class Rome extends Region {
     /**
      * Código de la región.
      */
-    public static final String CODE = "ROm";
+    public static final String CODE = "ROM";
 
     /**
      * Constructor de Greece.
