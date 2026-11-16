@@ -1,8 +1,8 @@
-# Ignore folders
+# Ignore
 .vscode
-.bin
+bin
 
-# Don't ignore .lib folder
-!.lib
-!.log
-!.saves
+# Don't ignore
+!lib
+!log
+!saves
