@@ -21,7 +21,7 @@ public class Iberia extends Region {
     public Iberia() {
         super("IBR", "Iberia");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/IBR.json"));
+                TreasureJSON.loadTreasures("IBR.json"));
     }
 
     /**

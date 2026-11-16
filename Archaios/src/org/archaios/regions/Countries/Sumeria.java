@@ -23,7 +23,7 @@ public class Sumeria extends Region implements ITerDif {
     public Sumeria() {
         super("SUM", "Sumeria");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/SUM.json"));
+                TreasureJSON.loadTreasures("SUM.json"));
     }
 
     /**
