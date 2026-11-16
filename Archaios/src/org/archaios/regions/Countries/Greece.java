@@ -21,7 +21,7 @@ public class Greece extends Region {
     public Greece() {
         super("GRC", "Grecia");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/GRC.json"));
+                TreasureJSON.loadTreasures("GRC.json"));
     }
 
     /**
