@@ -1,20 +1,21 @@
 package org.archaios.menu.license;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.menu.archeologist.ArcheologistMenuUtils;
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Region;
+import org.archaios.regions.Countries.ITerDif;
 
 /**
  * Menú con las opciones para las licencias.
- * @author Miguel González Obenza
+ * @author Javier Búa Martínez
  */
 public class LicenseMenu implements IOperation {
 
@@ -40,42 +41,35 @@ public class LicenseMenu implements IOperation {
             System.out.println("No tienes suficientes puntos para comprar una licencia a este arqueólogo.");
             return;
         }
-        
-        // TODO: Sustituir por Archaios.regionRepository.getDifficultRegions() cuando este implementado el repositorio
-        String[] codes = {"EGP", "PTR", "SUM"};
-        String[] names = {"Egipto", "Petra", "Sumeria"};
 
-        List<String> availableCodes = new ArrayList<>();
-        List<String> availableNames = new ArrayList<>();
-
-        for (int i = 0; i < codes.length; i++) {
-            if (!selectedArcheologist.hasLicense(codes[i])) {
-                availableCodes.add(codes[i]);
-                availableNames.add(names[i]);
+        List<Region> availableRegions = new ArrayList<>();
+        for (Region region : Archaios.regionsRepository.getAllElements()) {
+            if (region instanceof ITerDif && !selectedArcheologist.hasLicense(region.getCode())) {
+                availableRegions.add(region);
             }
         }
 
-        if (availableCodes.isEmpty()) {
+        if (availableRegions.isEmpty()) {
             System.out.println("Este arqueólogo ya dispone de todas las licencias disponibles.");
             return;
         }
 
         System.out.println(MenuGenerator.generateTitle("Regiones disponibles", ':', 20));
-        for (int i = 0; i < availableNames.size(); i++) {
-            System.out.println((i + 1) + ". " + availableNames.get(i) + " [" + availableCodes.get(i) + "]");
+        for (int i = 0; i < availableRegions.size(); i++) {
+            Region reg = availableRegions.get(i);
+            System.out.println((i + 1) + ". " + reg.getName() + " [" + reg.getCode() + "]");
         }
         System.out.println("0. Cancelar");
 
-        int choice = UserInput.getUserIntegerInRange(0, availableCodes.size(), "Opción no válida.");
+        int choice = UserInput.getUserIntegerInRange(0, availableRegions.size(), "Opción no válida.");
 
         if (choice > 0) {
-            String chosenCode = availableCodes.get(choice - 1);
-            String chosenName = availableNames.get(choice - 1);
+            Region chosenRegion = availableRegions.get(choice - 1);
 
             Stats.addPoints(-licenseCost);
-            selectedArcheologist.addLicense(chosenCode);
+            selectedArcheologist.addLicense(chosenRegion.getCode());
 
-            System.out.println("Licencia para " + chosenName + " adquirida con éxito para " + selectedArcheologist.getName() + ".");
+            System.out.println("Licencia para " + chosenRegion.getName() + " adquirida con éxito para " + selectedArcheologist.getName() + ".");
         }
     }
 }
