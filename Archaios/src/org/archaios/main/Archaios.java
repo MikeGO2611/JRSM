@@ -21,9 +21,12 @@ import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Countries.Greece;
 import org.archaios.treasures.Treasure;
-import org.archaios.zeraf.Zeraf;
 
 import com.google.gson.annotations.Expose;
+
+import zeraf.ESistema;
+import zeraf.Zeraf;
+import zeraf.ZerafFactory;
 
 /**
  * Clase principal que sirve como entrada al programa.
@@ -44,7 +47,6 @@ public class Archaios {
     /** Repositorio de regiones */
     public static Regions regionsRepository;
 
-    /** Zeraf, encargado de comunicarse con la librería Terra */
     public static Zeraf zeraf;
 
 
@@ -80,7 +82,6 @@ public class Archaios {
      * Inicializa el repositorio de skills.
      */
     private static void preInit() {
-        zeraf = Zeraf.createZeraf();
         skillRepository = new Skills();
         regionsRepository = new Regions();
     }
@@ -147,6 +148,9 @@ public class Archaios {
         
         logManager = new LogManager(playName);
         logManager.log("Inicio de la partida");
+
+        
+        zeraf = ZerafFactory.createZeraf(ESistema.MUSEO, idUser, idGroup);
     }
 
     /**
