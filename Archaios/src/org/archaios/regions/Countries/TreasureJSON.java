@@ -81,7 +81,7 @@ public class TreasureJSON {
                 for (TreasureData data : dataList) {
                     treasures.add(new Treasure(
                             data.name,
-                            "EGP",
+                            data.code,
                             getTreasureType(data.type),
                             data.code,
                             data.parts,
