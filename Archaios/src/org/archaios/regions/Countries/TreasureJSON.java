@@ -67,7 +67,7 @@ public class TreasureJSON {
         Gson gson = new Gson();
 
         try {
-            File jsonFile = new File("./src/org/archaios/regions/Countries/treasures/" + filePath);
+            File jsonFile = new File("./input" + filePath);
 
             try (Reader reader = new FileReader(jsonFile)) {
 
@@ -81,7 +81,7 @@ public class TreasureJSON {
                 for (TreasureData data : dataList) {
                     treasures.add(new Treasure(
                             data.name,
-                            "EGP",
+                            data.code,
                             getTreasureType(data.type),
                             data.code,
                             data.parts,
