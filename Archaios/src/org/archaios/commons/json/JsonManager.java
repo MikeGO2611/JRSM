@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import org.archaios.commons.statistics.Stats;
 import org.archaios.main.Archaios;
@@ -24,21 +25,22 @@ public class JsonManager {
 
         SaveJObject saveJObject = new SaveJObject(Archaios.getIdUser(), Archaios.getPlayName(), Stats.getArcheologistCollection(), Stats.getPoints());
 
-        File directory = new File("./saves");
-        if(!directory.exists()){
-            directory.mkdir();
-        }
+        
 
         File saveFile = new File("./saves/" +  Archaios.getPlayName() + ".save");
 
-        try(BufferedWriter bf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFile), "UTF-8"))){
+        try(BufferedWriter bf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFile), StandardCharsets.UTF_8))){
+            File directory = new File("./saves");
+            if(!directory.exists()){
+                directory.mkdir();
+            }
             gson.toJson(saveJObject, bf);
         } catch(FileNotFoundException e){
-            e.printStackTrace();
+            Archaios.logManager.logError("Error en JsonManager. No se ha encontrado el archivo de guardado: " + e.getMessage());
         } catch(UnsupportedEncodingException e){
-            e.printStackTrace();
+            Archaios.logManager.logError("Error en JsonManager. Tipo de CharacterEncoding no soportado: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Archaios.logManager.logError("Error en JsonManager. Error de IO al guardar: " + e.getMessage());
         }
     }
 
@@ -49,7 +51,7 @@ public class JsonManager {
         try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(saveFile), "UTF-8"))){
             saveJObject = gson.fromJson(br, SaveJObject.class);
         } catch(IOException e){
-            e.printStackTrace();
+            Archaios.logManager.logError("Error en JsonManager. Error de IO al leer: " + e.getMessage());
         }
 
         return saveJObject;

@@ -10,6 +10,7 @@ import java.util.Map;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.json.JsonManager;
 import org.archaios.commons.json.SaveJObject;
+import org.archaios.commons.logs.LogManager;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
 import org.archaios.commons.repositories.Treasures;
@@ -20,9 +21,12 @@ import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Countries.Greece;
 import org.archaios.treasures.Treasure;
-import org.archaios.zeraf.Zeraf;
 
 import com.google.gson.annotations.Expose;
+
+import zeraf.ESistema;
+import zeraf.Zeraf;
+import zeraf.ZerafFactory;
 
 /**
  * Clase principal que sirve como entrada al programa.
@@ -43,13 +47,15 @@ public class Archaios {
     /** Repositorio de regiones */
     public static Regions regionsRepository;
 
-    /** Zeraf, encargado de comunicarse con la librería Terra */
     public static Zeraf zeraf;
 
 
     // TODO Preguntar a Adrián como funciona el estado de prueba y producción, si viene dado por el museo externo, o se configura en el código o en ejecución.
     /** Estado del museo */
     public static MuseumState museumState;
+
+    /** Servicio de Log */
+    public static LogManager logManager;
 
     /**
      * Método main que inicia la ejecución del programa
@@ -76,7 +82,6 @@ public class Archaios {
      * Inicializa el repositorio de skills.
      */
     private static void preInit() {
-        zeraf = Zeraf.createZeraf();
         skillRepository = new Skills();
         regionsRepository = new Regions();
     }
@@ -140,6 +145,12 @@ public class Archaios {
             Stats.addArcheologist(firstArcheologist);
         }
 
+        
+        logManager = new LogManager(playName);
+        logManager.log("Inicio de la partida");
+
+        
+        zeraf = ZerafFactory.createZeraf(ESistema.MUSEO, idUser, idGroup);
     }
 
     /**
@@ -154,7 +165,6 @@ public class Archaios {
      */
     private static void save() {
         JsonManager.save();
-        System.out.println("Saved");
     }
 
     /**

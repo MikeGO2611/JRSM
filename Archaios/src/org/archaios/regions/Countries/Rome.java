@@ -21,7 +21,7 @@ public class Rome extends Region {
     public Rome() {
         super("ROM", "Roma");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/ROM.json"));
+                TreasureJSON.loadTreasures("ROM.json"));
     }
 
     /**

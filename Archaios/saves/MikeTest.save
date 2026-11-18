@@ -1,0 +1,25 @@
+{
+  "UID": "MikeTest",
+  "Partida": "MikeTest",
+  "Arqueólogos": [
+    {
+      "Licencias": [],
+      "Nombre": "Arch Test",
+      "Exp": 4,
+      "Nv": 0,
+      "Habilidades": [],
+      "Terrenos": [
+        "S_SQUARE"
+      ]
+    }
+  ],
+  "Estadísticas": {
+    "Tesoros": {
+      "EGP_TES_GRC_TES_001": 2
+    },
+    "Lugares": {
+      "GRC": 1
+    }
+  },
+  "Puntos": 2
+}

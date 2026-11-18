@@ -1,0 +1,39 @@
+{
+  "UID": "MikeGO",
+  "Partida": "TestPlay",
+  "Arqueólogos": [
+    {
+      "Nombre": "Mario Papolopoulus",
+      "Nv": 1,
+      "Exp": 10,
+      "Terrenos": [
+        "S_SQUARE"
+      ],
+      "Habilidades": [
+        "Escaneo A"
+      ],
+      "Especialización": "",
+      "Licencias": []
+    }
+  ],
+  "Estadísticas": {
+    "Tesoros": {
+      "GRC_CER_008_0002": 1,
+      "GRC_CER_008_0013": 1,
+      "GRC_JOY_003_0004": 1,
+      "GRC_TES_002_0275": 1,
+      "GRC_JOY_003_0001": 1,
+      "GRC_MON_003_0001": 1,
+      "GRC_CUE_001_0001": 1,
+      "GRC_CER_005_0001": 1,
+      "GRC_TES_001_0568": 1,
+      "GRC_TES_001_0337": 1,
+      "GRC_CER_006_0005": 1,
+      "GRC_TES_002_0549": 1
+    },
+    "Lugares": {
+      "GRC": 22
+    }
+  },
+  "Puntos": 16
+}

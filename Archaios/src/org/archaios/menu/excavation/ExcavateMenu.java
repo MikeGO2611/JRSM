@@ -11,6 +11,7 @@ import org.archaios.excavation.Excavation;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.menu.archeologist.ArcheologistMenuUtils;
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Region;
 import org.archaios.regions.Countries.Greece;
 
 /**

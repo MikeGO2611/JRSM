@@ -3,6 +3,7 @@ package org.archaios.regions.Countries;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
@@ -66,22 +67,9 @@ public class TreasureJSON {
         Gson gson = new Gson();
 
         try {
-            Path classPath = Paths.get(
-                    TreasureJSON.class.getProtectionDomain()
-                            .getCodeSource()
-                            .getLocation()
-                            .toURI());
+            File jsonFile = new File("./src/org/archaios/regions/Countries/treasures/" + filePath);
 
-            // Obtener la raíz dev_Ruben
-            Path projectPath = classPath.getParent();
-
-            // Entrar en Archaios/src
-            Path basePath = projectPath.resolve(
-                    "Archaios/src/org/archaios/regions/Countries").normalize();
-
-            Path jsonPath = basePath.resolve(filePath).normalize();
-
-            try (Reader reader = new FileReader(jsonPath.toFile())) {
+            try (Reader reader = new FileReader(jsonFile)) {
 
                 Type listType = new TypeToken<List<TreasureData>>() {
                 }.getType();
