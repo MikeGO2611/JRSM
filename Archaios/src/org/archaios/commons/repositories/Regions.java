@@ -1,5 +1,11 @@
 package org.archaios.commons.repositories;
 import org.archaios.regions.Region;
+import org.archaios.regions.Countries.Egypt;
+import org.archaios.regions.Countries.Greece;
+import org.archaios.regions.Countries.Iberia;
+import org.archaios.regions.Countries.Petra;
+import org.archaios.regions.Countries.Rome;
+import org.archaios.regions.Countries.Sumeria;
 
 /**
  * Clase que extiende de Repository para usar solo con regiones.
@@ -8,7 +14,19 @@ import org.archaios.regions.Region;
 public class Regions extends Repository<Region> {
 
     public Regions() {
-        super();
+        Greece grecia = new Greece();
+        Egypt egipto = new Egypt();
+        Iberia iberia = new Iberia();
+        Petra petra = new Petra();
+        Rome roma = new Rome();
+        Sumeria sumeria = new Sumeria();
+        
+        super.addElement(grecia);
+        super.addElement(egipto);
+        super.addElement(iberia);
+        super.addElement(petra);
+        super.addElement(roma);
+        super.addElement(sumeria);
     }
 
 }

@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-
+import org.archaios.commons.input.UserInput;
+import org.archaios.commons.json.SkillAdapter;
 import org.archaios.skills.Skill;
 import org.archaios.skills.SkillService;
 import org.archaios.treasures.ETreasureRarity;
+
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.annotations.SerializedName;
+
 import org.archaios.excavation.ETerrainShape;
 import org.archaios.excavation.ETerrainSize;
 
@@ -19,44 +23,58 @@ import org.archaios.excavation.ETerrainSize;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
+    /** Códigos de las regiones difíciles para las que el arqueólogo tiene licencia. */
+    @SerializedName("Licencias")
+    private List<String> licenses = new ArrayList<>();
+    
     /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
 
     /** Nombre identificativo del arqueólogo. */
+    @SerializedName("Nombre")
     private String name = null;
 
     /** Puntos de experiencia acumulados en el nivel actual. */
+    @SerializedName("Exp")
     private int exp = 0;
 
     /** Experiencia necesaria para subir al siguiente nivel. */
-    private int maxExp = 50;
+    transient private int maxExp = 50;
 
     /** Nivel actual del arqueólogo (de 0 a MAX_LEVEL). */
+    @SerializedName("Nv")
     private int level = 0;
 
     /** Región asignada como especialización al alcanzar el nivel máximo. */
+    @SerializedName("Especialización")
     private String specialization = null;
 
     /** Colección de habilidades aprendidas por el arqueólogo. */
+    @SerializedName("Habilidades")
     private List<Skill> skillCollection = new ArrayList<>();
 
     /** Formas geométricas de terreno que el arqueólogo puede excavar. */
+    @SerializedName("Terrenos")
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
 
     /** Acciones adicionales otorgadas por el excedente de experiencia a nivel máximo. */
-    private int extraActions = 0;
+    transient private int extraActions = 0;
 
     /** Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo. */
-    private int extraRandomTreasure = 0;
+    transient private int extraRandomTreasure = 0;
 
     /** Tesoros comunes garantizados por excedente de experiencia a nivel máximo. */
-    private int extraCTreasure = 0;
+    transient private int extraCTreasure = 0;
 
     /** Tesoros infrecuentes garantizados por excedente de experiencia a nivel máximo. */
-    private int extraITreasure = 0;
+    transient private int extraITreasure = 0;
 
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
-    private int extraRTreasure = 0;
+    transient private int extraRTreasure = 0;
+
+    public Archeologist(){
+        maxExp = 50;
+    }
 
     /**
      * Construye un nuevo arqueólogo con su nombre.
@@ -66,7 +84,7 @@ public class Archeologist {
      */
     public Archeologist(String name) {
         this.name = name;
-        this.terrainShapes.add(ETerrainShape.SQUARE);
+        this.terrainShapes.add(ETerrainShape.S_SQUARE);
     }
 
     /**
@@ -106,7 +124,7 @@ public class Archeologist {
         System.out.print(sb.toString());
     }
 
-    /** @return Lista de tamaños (SMALL, MEDIUM, BIG) disponibles. */
+    /** @return Lista de tamaños (SMALL, MEDIUM, LARGE) disponibles. */
     public List<ETerrainSize> getTerrainTypes() {
         List<ETerrainSize> types = new ArrayList<>();
         types.add(ETerrainSize.SMALL);
@@ -195,8 +213,7 @@ public class Archeologist {
     }
 
     /**
-     * Presenta tres opciones válidas al usuario y permite seleccionar por consola
-     * la habilidad que el arqueólogo aprenderá al subir de nivel.
+     * Permite seleccionar y aprender una habilidad de entre las disponibles.
      * 
      * @param allSkills Colección completa de habilidades del juego.
      */
@@ -206,7 +223,6 @@ public class Archeologist {
             return;
         }
 
-        Scanner scn = new Scanner(System.in);
         System.out.println("El arqueólogo " + this.name + " ha subido al nivel " + this.level);
         System.out.println("Puede aprender una de estas habilidades:");
 
@@ -215,19 +231,16 @@ public class Archeologist {
             System.out.println((i + 1) + ". " + s.getName() + " - " + s.getDescription());
         }
 
-        int choice = -1;
-        while (choice < 1 || choice > options.size()) {
-            System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
-            if (scn.hasNextInt()) {
-                choice = scn.nextInt();
-            } else {
-                scn.next();
-            }
-        }
+        System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
+        
+        int choice = UserInput.getUserIntegerInRange(
+            1, 
+            options.size(), 
+            "Opción no válida. Introduce un número del 1 al " + options.size() + ": "
+        );
 
         Skill selectedSkill = options.get(choice - 1);
         addSkill(selectedSkill);
-        scn.close();
     }
 
     /**
@@ -364,5 +377,62 @@ public class Archeologist {
             total += s.getRevelationTreasure();
         }
         return total;
+    }
+
+    /**
+     * @param terrainSymbol Terreno a excavar.
+     * @return Reduccion de coste de excavar. 
+     */
+    public int getExcavationCost(char terrainSymbol) {
+        for (Skill s : this.skillCollection) {
+            int cost = s.getTerrainCost(terrainSymbol);
+            if (cost != -1) {
+                return cost; 
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * @param terrainSymbol Terreno a excavar.
+     * @return Cantidad de casillas a romper.
+     */
+    public int getDemolitionAmount(char terrainSymbol) {
+        int total = 0;
+        for (Skill s : this.skillCollection) {
+            total += s.getRemovedTerrainAmount(terrainSymbol);
+        }
+        return total; 
+    }
+
+    /** @return Coste de la siguiente licencia. */
+    public int getNextLicenseCost(){
+        return 20 + (this.licenses.size()*10);
+    }
+
+    /**
+     * Comprueba si el arqueólogo dispone de licencia para una región concreta.
+     * 
+     * @param regionCode Código de la región.
+     * @return Devuelve si tiene la licencia para la región.
+     */
+    public boolean hasLicense(String regionCode) {
+        return this.licenses.contains(regionCode);
+    }
+
+    /**
+     * Añade una licencia de región al arqueólogo.
+     * 
+     * @param regionCode Código de la región a desbloquear.
+     */
+    public void addLicense(String regionCode) {
+        if (regionCode != null && !this.licenses.contains(regionCode)) {
+            this.licenses.add(regionCode);
+        }
+    }
+
+    /** @return Lista de los códigos de regiones con licencia. */
+    public List<String> getLicenses() {
+        return this.licenses;
     }
 }

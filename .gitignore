@@ -1,9 +1,7 @@
-.vscode/
-bin/
-*.class
-log/
-saves/
-config/
-lib/
-backup/
-*.jar
+# Ignore folders
+.vscode
+
+# Don't ignore .lib folder
+!.lib
+!.log
+!.saves

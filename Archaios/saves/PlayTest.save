@@ -1,0 +1,25 @@
+{
+  "UID": "PlayTest",
+  "Partida": "PlayTest",
+  "Arqueólogos": [
+    {
+      "Licencias": [],
+      "Nombre": "Arch Test",
+      "Exp": 6,
+      "Nv": 0,
+      "Habilidades": [],
+      "Terrenos": [
+        "S_SQUARE"
+      ]
+    }
+  ],
+  "Estadísticas": {
+    "Tesoros": {
+      "EGP_JOY_GRC_JOY_001": 1
+    },
+    "Lugares": {
+      "GRC": 2
+    }
+  },
+  "Puntos": 2
+}

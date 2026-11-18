@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.archaios.treasures.ETreasureRarity;
+
+import com.google.gson.annotations.JsonAdapter;
+
+import org.archaios.commons.json.SkillAdapter;
 import org.archaios.commons.repositories.ICode;
 import org.archaios.excavation.ETerrainShape;
 
@@ -16,6 +20,8 @@ import org.archaios.excavation.ETerrainShape;
  * 
  * @author Javier Búa Martínez
  */
+
+@JsonAdapter(SkillAdapter.class)
 public abstract class Skill implements ICode {
     /** Nombre identificativo de la habilidad. */
     private String name;
@@ -132,5 +138,21 @@ public abstract class Skill implements ICode {
     @Override
     public String getCode() {
         return this.name;
+    }
+
+    /**
+     * @param terrainSymbol Tipo de terreno a excavar.
+     * @return La reducción del coste al excavar.
+     */
+    public int getTerrainCost(char terrainSymbol) {
+        return -1; 
+    }
+
+    /**
+     * @param terrainSymbol Tipo de terreno a excavar.
+     * @return Cantidad de casillas que se transforman.
+     */
+    public int getRemovedTerrainAmount(char terrainSymbol) {
+        return 0;
     }
 }

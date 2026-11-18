@@ -1,11 +1,8 @@
 package org.archaios.commons.repositories;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.archaios.excavation.ETerrainShape;
-import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.skills.ExcavationSkill;
 import org.archaios.skills.ExpertSkill;
@@ -17,7 +14,7 @@ import org.archaios.skills.TreasureSkill;
 
 /**
  * Clase que extiende de Repository para usar solo con habilidades.
- * @author Rubén Hernández
+ * @author Javier Búa
  */
 public class Skills extends Repository<Skill> {
 
@@ -77,22 +74,20 @@ public class Skills extends Repository<Skill> {
         Skill investigacion = new RevelationSkill("Investigación", "Desglosa la cantidad de tesoros de cada rareza en la rejilla.", 0, 0);
 
         // Habilidades de terreno
-        Skill licenciaA = new TerrainSkill("Licencia A", "Permite excavar en formas de Fila y Columna.", Arrays.asList(ETerrainShape.ROW, ETerrainShape.COLUMN));
-        Skill licenciaB = new TerrainSkill("Licencia B", "Permite excavar en formas Horizontal y Vertical.", Arrays.asList(ETerrainShape.HORIZONTAL, ETerrainShape.VERTICAL));
+        Skill licenciaA = new TerrainSkill("Licencia A", "Permite excavar en formas de Fila y Columna.", Arrays.asList(ETerrainShape.S_ROW, ETerrainShape.S_COLUMN));
+        Skill licenciaB = new TerrainSkill("Licencia B", "Permite excavar en formas Horizontal y Vertical.", Arrays.asList(ETerrainShape.S_HORIZONTAL, ETerrainShape.S_VERTICAL));
 
         licenciaA.addIncompatibility(licenciaB);
         licenciaB.addIncompatibility(licenciaA);
 
         // Habilidades de especialistas
-        Skill espDesierto = new ExpertSkill("Especialista en desierto", "Establece el coste de excavar arena en 1 acción.", 1, "Arena", 0, null);
-        Skill espAgua = new ExpertSkill("Especialista en agua", "Establece el coste de excavar agua en 2 acciones.", 2, "Agua", 0, null);
-        Skill espSubmarinismo = new ExpertSkill("Especialista en submarinismo", "Establece el coste de excavar agua profunda en 2 acciones.", 2, "Agua profunda", 0, null);
-        Skill espMarI = new ExpertSkill("Especialista en mar abierto I", "Establece el coste de excavar océano en 3 acciones.", 3, "Océano", 0, null);
-        Skill espMarII = new ExpertSkill("Especialista en mar abierto II", "Establece el coste de excavar océano en 2 acciones.", 2, "Océano", 0, null);
-
-        espMarII.addDependency(espMarI);
-
-        Skill espDemolicionesA = new ExpertSkill("Especialista en demoliciones A", "Elimina 5 casillas de terreno de piedra al iniciar.", 0, null, 5, "Piedra");
+        Skill espDesierto = new ExpertSkill("Especialización en desierto", "Fija el coste de arena en 1 acción.", '~', 1, 0);
+        Skill espDemolicionesA = new ExpertSkill("Especialista en demoliciones A", "Rompe hasta 5 piedras antes de empezar.", '^', -1, 5);
+        //Skill espAgua = new ExpertSkill("Especialista en agua", "Establece el coste de excavar agua en 2 acciones.", 2, "Agua", 0, null);
+        //Skill espSubmarinismo = new ExpertSkill("Especialista en submarinismo", "Establece el coste de excavar agua profunda en 2 acciones.", 2, "Agua profunda", 0, null);
+        //Skill espMarI = new ExpertSkill("Especialista en mar abierto I", "Establece el coste de excavar océano en 3 acciones.", 3, "Océano", 0, null);
+        //Skill espMarII = new ExpertSkill("Especialista en mar abierto II", "Establece el coste de excavar océano en 2 acciones.", 2, "Océano", 0, null);
+        //espMarII.addDependency(espMarI);
 
         super.addElement(extraI);
         super.addElement(extraII);
@@ -125,13 +120,14 @@ public class Skills extends Repository<Skill> {
 
         super.addElement(licenciaA);
         super.addElement(licenciaB);
-
+/*
         super.addElement(espDesierto);
         super.addElement(espAgua);
         super.addElement(espSubmarinismo);
         super.addElement(espMarI);
         super.addElement(espMarII);
         super.addElement(espDemolicionesA);
+*/
     }
 
     /**

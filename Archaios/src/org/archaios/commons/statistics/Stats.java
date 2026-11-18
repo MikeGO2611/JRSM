@@ -17,6 +17,7 @@ public class Stats {
     private static int points = 0;
     /** Lista de arqueólogos del jugador. */
     private static List<Archeologist> archeologistCollection = new ArrayList<Archeologist>();
+    /** Lista de estadísticas de las regiones */
     private static List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<TerrainStatEntry>();
 
     /**
@@ -49,6 +50,14 @@ public class Stats {
      */
     public static int getArcheologistCollectionCount(){
         return archeologistCollection.size();
+    }
+
+    /**
+     * Setea la colección de arqueólogos directamente
+     * @param m_archeologistCollection List<Archeologist> con todos los arqueólogos
+     */
+    public static void setArcheologistCollection(List<Archeologist> m_archeologistCollection){
+        archeologistCollection = m_archeologistCollection;
     }
 
     /**

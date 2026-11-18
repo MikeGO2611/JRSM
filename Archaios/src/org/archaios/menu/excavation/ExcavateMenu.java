@@ -1,5 +1,6 @@
 package org.archaios.menu.excavation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -8,10 +9,12 @@ import org.archaios.commons.operations.IOperation;
 import org.archaios.excavation.ETerrainShape;
 import org.archaios.excavation.ETerrainSize;
 import org.archaios.excavation.Excavation;
+import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.menu.archeologist.ArcheologistMenuUtils;
 import org.archaios.people.Archeologist;
-import org.archaios.regions.Countries.Greece;
+import org.archaios.regions.Region;
+import org.archaios.regions.Countries.ITerDif;
 
 /**
  * Menú con las opciones de excavación.
@@ -40,12 +43,32 @@ public class ExcavateMenu implements IOperation {
             return;
         }
 
+        List<Region> availableRegions = new ArrayList<>();
+        for (Region region : Archaios.regionsRepository.getAllElements()) {
+            if (!(region instanceof ITerDif) || selectedArcheologist.hasLicense(region.getCode())) {
+                availableRegions.add(region);
+            }
+        }
+
+        System.out.println(MenuGenerator.generateTitle("Regiones", ':', 20));
+        for (int i = 0; i < availableRegions.size(); i++) {
+            System.out.println((i + 1) + ". " + availableRegions.get(i).getName());
+        }
+        System.out.println("0. Volver");
+
+        int regionChoice = UserInput.getUserIntegerInRange(
+                0, availableRegions.size(), "Opción no válida.");
+        if (regionChoice == 0) {
+            return;
+        }
+        Region selectedRegion = availableRegions.get(regionChoice - 1);
+
         List<ETerrainSize> terrainSizeCollection = selectedArcheologist.getTerrainTypes();
         System.out.println(MenuGenerator.generateTitle("Terrenos", ':', 20));
 
         for (int i = 0; i < terrainSizeCollection.size(); i++) {
             ETerrainSize terrainSize = terrainSizeCollection.get(i);
-            System.out.println((i + 1) + ". " + terrainSize.toString());
+            System.out.println((i + 1) + ". " + terrainSize.getName());
         }
 
         int userInput = UserInput.getUserIntegerInRange(0, terrainSizeCollection.size(), "Opción no válida.");
@@ -55,7 +78,8 @@ public class ExcavateMenu implements IOperation {
         List<ETerrainShape> terrainShapeCollection = selectedArcheologist.getTerrainShapes();
         Random random = new Random();
         ETerrainShape terrainShape = terrainShapeCollection.get(random.nextInt(terrainShapeCollection.size()));
-        Excavation excavation = new Excavation(selectedArcheologist, new Greece(), selectedTerrainSize, terrainShape);
+        Excavation excavation = new Excavation(
+                selectedArcheologist, selectedRegion, selectedTerrainSize, terrainShape);
         excavation.excavate();
     }
 }

@@ -5,6 +5,7 @@ import org.archaios.commons.repositories.ICode;
 /**
  * Clase Treasure
  * Contiene los atributos necesarios para ser almacenado.
+ * 
  * @author Rubén Hernández
  */
 public class Treasure implements ICode {
@@ -17,13 +18,22 @@ public class Treasure implements ICode {
     private int points;
 
     /**
-     * Constructor que genera el código del tesoro a partir de region, type y codeNumber.
+     * Constructor que genera el código del tesoro a partir de region, type y
+     * codeNumber.
      */
 
     public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int points,
             ETreasureRarity rarity, String description) {
         this.name = name;
-        this.idCode = region + "_" + type.getCode() + "_" + codeNumber;
+        if (parts < 10) {
+            this.idCode = codeNumber + "_000"+ parts;
+        }else if (parts < 100) {
+            this.idCode = codeNumber + "_00"+ parts;
+        }else if (parts < 1000) {
+            this.idCode = codeNumber + "_0"+ parts;
+        }else{
+            this.idCode = codeNumber + "_"+ parts;
+        }
         this.type = type;
         this.rarity = rarity;
         this.parts = parts;
