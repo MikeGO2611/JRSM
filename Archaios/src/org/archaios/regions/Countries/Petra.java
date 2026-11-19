@@ -32,8 +32,9 @@ public class Petra extends Region implements ITerDif {
      * @param charac caracter del terreno
      * @return float del porcentaje (entre 0 y 1) de que salga dado caracter
      */
-    public float getTerrainPercent(String icon) {
-        switch (icon) {
+    @Override
+    public float getTerrainPercent(String symbol) {
+        switch (symbol) {
             case "^":
                 return 0.75F;
             case "~":

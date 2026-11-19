@@ -15,17 +15,17 @@ public class Regions extends Repository<Region> {
 
     public Regions() {
         Greece grecia = new Greece();
-        Egypt egypt = new Egypt();
+        Egypt egipto = new Egypt();
         Iberia iberia = new Iberia();
         Petra petra = new Petra();
-        Rome rome = new Rome();
+        Rome roma = new Rome();
         Sumeria sumeria = new Sumeria();
-
+        
         super.addElement(grecia);
-        super.addElement(egypt);
+        super.addElement(egipto);
         super.addElement(iberia);
         super.addElement(petra);
-        super.addElement(rome);
+        super.addElement(roma);
         super.addElement(sumeria);
     }
 

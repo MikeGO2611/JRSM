@@ -120,14 +120,9 @@ public class Skills extends Repository<Skill> {
 
         super.addElement(licenciaA);
         super.addElement(licenciaB);
-/*
+
         super.addElement(espDesierto);
-        super.addElement(espAgua);
-        super.addElement(espSubmarinismo);
-        super.addElement(espMarI);
-        super.addElement(espMarII);
         super.addElement(espDemolicionesA);
-*/
     }
 
     /**
