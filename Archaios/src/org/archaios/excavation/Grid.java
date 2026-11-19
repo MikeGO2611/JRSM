@@ -3,6 +3,8 @@ package org.archaios.excavation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import org.archaios.regions.Region;
+import org.archaios.regions.Countries.ITerDif;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 
@@ -12,8 +14,8 @@ import org.archaios.treasures.Treasure;
  */
 public class Grid {
     /**
-     * Matriz bidimensional que representa el estado visual de cada celda 
-     * (e.g., "." para sin excavar, "x" para vacío, "C" para común).
+     * Matriz bidimensional que representa el terreno actual o el resultado
+     * de una celda excavada.
      */
     private String[][] cells;
 
@@ -28,6 +30,13 @@ public class Grid {
 
     /** Indica las celdas con tesoros cuya ubicación se ha revelado mediante habilidades. */
     private boolean[][] revealedTreasureLocations;
+
+    /** Terreno actual y coste de excavación de cada nivel. */
+    private ETerrainType[][] terrainTypes;
+    /** Coste asignado a cada nivel de terreno. */
+    private int[][] terrainCosts;
+    /** Indica qué casillas ya se han excavado por completo. */
+    private boolean[][] excavated;
 
     /**
      * Número de filas de la cuadrícula.
@@ -58,101 +67,85 @@ public class Grid {
      * @param shape forma que determina la distribución de las celdas
      */
     public Grid(int rows, int cols, ETerrainShape shape) {
-        int[] dimensions = getDimensions(rows, cols, shape);
+        this(rows, cols, shape, null);
+    }
+
+    /**
+     * Crea una cuadrícula y distribuye sus terrenos según la región.
+     *
+     * @param rows número base de filas
+     * @param cols número base de columnas
+     * @param shape forma que determina la distribución de las celdas
+     * @param region región de la excavación
+     */
+    public Grid(int rows, int cols, ETerrainShape shape, Region region) {
+        int[] dimensions = shape.getDimensions(rows, cols);
         this.rows = dimensions[0];
         this.cols = dimensions[1];
         this.cells = new String[this.rows][this.cols];
         this.hiddenTreasures = new Treasure[this.rows][this.cols];
         this.revealedEmptyCells = new boolean[this.rows][this.cols];
         this.revealedTreasureLocations = new boolean[this.rows][this.cols];
-        initializeGrid();
+        this.terrainTypes = new ETerrainType[this.rows][this.cols];
+        this.terrainCosts = new int[this.rows][this.cols];
+        this.excavated = new boolean[this.rows][this.cols];
+        initializeGrid(region);
     }
 
     /**
-     * Calcula las dimensiones finales de la cuadrícula para el tamaño y la forma elegidos.
+     * Inicializa los terrenos de la cuadrícula y fija su coste para evitar
+     * que un coste aleatorio cambie al reintentar una casilla.
      *
-     * @param baseRows número base de filas
-     * @param baseCols número base de columnas
-     * @param shape forma de la cuadrícula
-     * @return arreglo con el número final de filas y columnas
+     * @param region región que determina los terrenos, o {@code null} para usar tierra básica
      */
-    private int[] getDimensions(int baseRows, int baseCols, ETerrainShape shape) {
-        if (baseRows == 5 && baseCols == 5) {
-            switch (shape) {
-                case S_ROW:
-                    return new int[] { 5, 3 };
-                case S_HORIZONTAL:
-                    return new int[] { 10, 2 };
-                case S_COLUMN:
-                    return new int[] { 3, 5 };
-                case S_VERTICAL:
-                    return new int[] { 2, 10 };
-                case S_SQUARE:
-                default:
-                    return new int[] { 5, 5 };
-            }
-        }
-        if (baseRows == 10 && baseCols == 10) {
-            switch (shape) {
-                case S_ROW:
-                    return new int[] { 20, 5 };
-                case S_HORIZONTAL:
-                    return new int[] { 30, 3 };
-                case S_COLUMN:
-                    return new int[] { 5, 20 };
-                case S_VERTICAL:
-                    return new int[] { 3, 30 };
-                case S_SQUARE:
-                default:
-                    return new int[] { 10, 10 };
-            }
-        }
-        if (baseRows == 15 && baseCols == 15) {
-            switch (shape) {
-                case S_ROW:
-                    return new int[] { 20, 10 };
-                case S_HORIZONTAL:
-                    return new int[] { 40, 5 };
-                case S_COLUMN:
-                    return new int[] { 10, 20 };
-                case S_VERTICAL:
-                    return new int[] { 5, 40 };
-                case S_SQUARE:
-                default:
-                    return new int[] { 15, 15 };
-            }
-        }
-
-        int totalCells = baseRows * baseCols;
-        switch (shape) {
-            case S_ROW:
-                return new int[] { 1, totalCells };
-            case S_COLUMN:
-                return new int[] { totalCells, 1 };
-            case S_HORIZONTAL:
-                int horizontalRows = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
-                int horizontalCols = (int) Math.ceil((double) totalCells / horizontalRows);
-                return new int[] { horizontalRows, horizontalCols };
-            case S_VERTICAL:
-                int verticalCols = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
-                int verticalRows = (int) Math.ceil((double) totalCells / verticalCols);
-                return new int[] { verticalRows, verticalCols };
-            case S_SQUARE:
-            default:
-                return new int[] { baseRows, baseCols };
-        }
-    }
-
-    /**
-     * Inicializa visualmente la cuadrícula llenando todas las celdas 
-     * con el carácter "." que representa una zona sin excavar.
-     */
-    private void initializeGrid() {
+    private void initializeGrid(Region region) {
+        Random random = new Random();
+        ITerDif difficultRegion = region instanceof ITerDif ? (ITerDif) region : null;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                cells[i][j] = "."; // Casilla sin excavar
+                ETerrainType terrain = difficultRegion == null
+                        ? ETerrainType.EARTH
+                        : chooseTerrain(difficultRegion, random);
+                terrainTypes[i][j] = terrain;
+                terrainCosts[i][j] = terrain.rollCost(random);
+                cells[i][j] = String.valueOf(terrain.getSymbol());
             }
         }
+    }
+
+    /**
+     * Elige un terreno usando las probabilidades declaradas por la región.
+     *
+     * @param region región que proporciona las probabilidades
+     * @param random generador de números aleatorios
+     * @return tipo de terreno elegido
+     * @throws IllegalStateException si las probabilidades son inválidas o no hay terrenos definidos
+     */
+    private ETerrainType chooseTerrain(ITerDif region, Random random) {
+        double totalWeight = 0;
+        double[] weights = new double[ETerrainType.values().length];
+        ETerrainType[] terrainOptions = ETerrainType.values();
+
+        for (int i = 0; i < terrainOptions.length; i++) {
+            float weight = region.getTerrainPercent(terrainOptions[i].getRegionSymbol());
+            if (Float.isNaN(weight) || weight < 0 || weight > 1) {
+                throw new IllegalStateException("Porcentaje de terreno no válido en la región.");
+            }
+            weights[i] = weight;
+            totalWeight += weight;
+        }
+        if (totalWeight <= 0) {
+            throw new IllegalStateException("La región no define terrenos para la excavación.");
+        }
+
+        double selection = random.nextDouble() * totalWeight;
+        for (int i = 0; i < terrainOptions.length; i++) {
+            selection -= weights[i];
+            if (selection < 0) {
+                return terrainOptions[i];
+            }
+        }
+        return terrainOptions[terrainOptions.length - 1];
     }
 
     /**
@@ -226,15 +219,17 @@ public class Grid {
             System.out.printf("%2d ", (i + 1));
             for (int j = 0; j < cols; j++) {
                 String cell = cells[i][j];
-                if (revealAll && ".".equals(cell)) {
+                if (!excavated[i][j] && revealAll) {
                     cell = hiddenTreasures[i][j] == null
                             ? "x"
                             : getTreasureSymbol(hiddenTreasures[i][j]);
-                } else if (".".equals(cell)) {
+                } else if (!excavated[i][j]) {
                     if (revealedEmptyCells[i][j]) {
                         cell = "E";
                     } else if (revealedTreasureLocations[i][j]) {
                         cell = "?";
+                    } else {
+                        cell = String.valueOf(terrainTypes[i][j].getSymbol());
                     }
                 }
                 System.out.print(cell + " ");
@@ -288,7 +283,7 @@ public class Grid {
         List<int[]> candidates = new ArrayList<>();
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                if (!".".equals(cells[row][col])) {
+                if (excavated[row][col]) {
                     continue;
                 }
                 if (treasureLocations ? hiddenTreasures[row][col] != null
@@ -350,16 +345,23 @@ public class Grid {
     }
 
     /**
-     * Realiza la acción de excavar en una coordenada específica.
-     * Actualiza el estado visual de la celda a "x" (vacío) o a la inicial 
-     * de la rareza del tesoro (C, I, R) si se encuentra algo.
+     * Excava un nivel en una coordenada. Si queda otro nivel, lo deja expuesto;
+     * si no, marca la celda como vacía o devuelve el tesoro encontrado.
      *
      * @param row Fila a excavar.
      * @param col Columna a excavar.
      * @return El tesoro encontrado en esa posición, o null si estaba vacía.
      */
     public Treasure dig(int row, int col) {
-        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols || excavated[row][col]) {
+            return null;
+        }
+
+        ETerrainType nextLayer = terrainTypes[row][col].getNextLayer();
+        if (nextLayer != null) {
+            terrainTypes[row][col] = nextLayer;
+            terrainCosts[row][col] = nextLayer.rollCost(new Random());
+            cells[row][col] = String.valueOf(nextLayer.getSymbol());
             return null;
         }
 
@@ -370,7 +372,58 @@ public class Grid {
         } else {
             cells[row][col] = "x"; // Casilla vacía
         }
+        excavated[row][col] = true;
         return found;
+    }
+
+    /**
+     * Comprueba si una coordenada válida ya fue excavada por completo.
+     *
+     * @param row índice de fila, desde cero
+     * @param col índice de columna, desde cero
+     * @return {@code true} si la posición ya fue excavada
+     */
+    public boolean isDug(int row, int col) {
+        return row >= 0 && row < rows && col >= 0 && col < cols
+                && excavated[row][col];
+    }
+
+    /**
+     * Obtiene el coste ya asignado al nivel actual de una casilla.
+     *
+     * @param row índice de fila, desde cero
+     * @param col índice de columna, desde cero
+     * @return coste de acciones del nivel actual
+     */
+    public int getTerrainCost(int row, int col) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+            throw new IndexOutOfBoundsException("Coordenada fuera de la cuadrícula.");
+        }
+        return terrainCosts[row][col];
+    }
+
+    /**
+     * Sustituye por tierra básica la cantidad indicada de piedras aleatorias.
+     *
+     * @param amount cantidad máxima de piedras que se transformarán
+     */
+    public void demolishStones(int amount) {
+        List<int[]> stones = new ArrayList<>();
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (!excavated[row][col] && terrainTypes[row][col] == ETerrainType.STONE) {
+                    stones.add(new int[] { row, col });
+                }
+            }
+        }
+
+        Random random = new Random();
+        for (int i = 0; i < amount && !stones.isEmpty(); i++) {
+            int[] position = stones.remove(random.nextInt(stones.size()));
+            terrainTypes[position[0]][position[1]] = ETerrainType.EARTH;
+            terrainCosts[position[0]][position[1]] = ETerrainType.EARTH.rollCost(random);
+            cells[position[0]][position[1]] = String.valueOf(ETerrainType.EARTH.getSymbol());
+        }
     }
 
     /**
@@ -394,6 +447,18 @@ public class Grid {
      */
     public int getTotalCells() { return rows * cols; }
 
-    public char getTerrainAt(int row, int col) { return '·'; }
-    public void demolishStones(int amount) { }
+    /**
+     * Devuelve el símbolo del nivel de terreno que está expuesto en una casilla.
+     *
+     * @param row índice de fila, desde cero
+     * @param col índice de columna, desde cero
+     * @return símbolo del nivel actual
+     * @throws IndexOutOfBoundsException si la coordenada queda fuera de la cuadrícula
+     */
+    public char getTerrainAt(int row, int col) {
+        if (row < 0 || row >= rows || col < 0 || col >= cols) {
+            throw new IndexOutOfBoundsException("Coordenada fuera de la cuadrícula.");
+        }
+        return terrainTypes[row][col].getSymbol();
+    }
 }
