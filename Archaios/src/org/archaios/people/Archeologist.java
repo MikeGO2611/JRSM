@@ -121,6 +121,13 @@ public class Archeologist {
             sb.append("   ").append(skill.getDescription()).append("\n");
         }
 
+        if(licenses.size() > 0){
+            sb.append("Licencias:\n");
+            for (String license : this.licenses) {
+                sb.append("  ").append(license).append("\n");
+            }
+        }
+
         System.out.print(sb.toString());
     }
 

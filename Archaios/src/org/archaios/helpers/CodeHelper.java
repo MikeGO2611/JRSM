@@ -59,7 +59,7 @@ public class CodeHelper {
 	 */
 	public static String getTreasurePart(String code)
 	{
-		if(code.length() == 14)
+		if(code.length() == 16)
 		{
 			return code.substring(12, 16);
 		}else{

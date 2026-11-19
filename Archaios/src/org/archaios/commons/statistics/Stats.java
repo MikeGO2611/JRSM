@@ -84,14 +84,27 @@ public class Stats {
         Stats.points += points;
     }
 
+    /**
+     * Obtiene todos las estadísticas de terreno
+     * @return List<TerrainStatEntry>
+    */
     public static List<TerrainStatEntry> getTerrainStatEntryCollection(){
         return terrainStatEntryCollection;
     }
 
+    /**
+     * Añade una estadísitca de terreno a la lista como <code>TerrainStatEntry</code>
+     * @param terrainStatEntry
+     */
     public static void addTerrainStatEntry(TerrainStatEntry terrainStatEntry){
         terrainStatEntryCollection.add(terrainStatEntry);
     }
 
+    /**
+     * Añade una estadística de terreno a partir de una región y de una lista de tesoro.
+     * @param region Region
+     * @param foundTreasureCollection List<Treasure>
+     */
     public static void addTerrainStatEntry(Region region, List<Treasure> foundTreasureCollection){
         boolean alreadyExists = false;
 

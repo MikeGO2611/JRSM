@@ -13,8 +13,15 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+/**
+ * Adaptador de la clase <code>Skill</code> para serializar y deserializar.
+ */
 public class SkillAdapter implements JsonSerializer<Skill>, JsonDeserializer<Skill> {
 
+    /**
+     * Deserializar de JSON a <code>Skill</code>
+     * @see com.google.gson.JsonDeserializer#deserialize(com.google.gson.JsonElement, java.lang.reflect.Type, com.google.gson.JsonDeserializationContext)
+     */
     @Override
     public Skill deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
@@ -31,6 +38,10 @@ public class SkillAdapter implements JsonSerializer<Skill>, JsonDeserializer<Ski
                 return skill;
     }
 
+    /**
+     * Serializar de <code>Skill</code> a JSON
+     * @see com.google.gson.JsonSerializer#serialize(java.lang.Object, java.lang.reflect.Type, com.google.gson.JsonSerializationContext)
+     */
     @Override
     public JsonElement serialize(Skill src, Type typeOfSrc, JsonSerializationContext context) {
         return context.serialize(src.getName());

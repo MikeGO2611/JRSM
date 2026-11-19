@@ -19,17 +19,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * 
- * JsonManager
+ * Encargado de la lectura y escritura de JSON.
+ * @author Miguel González Obenza
  */
 public class JsonManager {
 
+    /**
+     * Guarda el estado actual de la partida a un archivo JSON en la ubicación correspondiente.
+     */
     public static void save(){
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         SaveJObject saveJObject = new SaveJObject(Archaios.getIdUser(), Archaios.getPlayName(), Stats.getArcheologistCollection(), Stats.getPoints());
 
-        
 
         File saveFile = new File("./saves/" +  Archaios.getPlayName() + ".save");
 
@@ -48,6 +50,11 @@ public class JsonManager {
         }
     }
 
+    /**
+     * Lee de un archivo JSON y lo transforma en un objeto <code>SaveJObject</code>.
+     * @param saveFile
+     * @return
+     */
     public static SaveJObject readFromFile(File saveFile){
         Gson gson = new Gson();
         SaveJObject saveJObject = null;
