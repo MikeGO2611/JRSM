@@ -73,7 +73,7 @@ public class Excavation {
         this.foundTreasures = new ArrayList<>();
 
         this.terrainShape = terrainShape;
-        this.grid = new Grid(terrain.getRows(), terrain.getCols(), terrainShape);
+        this.grid = new Grid(terrain.getRows(), terrain.getCols(), terrainShape, region);
         
         calculateAttempts();
         distributeTreasures();
@@ -280,27 +280,17 @@ public class Excavation {
     /**
      * Determina el coste en acciones de excavar una casilla según su terreno y el arqueólogo.
      *
-     * @param terrainSymbol Símbolo del terreno en la casilla.
+     * @param row índice de fila, desde cero
+     * @param col índice de columna, desde cero
      * @return Número de acciones necesarias para excavar la celda.
      */
-    private int calculateCost(char terrainSymbol) {
+    private int calculateCost(int row, int col) {
+        char terrainSymbol = grid.getTerrainAt(row, col);
         int customCost = archeologist.getExcavationCost(terrainSymbol);
         if (customCost != -1) {
             return customCost;
         }
-
-        switch (terrainSymbol) {
-            case '^':
-                return 1;
-            case '~':
-                return 1 + new Random().nextInt(2);
-            case '-':
-                return 2;
-            case '·':
-                return 1;
-            default:
-                return 1;
-        }
+        return grid.getTerrainCost(row, col);
     }
 
     /**
@@ -317,8 +307,15 @@ public class Excavation {
             return false;
         }
 
-        char terrainSymbol = grid.getTerrainAt(row, col);
-        int cost = calculateCost(terrainSymbol);
+        if (row < 0 || row >= grid.getRows() || col < 0 || col >= grid.getCols()) {
+            return false;
+        }
+        if (grid.isDug(row, col)) {
+            System.out.println("Esa casilla ya fue excavada.");
+            return false;
+        }
+
+        int cost = calculateCost(row, col);
 
         if (remainingAttempts < cost) {
             System.out.println("No tienes suficientes acciones (" + remainingAttempts + ") para excavar este terreno (cuesta " + cost + ").");
@@ -376,7 +373,7 @@ public class Excavation {
 
             System.out.print("Coordenadas: ");
             String[] coordinates = UserInput.getUserString().trim().split("\\s+");
-            boolean dugAtLeastOne = false;
+            boolean enteredValidCoordinate = false;
 
             for (String input : coordinates) {
                 int[] coordinate = parseCoordinate(input);
@@ -385,14 +382,18 @@ public class Excavation {
                     continue;
                 }
 
+                enteredValidCoordinate = true;
                 int foundBeforeDig = foundTreasures.size();
+                char terrainBeforeDig = grid.getTerrainAt(coordinate[0], coordinate[1]);
                 boolean dugSuccess = digPosition(coordinate[0], coordinate[1]);
 
                 if (dugSuccess) {
-                    dugAtLeastOne = true;
                     if (foundTreasures.size() > foundBeforeDig) {
                         Treasure treasure = foundTreasures.get(foundTreasures.size() - 1);
                         System.out.println("¡Has encontrado: " + treasure.getName() + "!");
+                    } else if (!grid.isDug(coordinate[0], coordinate[1])) {
+                        System.out.println("Has excavado la capa " + terrainBeforeDig
+                                + "; debajo hay " + grid.getTerrainAt(coordinate[0], coordinate[1]) + ".");
                     } else {
                         System.out.println("No había ningún tesoro en esa casilla.");
                     }
@@ -403,7 +404,7 @@ public class Excavation {
                 }
             }
 
-            if (!dugAtLeastOne) {
+            if (!enteredValidCoordinate) {
                 System.out.println("Introduce al menos una coordenada válida.");
             }
         }
@@ -504,6 +505,7 @@ public class Excavation {
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
         
+=========
     }
 
     /**
@@ -514,5 +516,6 @@ public class Excavation {
         for(Treasure treasure : foundTreasures){
             Archaios.logManager.log(treasure.getCode());
         }
+>>>>>>>>> Temporary merge branch 2
     }
 }

@@ -31,8 +31,9 @@ public class Egypt extends Region implements ITerDif {
      * @param charac caracter del terreno
      * @return float del porcentaje (entre 0 y 1) de que salga dado caracter
      */
-    public float getTerrainPercent(String charac) {
-        switch (charac) {
+    @Override
+    public float getTerrainPercent(String symbol) {
+        switch (symbol) {
             case "-":
                 return 0.1F;
             case ".":
