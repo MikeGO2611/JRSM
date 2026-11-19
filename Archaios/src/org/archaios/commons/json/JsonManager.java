@@ -18,6 +18,10 @@ import org.archaios.main.Archaios;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * 
+ * JsonManager
+ */
 public class JsonManager {
 
     public static void save(){
