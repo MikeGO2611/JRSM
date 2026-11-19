@@ -1,7 +1,6 @@
 package org.archaios.main;
 
 import java.io.File;
-import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,11 +12,10 @@ import org.archaios.commons.json.SaveJObject;
 import org.archaios.commons.logs.LogManager;
 import org.archaios.commons.repositories.Regions;
 import org.archaios.commons.repositories.Skills;
-import org.archaios.commons.repositories.Treasures;
 import org.archaios.commons.statistics.Stats;
 import org.archaios.commons.statistics.TerrainStatEntry;
+import org.archaios.helpers.CodeHelper;
 import org.archaios.menu.Menu;
-import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Region;
 import org.archaios.regions.Countries.Egypt;
@@ -28,7 +26,6 @@ import org.archaios.regions.Countries.Rome;
 import org.archaios.regions.Countries.Sumeria;
 import org.archaios.treasures.Treasure;
 
-import com.google.gson.annotations.Expose;
 
 import zeraf.ESistema;
 import zeraf.Zeraf;
@@ -215,22 +212,27 @@ public class Archaios {
             terrainStatEntryCollection.add(terrainStatEntry);
         }
 
+        //TODO Hacerlo bien con HashMaps y un repositorio
         Map<String, Integer> treasureSaveStats = saveJObject.getSaveStats().getTreasureSaveStats();
         for(Map.Entry<String, Integer> entry : treasureSaveStats.entrySet()){
 
             Treasure treasure = null;
 
+            String entryKey = entry.getKey();
+
             for(Region region : regionsRepository.getAllElements()){
-                for(Treasure regionTreasure : region.getAllTreasures()){
-                    if(entry.getKey().substring(0,12).equals(regionTreasure.getCode().substring(0,12))){
-                        treasure = regionTreasure;
-                        int partNumber = Integer.parseInt(entry.getKey().substring(12, 16));
-                        treasure.setPartNumber(partNumber);
-                        
-                        for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
-                            if(terrainStatEntry.getRegion().equals(region)){
-                                for(int i = 0; i < entry.getValue(); i++){
-                                    terrainStatEntry.addTreasures(Arrays.asList(treasure));
+                if(region.getCode().equals(CodeHelper.getRegion(entryKey))){
+                    for(Treasure regionTreasure : region.getAllTreasures()){
+                        if(CodeHelper.getFullTreasure(entryKey).equals(CodeHelper.getFullTreasure(regionTreasure.getCode()))){
+                            treasure = regionTreasure;
+                            int partNumber = Integer.parseInt(CodeHelper.getTreasurePart(entryKey));
+                            treasure.setPartNumber(partNumber);
+                            
+                            for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
+                                if(terrainStatEntry.getRegion().equals(region)){
+                                    for(int i = 0; i < entry.getValue(); i++){
+                                        terrainStatEntry.addTreasures(Arrays.asList(treasure));
+                                    }
                                 }
                             }
                         }
