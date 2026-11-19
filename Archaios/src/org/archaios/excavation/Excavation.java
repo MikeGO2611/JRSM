@@ -265,6 +265,7 @@ public class Excavation {
         } while (isPositionOccupied(row, col));
 
         Treasure treasure = possibleTreasures.get(random.nextInt(possibleTreasures.size()));
+        treasure.generateRandomPart();
         grid.setHiddenTreasure(row, col, treasure);
     }
 

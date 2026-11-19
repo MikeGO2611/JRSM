@@ -13,7 +13,7 @@ public class Sumeria extends Region implements ITerDif {
     /**
      * Código de la región.
      */
-    public static final String CODE = "PTR";
+    public static final String CODE = "SUM";
 
     /**
      * Constructor de Sumeria.

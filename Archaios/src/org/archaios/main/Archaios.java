@@ -19,7 +19,13 @@ import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.menu.Menu;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
+import org.archaios.regions.Region;
+import org.archaios.regions.Countries.Egypt;
 import org.archaios.regions.Countries.Greece;
+import org.archaios.regions.Countries.Iberia;
+import org.archaios.regions.Countries.Petra;
+import org.archaios.regions.Countries.Rome;
+import org.archaios.regions.Countries.Sumeria;
 import org.archaios.treasures.Treasure;
 
 import com.google.gson.annotations.Expose;
@@ -48,11 +54,6 @@ public class Archaios {
     public static Regions regionsRepository;
 
     public static Zeraf zeraf;
-
-
-    // TODO Preguntar a Adrián como funciona el estado de prueba y producción, si viene dado por el museo externo, o se configura en el código o en ejecución.
-    /** Estado del museo */
-    public static MuseumState museumState;
 
     /** Servicio de Log */
     public static LogManager logManager;
@@ -182,31 +183,59 @@ public class Archaios {
         List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<>();
 
         Map<String, Integer> locationSaveStats = saveJObject.getSaveStats().getLocationSaveStats();
+
         for(Map.Entry<String, Integer> entry : locationSaveStats.entrySet()){
-            if(entry.getKey().contains("GRC")){
-                TerrainStatEntry terrainStatEntry = new TerrainStatEntry(new Greece());
-                terrainStatEntry.setVisits(entry.getValue());
-                terrainStatEntryCollection.add(terrainStatEntry);
+            TerrainStatEntry terrainStatEntry = null;
+
+            switch (entry.getKey()) {
+                case "EGP":
+                    terrainStatEntry = new TerrainStatEntry(new Egypt());
+                    break;
+                case "GRC":
+                    terrainStatEntry = new TerrainStatEntry(new Greece());
+                    break;
+                case "IBR":
+                    terrainStatEntry = new TerrainStatEntry(new Iberia());
+                    break;
+                case "PTR":
+                    terrainStatEntry = new TerrainStatEntry(new Petra());
+                    break;
+                case "ROM":
+                    terrainStatEntry = new TerrainStatEntry(new Rome());
+                    break;
+                case "SUM":
+                    terrainStatEntry = new TerrainStatEntry(new Sumeria());
+                    break;
+                default:
+                    System.err.println("Región no reconocida");
+                    break;
             }
+
+            terrainStatEntry.setVisits(entry.getValue());
+            terrainStatEntryCollection.add(terrainStatEntry);
         }
 
         Map<String, Integer> treasureSaveStats = saveJObject.getSaveStats().getTreasureSaveStats();
-        Treasures treasures = new Treasures();
         for(Map.Entry<String, Integer> entry : treasureSaveStats.entrySet()){
-            
-            Treasure treasure = treasures.getElementCode(entry.getKey());
 
-            if(treasure.getCode().contains("GRC")){
+            Treasure treasure = null;
 
-                TerrainStatEntry terrainStatEntry = null;
-
-                for(TerrainStatEntry terrainStatEntryFind : terrainStatEntryCollection){
-                    if(terrainStatEntryFind.getRegion() instanceof Greece){
-                        terrainStatEntry = terrainStatEntryFind;
+            for(Region region : regionsRepository.getAllElements()){
+                for(Treasure regionTreasure : region.getAllTreasures()){
+                    if(entry.getKey().substring(0,12).equals(regionTreasure.getCode().substring(0,12))){
+                        treasure = regionTreasure;
+                        int partNumber = Integer.parseInt(entry.getKey().substring(12, 16));
+                        treasure.setPartNumber(partNumber);
+                        
+                        for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
+                            if(terrainStatEntry.getRegion().equals(region)){
+                                for(int i = 0; i < entry.getValue(); i++){
+                                    terrainStatEntry.addTreasures(Arrays.asList(treasure));
+                                }
+                            }
+                        }
                     }
                 }
-
-                terrainStatEntry.addTreasures(Arrays.asList(treasure));
             }
         }
 

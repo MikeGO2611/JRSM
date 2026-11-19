@@ -67,7 +67,7 @@ public class TreasureJSON {
         Gson gson = new Gson();
 
         try {
-            File jsonFile = new File("./input" + filePath);
+            File jsonFile = new File("./input/treasures/" + filePath);
 
             try (Reader reader = new FileReader(jsonFile)) {
 
@@ -85,6 +85,7 @@ public class TreasureJSON {
                             getTreasureType(data.type),
                             data.code,
                             data.parts,
+                            0,
                             data.points,
                             getTreasureRarity(data.rarity),
                             data.description));
