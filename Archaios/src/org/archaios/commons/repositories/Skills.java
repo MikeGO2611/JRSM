@@ -74,8 +74,8 @@ public class Skills extends Repository<Skill> {
         Skill investigacion = new RevelationSkill("Investigación", "Desglosa la cantidad de tesoros de cada rareza en la rejilla.", 0, 0);
 
         // Habilidades de terreno
-        Skill licenciaA = new TerrainSkill("Licencia A", "Permite excavar en formas de Fila y Columna.", Arrays.asList(ETerrainShape.ROW, ETerrainShape.COLUMN));
-        Skill licenciaB = new TerrainSkill("Licencia B", "Permite excavar en formas Horizontal y Vertical.", Arrays.asList(ETerrainShape.HORIZONTAL, ETerrainShape.VERTICAL));
+        Skill licenciaA = new TerrainSkill("Licencia A", "Permite excavar en formas de Fila y Columna.", Arrays.asList(ETerrainShape.S_ROW, ETerrainShape.S_COLUMN));
+        Skill licenciaB = new TerrainSkill("Licencia B", "Permite excavar en formas Horizontal y Vertical.", Arrays.asList(ETerrainShape.S_HORIZONTAL, ETerrainShape.S_VERTICAL));
 
         licenciaA.addIncompatibility(licenciaB);
         licenciaB.addIncompatibility(licenciaA);

@@ -6,15 +6,15 @@ package org.archaios.excavation;
  */
 public enum ETerrainShape {
     /** Terreno organizado en una sola fila. */
-    ROW("Fila"),
+    S_ROW("Fila"),
     /** Terreno organizado de forma horizontal. */
-    HORIZONTAL("Horizontal"),
+    S_HORIZONTAL("Horizontal"),
     /** Terreno organizado en una sola columna. */
-    COLUMN("Columna"),
+    S_COLUMN("Columna"),
     /** Terreno organizado de forma vertical. */
-    VERTICAL("Vertical"),
+    S_VERTICAL("Vertical"),
     /** Terreno organizado en una disposición cuadrada. */
-    SQUARE("Cuadrado");
+    S_SQUARE("Cuadrado");
 
     /** Nombre localizado de la forma del terreno. */
     private final String name;

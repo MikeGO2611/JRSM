@@ -51,6 +51,10 @@ public class TerrainStatEntry {
         return visits;
     }
 
+    public void setVisits(int visits){
+        this.visits = visits;
+    }
+
     public int getTreasureDigCount(){
         return treasureDigCount;
     }

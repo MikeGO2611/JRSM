@@ -408,6 +408,7 @@ public class Excavation {
             }
         }
         printExcavationState();
+        logResults();
         printResults();
 
         Archaios.zeraf.sendData(foundTreasures);
@@ -503,5 +504,15 @@ public class Excavation {
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
         
+    }
+
+    /**
+     * Loggear los tesoros en el log de partida.
+     * @author Miguel González Obenza
+     */
+    private void logResults(){
+        for(Treasure treasure : foundTreasures){
+            Archaios.logManager.log(treasure.getCode());
+        }
     }
 }

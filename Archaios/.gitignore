@@ -1,0 +1,8 @@
+# Ignore
+.vscode
+bin
+
+# Don't ignore
+!lib
+!log
+!saves

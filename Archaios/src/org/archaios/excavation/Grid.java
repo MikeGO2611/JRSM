@@ -47,7 +47,7 @@ public class Grid {
      * @param cols Número de columnas del terreno.
      */
     public Grid(int rows, int cols) {
-        this(rows, cols, ETerrainShape.SQUARE);
+        this(rows, cols, ETerrainShape.S_SQUARE);
     }
 
     /**
@@ -79,45 +79,45 @@ public class Grid {
     private int[] getDimensions(int baseRows, int baseCols, ETerrainShape shape) {
         if (baseRows == 5 && baseCols == 5) {
             switch (shape) {
-                case ROW:
+                case S_ROW:
                     return new int[] { 5, 3 };
-                case HORIZONTAL:
+                case S_HORIZONTAL:
                     return new int[] { 10, 2 };
-                case COLUMN:
+                case S_COLUMN:
                     return new int[] { 3, 5 };
-                case VERTICAL:
+                case S_VERTICAL:
                     return new int[] { 2, 10 };
-                case SQUARE:
+                case S_SQUARE:
                 default:
                     return new int[] { 5, 5 };
             }
         }
         if (baseRows == 10 && baseCols == 10) {
             switch (shape) {
-                case ROW:
+                case S_ROW:
                     return new int[] { 20, 5 };
-                case HORIZONTAL:
+                case S_HORIZONTAL:
                     return new int[] { 30, 3 };
-                case COLUMN:
+                case S_COLUMN:
                     return new int[] { 5, 20 };
-                case VERTICAL:
+                case S_VERTICAL:
                     return new int[] { 3, 30 };
-                case SQUARE:
+                case S_SQUARE:
                 default:
                     return new int[] { 10, 10 };
             }
         }
         if (baseRows == 15 && baseCols == 15) {
             switch (shape) {
-                case ROW:
+                case S_ROW:
                     return new int[] { 20, 10 };
-                case HORIZONTAL:
+                case S_HORIZONTAL:
                     return new int[] { 40, 5 };
-                case COLUMN:
+                case S_COLUMN:
                     return new int[] { 10, 20 };
-                case VERTICAL:
+                case S_VERTICAL:
                     return new int[] { 5, 40 };
-                case SQUARE:
+                case S_SQUARE:
                 default:
                     return new int[] { 15, 15 };
             }
@@ -125,19 +125,19 @@ public class Grid {
 
         int totalCells = baseRows * baseCols;
         switch (shape) {
-            case ROW:
+            case S_ROW:
                 return new int[] { 1, totalCells };
-            case COLUMN:
+            case S_COLUMN:
                 return new int[] { totalCells, 1 };
-            case HORIZONTAL:
+            case S_HORIZONTAL:
                 int horizontalRows = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
                 int horizontalCols = (int) Math.ceil((double) totalCells / horizontalRows);
                 return new int[] { horizontalRows, horizontalCols };
-            case VERTICAL:
+            case S_VERTICAL:
                 int verticalCols = Math.max(1, (int) Math.sqrt(totalCells / 2.0));
                 int verticalRows = (int) Math.ceil((double) totalCells / verticalCols);
                 return new int[] { verticalRows, verticalCols };
-            case SQUARE:
+            case S_SQUARE:
             default:
                 return new int[] { baseRows, baseCols };
         }
