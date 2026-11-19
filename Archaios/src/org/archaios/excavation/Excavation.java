@@ -502,5 +502,6 @@ public class Excavation {
         System.out.println("Puntos conseguidos: " + pointsEarned);
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
+        
     }
 }
