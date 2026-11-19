@@ -1,5 +1,7 @@
 package org.archaios.treasures;
 
+import java.util.Random;
+
 import org.archaios.commons.repositories.ICode;
 
 /**
@@ -11,7 +13,8 @@ import org.archaios.commons.repositories.ICode;
 public class Treasure implements ICode {
     private String name;
     private String description;
-    private String idCode;
+    private String codeNumber;
+    private int part;
     private ETreasureType type;
     private ETreasureRarity rarity;
     private int parts;
@@ -22,23 +25,25 @@ public class Treasure implements ICode {
      * codeNumber.
      */
 
-    public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int points,
+    public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int part, int points,
             ETreasureRarity rarity, String description) {
         this.name = name;
-        if (parts < 10) {
-            this.idCode = codeNumber + "_000"+ parts;
-        }else if (parts < 100) {
-            this.idCode = codeNumber + "_00"+ parts;
-        }else if (parts < 1000) {
-            this.idCode = codeNumber + "_0"+ parts;
-        }else{
-            this.idCode = codeNumber + "_"+ parts;
-        }
         this.type = type;
+        this.codeNumber = codeNumber;
+        this.part = part;
         this.rarity = rarity;
         this.parts = parts;
         this.points = points;
         this.description = description;
+    }
+
+    /**
+     * Asignar el número concreto de la parte del tesoro
+     * @param part int número de la parte
+     * @author Miguel González Obenza
+     */
+    public void setPartNumber(int part){
+        this.part = part;
     }
 
     /**
@@ -56,10 +61,20 @@ public class Treasure implements ICode {
     }
 
     /**
-     * @return código del tesoro.
+     * Genera el código en base a los atributos
+     * @return String código del tesoro
+     * @author Miguel González Obenza
      */
     public String getCode() {
-        return idCode;
+        if (part < 10) {
+            return codeNumber + "_000"+ part;
+        }else if (part < 100) {
+           return codeNumber + "_00"+ part;
+        }else if (part < 1000) {
+            return codeNumber + "_0"+ part;
+        }else{
+            return codeNumber + "_"+ part;
+        }
     }
 
     /**
@@ -88,6 +103,14 @@ public class Treasure implements ICode {
      */
     public int getPoints() {
         return points;
+    }
+
+    /**
+     * @return
+     */
+    public void generateRandomPart(){
+        Random random = new Random();
+        this.part = random.nextInt(1, parts+1);
     }
 
 }

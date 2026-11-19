@@ -1,6 +1,7 @@
 package org.archaios.regions.Countries;
 
 import org.archaios.regions.Region;
+import org.archaios.treasures.Treasure;
 
 /**
  * Clase Greece
@@ -21,7 +22,7 @@ public class Greece extends Region {
     public Greece() {
         super("GRC", "Grecia");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/GRC.json"));
+                TreasureJSON.loadTreasures("GRC.json"));
     }
 
     /**

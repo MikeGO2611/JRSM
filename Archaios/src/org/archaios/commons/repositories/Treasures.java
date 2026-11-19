@@ -12,7 +12,7 @@ public class Treasures extends Repository<Treasure> {
 
     public Treasures() {
 
-        Treasure calco = new Treasure("Calco griego", "GRC", ETreasureType.COIN, "001", 1, 1, ETreasureRarity.COMMON, "Moneda griega de cobre que tenía el menor valor.");
+    /*    Treasure calco = new Treasure("Calco griego", "GRC", ETreasureType.COIN, "001", 1, 1, ETreasureRarity.COMMON, "Moneda griega de cobre que tenía el menor valor.");
         Treasure obolo = new Treasure("Óbolo griego", "GRC", ETreasureType.COIN, "002", 1, 1, ETreasureRarity.COMMON, "Moneda griega de plata de poco valor.");
         Treasure dracma = new Treasure("Dracma griego", "GRC", ETreasureType.COIN, "003", 1, 1, ETreasureRarity.COMMON, "Moneda griega de plata ampliamente usada.");
         Treasure estatero = new Treasure("Estatero", "GRC", ETreasureType.COIN, "004", 1, 2, ETreasureRarity.UNCOMMON, "Moneda griega de gran valor hecha de electro.");
@@ -58,7 +58,7 @@ public class Treasures extends Repository<Treasure> {
         super.addElement(aspis);
         super.addElement(cascoCorintio);
         super.addElement(cascoFrigio);
-        super.addElement(xifos);
+        super.addElement(xifos);*/
     }
 
     

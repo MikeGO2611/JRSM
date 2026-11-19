@@ -7,11 +7,14 @@ import java.util.Map;
 import java.util.Random;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.commons.statistics.TerrainStatEntry;
 import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.regions.Region;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
+
+import zeraf.Zeraf;
 
 /**
  * Controla el proceso lógico de una excavación, gestionando el arqueólogo a cargo, 
@@ -262,6 +265,7 @@ public class Excavation {
         } while (isPositionOccupied(row, col));
 
         Treasure treasure = possibleTreasures.get(random.nextInt(possibleTreasures.size()));
+        treasure.generateRandomPart();
         grid.setHiddenTreasure(row, col, treasure);
     }
 
@@ -412,7 +416,9 @@ public class Excavation {
         logResults();
         printResults();
 
-        Archaios.zeraf.sendData(foundTreasures);
+        for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
+            Archaios.zeraf.sendData(terrainStatEntry.getTreasures());
+        }
     }
 
     /**
@@ -504,8 +510,6 @@ public class Excavation {
         System.out.println("Puntos conseguidos: " + pointsEarned);
         System.out.println("El arqueólogo " + archeologist.getName() + " ha conseguido "
                 + experienceEarned + " puntos de experiencia.");
-        
-=========
     }
 
     /**
@@ -516,6 +520,5 @@ public class Excavation {
         for(Treasure treasure : foundTreasures){
             Archaios.logManager.log(treasure.getCode());
         }
->>>>>>>>> Temporary merge branch 2
     }
 }

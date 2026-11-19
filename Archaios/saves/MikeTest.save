@@ -1,11 +1,11 @@
 {
-  "UID": "PlayTest",
-  "Partida": "PlayTest",
+  "UID": "MikeTest",
+  "Partida": "MikeTest",
   "Arqueólogos": [
     {
       "Licencias": [],
       "Nombre": "Arch Test",
-      "Exp": 6,
+      "Exp": 4,
       "Nv": 0,
       "Habilidades": [],
       "Terrenos": [
@@ -15,10 +15,10 @@
   ],
   "Estadísticas": {
     "Tesoros": {
-      "EGP_JOY_GRC_JOY_001": 1
+      "EGP_TES_GRC_TES_001": 2
     },
     "Lugares": {
-      "GRC": 2
+      "GRC": 1
     }
   },
   "Puntos": 2

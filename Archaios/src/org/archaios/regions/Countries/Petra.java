@@ -23,7 +23,7 @@ public class Petra extends Region implements ITerDif {
     public Petra() {
         super("PTR", "Petra");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/PTR.json"));
+                TreasureJSON.loadTreasures("PTR.json"));
     }
 
     /**

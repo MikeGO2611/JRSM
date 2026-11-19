@@ -22,7 +22,7 @@ public class Egypt extends Region implements ITerDif {
     public Egypt() {
         super("EGP", "Egipto");
         this.treasures.addAll(
-                TreasureJSON.loadTreasures("./treasures/EGP.json"));
+                TreasureJSON.loadTreasures("EGP.json"));
     }
 
     /**
