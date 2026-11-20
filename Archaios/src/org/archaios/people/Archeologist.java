@@ -23,10 +23,12 @@ import org.archaios.excavation.ETerrainSize;
  * @author Javier Búa Martínez
  */
 public class Archeologist {
-    /** Códigos de las regiones difíciles para las que el arqueólogo tiene licencia. */
+    /**
+     * Códigos de las regiones difíciles para las que el arqueólogo tiene licencia.
+     */
     @SerializedName("Licencias")
     private List<String> licenses = new ArrayList<>();
-    
+
     /** Nivel máximo que puede alcanzar un arqueólogo. */
     public static final int MAX_LEVEL = 5;
 
@@ -57,22 +59,30 @@ public class Archeologist {
     @SerializedName("Terrenos")
     private List<ETerrainShape> terrainShapes = new ArrayList<>();
 
-    /** Acciones adicionales otorgadas por el excedente de experiencia a nivel máximo. */
+    /**
+     * Acciones adicionales otorgadas por el excedente de experiencia a nivel
+     * máximo.
+     */
     transient private int extraActions = 0;
 
-    /** Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo. */
+    /**
+     * Tesoros aleatorios garantizados por excedente de experiencia a nivel máximo.
+     */
     transient private int extraRandomTreasure = 0;
 
     /** Tesoros comunes garantizados por excedente de experiencia a nivel máximo. */
     transient private int extraCTreasure = 0;
 
-    /** Tesoros infrecuentes garantizados por excedente de experiencia a nivel máximo. */
+    /**
+     * Tesoros infrecuentes garantizados por excedente de experiencia a nivel
+     * máximo.
+     */
     transient private int extraITreasure = 0;
 
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     transient private int extraRTreasure = 0;
 
-    public Archeologist(){
+    public Archeologist() {
         maxExp = 50;
     }
 
@@ -89,7 +99,8 @@ public class Archeologist {
 
     /**
      * Imprime por consola la ficha detallada del arqueólogo con su nivel,
-     * experiencia, especialización, tamaños de terreno, formas y habilidades aprendidas.
+     * experiencia, especialización, tamaños de terreno, formas y habilidades
+     * aprendidas.
      */
     public void archeologistInformation() {
         StringBuilder sb = new StringBuilder();
@@ -115,13 +126,15 @@ public class Archeologist {
             sb.append("  - ").append(shape.name()).append("\n");
         }
 
-        sb.append("Habilidades:\n");
-        for (Skill skill : this.skillCollection) {
-            sb.append("  ").append(skill.getName()).append("\n");
-            sb.append("   ").append(skill.getDescription()).append("\n");
+        if (skillCollection.size() > 0) {
+            sb.append("Habilidades:\n");
+            for (Skill skill : this.skillCollection) {
+                sb.append("  ").append(skill.getName()).append("\n");
+                sb.append("   ").append(skill.getDescription()).append("\n");
+            }
         }
 
-        if(licenses.size() > 0){
+        if (licenses.size() > 0) {
             sb.append("Licencias:\n");
             for (String license : this.licenses) {
                 sb.append("  ").append(license).append("\n");
@@ -195,7 +208,8 @@ public class Archeologist {
     }
 
     /**
-     * Añade una nueva forma de terreno a la colección si aún no ha sido desbloqueada.
+     * Añade una nueva forma de terreno a la colección si aún no ha sido
+     * desbloqueada.
      * 
      * @param shape Forma de terreno a añadir.
      */
@@ -206,7 +220,8 @@ public class Archeologist {
     }
 
     /**
-     * Asigna una habilidad al arqueólogo y desbloquea las formas de terreno asociadas.
+     * Asigna una habilidad al arqueólogo y desbloquea las formas de terreno
+     * asociadas.
      * 
      * @param skill Habilidad a aprender.
      */
@@ -239,19 +254,19 @@ public class Archeologist {
         }
 
         System.out.print("Habilidad a aprender (1-" + options.size() + "): ");
-        
+
         int choice = UserInput.getUserIntegerInRange(
-            1, 
-            options.size(), 
-            "Opción no válida. Introduce un número del 1 al " + options.size() + ": "
-        );
+                1,
+                options.size(),
+                "Opción no válida. Introduce un número del 1 al " + options.size() + ": ");
 
         Skill selectedSkill = options.get(choice - 1);
         addSkill(selectedSkill);
     }
 
     /**
-     * Recalcula las bonificaciones pasivas otorgadas por el excedente de experiencia
+     * Recalcula las bonificaciones pasivas otorgadas por el excedente de
+     * experiencia
      * tras haber alcanzado el nivel máximo.
      */
     public void extrasExpSpecialization() {
@@ -263,8 +278,10 @@ public class Archeologist {
     }
 
     /**
-     * Incrementa la experiencia del arqueólogo, procesa las subidas de nivel pertinentes
-     * (hasta el tope de MAX_LEVEL) e inicia la selección de habilidades por cada nivel ganado.
+     * Incrementa la experiencia del arqueólogo, procesa las subidas de nivel
+     * pertinentes
+     * (hasta el tope de MAX_LEVEL) e inicia la selección de habilidades por cada
+     * nivel ganado.
      * 
      * @param expGained Puntos de experiencia ganados.
      * @param allSkills Catálogo total de habilidades disponibles.
@@ -388,13 +405,13 @@ public class Archeologist {
 
     /**
      * @param terrainSymbol Terreno a excavar.
-     * @return Reduccion de coste de excavar. 
+     * @return Reduccion de coste de excavar.
      */
     public int getExcavationCost(char terrainSymbol) {
         for (Skill s : this.skillCollection) {
             int cost = s.getTerrainCost(terrainSymbol);
             if (cost != -1) {
-                return cost; 
+                return cost;
             }
         }
         return -1;
@@ -409,12 +426,12 @@ public class Archeologist {
         for (Skill s : this.skillCollection) {
             total += s.getRemovedTerrainAmount(terrainSymbol);
         }
-        return total; 
+        return total;
     }
 
     /** @return Coste de la siguiente licencia. */
-    public int getNextLicenseCost(){
-        return 20 + (this.licenses.size()*10);
+    public int getNextLicenseCost() {
+        return 20 + (this.licenses.size() * 10);
     }
 
     /**
