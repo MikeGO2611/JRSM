@@ -85,7 +85,7 @@ public class AtlasMenu implements IOperation{
                 System.out.println("1. Sí");
                 System.out.println("0. No");
 
-                userInput = UserInput.getUserIntegerInRange(0, 2, "Opción no válida.");
+                userInput = UserInput.getUserIntegerInRange(0, 1, "Opción no válida.");
 
                 if(userInput == 0){
                     userExit = true;

@@ -335,12 +335,30 @@ public class Excavation {
     }
 
     /**
-     * Comprueba si la excavación ha concluido debido a que el jugador se quedó sin intentos.
+     * Comprueba si queda al menos una casilla sin excavar cuyo coste sea asumible.
      *
-     * @return true si no quedan intentos disponibles, false en caso contrario.
+     * @return true si existe alguna casilla excavable; false en caso contrario.
+     * @author Javier Búa
+     */
+    private boolean hasExcavatableCell() {
+        for (int row = 0; row < grid.getRows(); row++) {
+            for (int col = 0; col < grid.getCols(); col++) {
+                if (!grid.isDug(row, col) && calculateCost(row, col) <= remainingAttempts) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Comprueba si la excavación ha concluido por falta de intentos o de casillas excavables.
+     *
+     * @return true si no quedan intentos o no hay casillas excavables, false en caso contrario.
+     * @author Javier Búa
      */
     public boolean isFinished() {
-        return remainingAttempts <= 0;
+        return remainingAttempts <= 0 || !hasExcavatableCell();
     }
 
     /**
@@ -370,6 +388,14 @@ public class Excavation {
         System.out.println("Forma del terreno: " + terrainShape.getName());
         if (archeologist.getRevelationEmpty() > 0 || archeologist.getRevelationTreasure() > 0) {
             System.out.println("Pistas de habilidades: E = casilla vacía revelada; ? = tesoro localizado.");
+        }
+        boolean hasInvestigation = archeologist.getSkillList().stream()
+                .anyMatch(skill -> "Investigación".equals(skill.getName()));
+        if (hasInvestigation) {
+            System.out.println("Investigación — Tesoros ocultos en la rejilla:");
+            for (ETreasureRarity rarity : ETreasureRarity.values()) {
+                System.out.println("  - " + rarity + ": " + grid.countTreasures(rarity));
+            }
         }
 
         while (!isFinished()) {
@@ -411,6 +437,9 @@ public class Excavation {
             if (!enteredValidCoordinate) {
                 System.out.println("Introduce al menos una coordenada válida.");
             }
+        }
+        if (remainingAttempts > 0) {
+            System.out.println("No quedan casillas excavables con las acciones restantes (" + remainingAttempts + ").");
         }
         printExcavationState();
         logResults();

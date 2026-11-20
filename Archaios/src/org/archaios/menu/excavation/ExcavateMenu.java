@@ -70,10 +70,13 @@ public class ExcavateMenu implements IOperation {
             ETerrainSize terrainSize = terrainSizeCollection.get(i);
             System.out.println((i + 1) + ". " + terrainSize.getName());
         }
+        System.out.println("0. Volver");
 
         int userInput = UserInput.getUserIntegerInRange(0, terrainSizeCollection.size(), "Opción no válida.");
+        if (userInput == 0) {
+            return;
+        }
         ETerrainSize selectedTerrainSize = terrainSizeCollection.get(userInput - 1);
-
 
         List<ETerrainShape> terrainShapeCollection = selectedArcheologist.getTerrainShapes();
         Random random = new Random();

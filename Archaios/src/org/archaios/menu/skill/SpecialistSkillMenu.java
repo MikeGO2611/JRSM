@@ -65,6 +65,7 @@ public class SpecialistSkillMenu implements IOperation {
      * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
      */
     private void initSkillList(){
+        specialistSkillCollection.clear();
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 
         for (Skill skill : skillCollection) {

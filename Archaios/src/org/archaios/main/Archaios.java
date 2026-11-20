@@ -105,7 +105,7 @@ public class Archaios {
                 System.out.println("Hay partidas guardadas, ¿quieres cargar alguna?");
                 System.out.println("0. No");
                 System.out.println("1. Sí");
-                int userInput = UserInput.getUserIntegerInRange(0, 2, "Opción no válida");
+                int userInput = UserInput.getUserIntegerInRange(0, 1, "Opción no válida");
 
                 if(userInput == 1){
                     newSave = false;
@@ -116,7 +116,7 @@ public class Archaios {
                     }
                     System.out.println("0. Volver");
 
-                    userInput = UserInput.getUserIntegerInRange(0, saveFileCollection.size() + 1, "Opción no válida");
+                    userInput = UserInput.getUserIntegerInRange(0, saveFileCollection.size(), "Opción no válida");
 
                     if(userInput == 0){
                         newSave = true;
@@ -178,7 +178,9 @@ public class Archaios {
         Stats.setArcheologistCollection(saveJObject.getArcheologistCollection());
 
         List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<>();
-
+        for (Archeologist arch : Stats.getArcheologistCollection()) {
+            arch.recalculateAfterLoad();
+        }
         Map<String, Integer> locationSaveStats = saveJObject.getSaveStats().getLocationSaveStats();
 
         for(Map.Entry<String, Integer> entry : locationSaveStats.entrySet()){
@@ -231,7 +233,7 @@ public class Archaios {
                             for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
                                 if(terrainStatEntry.getRegion().equals(region)){
                                     for(int i = 0; i < entry.getValue(); i++){
-                                        terrainStatEntry.addTreasures(Arrays.asList(treasure));
+                                        terrainStatEntry.addLoadedTreasure(treasure);
                                     }
                                 }
                             }

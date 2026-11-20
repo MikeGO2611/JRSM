@@ -278,6 +278,26 @@ public class Archeologist {
     }
 
     /**
+     * Recalcula los campos transient tras cargar un arqueólogo desde un archivo guardado.
+     */
+    public void recalculateAfterLoad() {
+        if (this.licenses == null) {
+            this.licenses = new ArrayList<>();
+        }
+        if (this.skillCollection == null) {
+            this.skillCollection = new ArrayList<>();
+        }
+        if (this.terrainShapes == null) {
+            this.terrainShapes = new ArrayList<>();
+            this.terrainShapes.add(ETerrainShape.S_SQUARE);
+        }
+        this.maxExp = 50 * (this.level + 1);
+        if (this.level == MAX_LEVEL) {
+            extrasExpSpecialization();
+        }
+    }
+
+    /**
      * Incrementa la experiencia del arqueólogo, procesa las subidas de nivel
      * pertinentes
      * (hasta el tope de MAX_LEVEL) e inicia la selección de habilidades por cada

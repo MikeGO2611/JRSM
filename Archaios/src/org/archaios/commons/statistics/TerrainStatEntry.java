@@ -78,6 +78,21 @@ public class TerrainStatEntry {
     }
 
     /**
+     * Añade un tesoro cargado desde archivo guardado sin incrementar el contador de visitas.
+     * @param treasure Tesoro recuperado de la partida guardada.
+     * @author Javier Búa
+     */
+    public void addLoadedTreasure(Treasure treasure) {
+        if (treasure != null) {
+            treasureDigCount++;
+            if (!foundTreasureCollection.contains(treasure)) {
+                foundTreasureCollection.add(treasure);
+            }
+            sortTreasures();
+        }
+    }
+
+    /**
      * Obtiene la visitas al terreno
      * @return int
      */
