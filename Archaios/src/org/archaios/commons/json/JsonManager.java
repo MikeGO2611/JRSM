@@ -32,15 +32,17 @@ public class JsonManager {
 
         SaveJObject saveJObject = new SaveJObject(Archaios.getIdUser(), Archaios.getPlayName(), Stats.getArcheologistCollection(), Stats.getPoints());
 
+        File directory = new File("./saves");
+        if(!directory.exists()){
+            directory.mkdir();
+        }
 
         File saveFile = new File("./saves/" +  Archaios.getPlayName() + ".save");
 
         try(BufferedWriter bf = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFile), StandardCharsets.UTF_8))){
-            File directory = new File("./saves");
-            if(!directory.exists()){
-                directory.mkdir();
+            if(saveJObject != null){
+                gson.toJson(saveJObject, bf);
             }
-            gson.toJson(saveJObject, bf);
         } catch(FileNotFoundException e){
             Archaios.logManager.logError("Error en JsonManager. No se ha encontrado el archivo de guardado: " + e.getMessage());
         } catch(UnsupportedEncodingException e){

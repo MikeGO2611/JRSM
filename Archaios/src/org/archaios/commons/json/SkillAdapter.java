@@ -3,6 +3,7 @@ package org.archaios.commons.json;
 import java.lang.reflect.Type;
 
 import org.archaios.commons.repositories.Skills;
+import org.archaios.main.Archaios;
 import org.archaios.people.Archeologist;
 import org.archaios.skills.Skill;
 
@@ -26,9 +27,8 @@ public class SkillAdapter implements JsonSerializer<Skill>, JsonDeserializer<Ski
     public Skill deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
                 String skillName = json.getAsString();
-                Skills skillCollection = new Skills();
                 Skill skill = null;
-                for(Skill probableSkill : skillCollection.getAllElements()){
+                for(Skill probableSkill : Archaios.skillRepository.getAllElements()){
                     if(probableSkill.getName().equals(skillName)){
                         skill = probableSkill;
                         break;

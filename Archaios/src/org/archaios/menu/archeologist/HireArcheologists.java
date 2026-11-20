@@ -79,6 +79,7 @@ public class HireArcheologists implements IOperation{
                 Stats.addPoints(-HIRE_COST);
 
                 System.out.println("Arqueólogo " + randomArcheologist.getName() + " añadido.");
+                Archaios.save();
             }
 
         } else {

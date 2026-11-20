@@ -92,6 +92,9 @@ public class Archaios {
         File saveDirectory = new File("./saves");
         boolean newSave = true;
 
+        logManager = new LogManager(playName);
+        logManager.log("Inicio de la partida");
+
         if (saveDirectory.exists() && saveDirectory.isDirectory()){
 
             List<File> saveFileCollection = new ArrayList<>();
@@ -110,7 +113,7 @@ public class Archaios {
                 if(userInput == 1){
                     newSave = false;
 
-                    System.out.println("¿Qué partida quieres guardar?");
+                    System.out.println("¿Qué partida quieres cargar?");
                     for(int i = 0; i < saveFileCollection.size(); i++){
                         System.out.println((i + 1) + ". " + saveFileCollection.get(i).getName().split(".save")[0]);
                     }
@@ -144,8 +147,6 @@ public class Archaios {
         }
 
         
-        logManager = new LogManager(playName);
-        logManager.log("Inicio de la partida");
 
         
         zeraf = ZerafFactory.createZeraf(ESistema.MUSEO, idUser, idGroup);
@@ -161,7 +162,7 @@ public class Archaios {
     /**
      * Guarda la partida.
      */
-    private static void save() {
+    public  static void save() {
         JsonManager.save();
     }
 

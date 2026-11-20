@@ -14,8 +14,6 @@ import org.archaios.regions.Region;
 import org.archaios.treasures.ETreasureRarity;
 import org.archaios.treasures.Treasure;
 
-import zeraf.Zeraf;
-
 /**
  * Controla el proceso lógico de una excavación, gestionando el arqueólogo a cargo, 
  * el terreno, la distribución de los tesoros y los turnos/intentos restantes.
@@ -445,9 +443,7 @@ public class Excavation {
         logResults();
         printResults();
 
-        for(TerrainStatEntry terrainStatEntry : Stats.getTerrainStatEntryCollection()){
-            Archaios.zeraf.sendData(terrainStatEntry.getTreasures());
-        }
+        Archaios.zeraf.sendData(foundTreasures);
     }
 
     /**

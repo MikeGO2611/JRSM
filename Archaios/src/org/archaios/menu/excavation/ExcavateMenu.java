@@ -84,5 +84,6 @@ public class ExcavateMenu implements IOperation {
         Excavation excavation = new Excavation(
                 selectedArcheologist, selectedRegion, selectedTerrainSize, terrainShape);
         excavation.excavate();
+        Archaios.save();
     }
 }
