@@ -19,11 +19,13 @@ import org.archaios.regions.Countries.ITerDif;
  */
 public class LicenseMenu implements IOperation {
 
+    /** @return Nombre de la operación del menú. */
     @Override
     public String getName() {
         return "Licencias";
     }
 
+    /** Gestiona la compra de licencias de regiones difíciles para un arqueólogo. */
     @Override
     public void operation() {
         System.out.println(MenuGenerator.generateTitle(getName(), ':', 20));

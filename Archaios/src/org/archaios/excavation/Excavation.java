@@ -390,7 +390,7 @@ public class Excavation {
         boolean hasInvestigation = archeologist.getSkillList().stream()
                 .anyMatch(skill -> "Investigación".equals(skill.getName()));
         if (hasInvestigation) {
-            System.out.println("Investigación — Tesoros ocultos en la rejilla:");
+            System.out.println("Investigación - Tesoros ocultos en la rejilla:");
             for (ETreasureRarity rarity : ETreasureRarity.values()) {
                 System.out.println("  - " + rarity + ": " + grid.countTreasures(rarity));
             }

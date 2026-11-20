@@ -27,7 +27,7 @@ public class SkillMenu implements IOperation {
 
     /**
      * @return el nombre de la operación
-     * @see commons.operations.IOperation#getName()
+     * @see org.archaios.commons.operations.IOperation#getName()
      */
     @Override
     public String getName() {
@@ -40,7 +40,7 @@ public class SkillMenu implements IOperation {
      * @see SpecialistSkillMenu
      * @see TerrainSkillMenu
      * @see TreasureSkillMenu
-     * @see commons.operations.IOperation#operation()
+     * @see org.archaios.commons.operations.IOperation#operation()
      */
     @Override
     public void operation() {

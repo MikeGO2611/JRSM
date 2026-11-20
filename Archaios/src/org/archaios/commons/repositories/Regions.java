@@ -12,7 +12,7 @@ import org.archaios.regions.Countries.Sumeria;
  * @author Rubén Hernández
  */
 public class Regions extends Repository<Region> {
-
+    /** Inicializa el repositorio cargando todas las regiones disponibles. */
     public Regions() {
         Greece grecia = new Greece();
         Egypt egipto = new Egypt();

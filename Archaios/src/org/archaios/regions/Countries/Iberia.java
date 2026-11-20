@@ -15,7 +15,7 @@ public class Iberia extends Region {
     public static final String CODE = "IBR";
 
     /**
-     * Constructor de Greece.
+     * Constructor de Iberia.
      * Obtiene todos los tesoros del JSON de la región
      */ 
     public Iberia() {

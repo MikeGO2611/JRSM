@@ -42,7 +42,7 @@ public class TerrainStatEntry {
     /**
      * Construtor mediante una región, lista de tesoros encontrados y el número de veces que se ha excavado.
      * @param region Region
-     * @param foundTreasureCollection List<Treasure> 
+     * @param foundTreasureCollection {@code List<Treasure>}
      * @param treasureDigCount int
      */
     public TerrainStatEntry(Region region, List<Treasure> foundTreasureCollection, int treasureDigCount){
@@ -60,7 +60,7 @@ public class TerrainStatEntry {
 
     /**
      * Añade tesoros a la lista de tesoros encontrados.
-     * @param foundTreasures
+     * @param foundTreasures Lista de tesoros encontrados en la excavación.
      */
     public void addTreasures(List<Treasure> foundTreasures){
         visits++;
@@ -118,7 +118,7 @@ public class TerrainStatEntry {
 
     /**
      * Obtiene la lista de todos los tesoros excavados en este territorio.
-     * @return List<Treasure>
+     * @return {@code List<Treasure>}
      */
     public List<Treasure> getTreasures(){
         return foundTreasureCollection;

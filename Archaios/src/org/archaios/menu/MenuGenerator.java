@@ -16,7 +16,7 @@ import org.archaios.people.Archeologist;
  */
 final public class MenuGenerator {
 
-    // Definiendo el constructor como un método privado se impide la instanciación de la clase sin necesidad de hacerla abstracta.
+    /** Constructor privado para evitar la instanciación de la clase. */
     private MenuGenerator(){
 
     }
@@ -43,6 +43,15 @@ final public class MenuGenerator {
         }
     }
 
+    /**
+     * Imprime el menú en base al {@code entryCollection} y pide al usuario su selección.
+     * Además admite comandos de depuración.
+     * @param title el título del menú
+     * @param ch el decorador que rodea el título del menú
+     * @param entryCollection la colección de entradas del menú
+     * @param exitOption se mostrará para la opción de salida
+     * @param errorMessage se mostrará en caso de que el usuario elija una opción inválida
+     */
     public static void askUserMenuOptionCheats(String title, Character ch, List<IOperation> entryCollection, String exitOption, String errorMessage){
         boolean userExit = false;
         while (!userExit) {
@@ -77,9 +86,13 @@ final public class MenuGenerator {
                 else if(userInput.contains("add_points")){
                     List<String> command = Arrays.asList(userInput.split("\s"));
                     if(command.size() == 2){
-                        int points = Integer.parseInt(command.get(1));
-                        Stats.addPoints(points);
-                        System.out.println(points + " puntos añadidos.");
+                        try {
+                            int points = Integer.parseInt(command.get(1));
+                            Stats.addPoints(points);
+                            System.out.println(points + " puntos añadidos.");
+                        } catch (NumberFormatException e) {
+                            System.out.println("Cantidad de puntos no válida.");
+                        }
                     }
                 }
                 else if(userInput.contains("add_exp")){

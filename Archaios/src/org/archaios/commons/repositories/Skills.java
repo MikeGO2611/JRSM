@@ -17,7 +17,9 @@ import org.archaios.skills.TreasureSkill;
  * @author Javier Búa
  */
 public class Skills extends Repository<Skill> {
-
+    /** 
+     * Inicializa el catálogo completo de habilidades con sus dependencias e incompatibilidades. 
+    */
     public Skills() {
         super();
 
@@ -129,7 +131,7 @@ public class Skills extends Repository<Skill> {
      * Devuelve un número determinado de habilidades aleatorias.
      * @param archeologist Archeologist al que se le comparará la compatibilidad de las habilidades
      * @param count int Número inferior o igual a tres de habilidades a devolver.
-     * @return List<Skill> compatibles con el arqueólogo.
+     * @return {@code List<Skill>} compatibles con el arqueólogo.
      */
     public List<Skill> getRandomCompatibleSkills(Archeologist archeologist, int count){
         List<Skill> skillList = SkillService.selectThreeSkills(archeologist, getAllElements());

@@ -28,7 +28,7 @@ public class Egypt extends Region implements ITerDif {
     /**
      * Porcentaje de conseguir x terreno.
      * 
-     * @param charac caracter del terreno
+     * @param symbol Símbolo del tipo de terreno.
      * @return float del porcentaje (entre 0 y 1) de que salga dado caracter
      */
     @Override
@@ -51,7 +51,9 @@ public class Egypt extends Region implements ITerDif {
     public String getCode() {
         return CODE;
     }
-
+    /**
+     * @return Nombre de la expansión a la que pertenece la región.
+     */
     public String getExpansion() {
         return "Imperio de las arenas.";
     }

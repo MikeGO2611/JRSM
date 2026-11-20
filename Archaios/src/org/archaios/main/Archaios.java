@@ -2,7 +2,6 @@ package org.archaios.main;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -92,9 +91,6 @@ public class Archaios {
         File saveDirectory = new File("./saves");
         boolean newSave = true;
 
-        logManager = new LogManager(playName);
-        logManager.log("Inicio de la partida");
-
         if (saveDirectory.exists() && saveDirectory.isDirectory()){
 
             List<File> saveFileCollection = new ArrayList<>();
@@ -124,9 +120,10 @@ public class Archaios {
                     if(userInput == 0){
                         newSave = true;
                     } else {
-                        load(saveFileCollection.get(userInput - 1));
+                        if (!load(saveFileCollection.get(userInput - 1))) {
+                            newSave = true;
+                        }
                     }
-
                 } else{
                     newSave = true;
                 }
@@ -145,10 +142,8 @@ public class Archaios {
             Archeologist firstArcheologist = new Archeologist(archeologistName);
             Stats.addArcheologist(firstArcheologist);
         }
-
-        
-
-        
+        logManager = new LogManager(playName);
+        logManager.log("Inicio de la partida");
         zeraf = ZerafFactory.createZeraf(ESistema.MUSEO, idUser, idGroup);
     }
 
@@ -168,10 +163,15 @@ public class Archaios {
 
     /**
      * Carga la partida
+     * @param saveFile Archivo de partida guardada a cargar.
+     * @return true si la partida se cargó correctamente; false en caso de error.
      */
-    private static void load(File saveFile) {
+    private static boolean load(File saveFile) {
         SaveJObject saveJObject = JsonManager.readFromFile(saveFile);
-
+        if (saveJObject == null) {
+            System.err.println("No se pudo cargar el archivo de guardado.");
+            return false;
+        }
         idUser = saveJObject.getUid();
         playName = saveJObject.getPlayName();
         Stats.setPoints(saveJObject.getPoints());
@@ -211,8 +211,10 @@ public class Archaios {
                     break;
             }
 
-            terrainStatEntry.setVisits(entry.getValue());
-            terrainStatEntryCollection.add(terrainStatEntry);
+            if (terrainStatEntry != null) {
+                terrainStatEntry.setVisits(entry.getValue());
+                terrainStatEntryCollection.add(terrainStatEntry);
+            }
         }
 
         //TODO Hacerlo bien con HashMaps y un repositorio
@@ -247,11 +249,12 @@ public class Archaios {
         for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
             Stats.addTerrainStatEntry(terrainStatEntry);
         }
+        return true;
     }
 
     /**
      * Getter del ID del usuario
-     * @return int ID
+     * @return String ID del usuario.
      */
     public static String getIdUser() {
         return idUser;

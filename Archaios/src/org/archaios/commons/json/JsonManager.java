@@ -54,8 +54,8 @@ public class JsonManager {
 
     /**
      * Lee de un archivo JSON y lo transforma en un objeto <code>SaveJObject</code>.
-     * @param saveFile
-     * @return
+     * @param saveFile Archivo JSON de guardado que se va a leer.
+     * @return Objeto SaveJObject reconstruido o null si ocurre un error.
      */
     public static SaveJObject readFromFile(File saveFile){
         Gson gson = new Gson();
@@ -64,7 +64,11 @@ public class JsonManager {
         try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(saveFile), "UTF-8"))){
             saveJObject = gson.fromJson(br, SaveJObject.class);
         } catch(IOException e){
-            Archaios.logManager.logError("Error en JsonManager. Error de IO al leer: " + e.getMessage());
+            if (Archaios.logManager != null) {
+                Archaios.logManager.logError("Error en JsonManager. Error de IO al leer: " + e.getMessage());
+            } else {
+                System.err.println("Error en JsonManager. Error de IO al leer: " + e.getMessage());
+            }
         }
 
         return saveJObject;

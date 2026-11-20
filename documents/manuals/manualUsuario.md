@@ -7,13 +7,13 @@ Archaios es un videojuego de un jugador donde debes gestionar a varios arqueólo
 El jugador inicia la partida con un arqueólogo. Este arqueólogo se podrá emplear para excavar en distintas regiones y obtener tesoros.
 
 En cada excavación, el arqueólogo concreto que excavó adquiere puntos de experiencia. Los puntos de experiencia permiten subir de nivel al arqueólogo, obteniendo distintas habilidades con cada nivel.
-Cuano un arqueólogo llega al nivel 5, obtiene una especialización en una región, lo cual le aporta beneficios en cada excavación de esa región.
+Cuando un arqueólogo llega al nivel 5, obtiene una especialización en una región, lo cual le aporta beneficios en cada excavación de esa región.
 
 Así mismo, en cada excavación, el jugador obtiene puntos. Estos puntos, a diferencia de la experiencia, son independientes de los arqueólogos, y pertenecen al jugador. Con estos puntos se puede contratar nuevos arqueólogos o adquirir licencias para los arqueólogos ya existentes.
 
 ## Inicio
 
-Al iniciar Archaios, el juego buscará partida guardadas. Si hay alguna, podrás elegir entre cargar una partida existente o crear una partida nueva.
+Al iniciar Archaios, el juego buscará partidas guardadas. Si hay alguna, podrás elegir entre cargar una partida existente o crear una partida nueva.
 
 ### Partida Nueva
 
@@ -72,7 +72,7 @@ Una misma casilla no se puede excavar varias veces en la misma excavación.
 
 Al final de la excavación se mostrarán los tesoros adquiridos, la experiencia ganada, y los puntos adquiridos.
 
-Si el arqueólogo sube de nivel, el jugador elegirá que habilidad obtendrá el arqueólogo.
+Si el arqueólogo sube de nivel, el jugador elegirá qué habilidad obtendrá el arqueólogo.
 
 ### 7. Estadísticas
 
@@ -80,7 +80,7 @@ Permite ver las estadísticas tanto de las regiones como de los tesoros.
 
 #### Ver Regiones
 
-Permite ver el número de veces que una región fe visitada, el número de tesoros únicos encontrados de dicha región, y el número total de tesoros excavados.
+Permite ver el número de veces que una región fue visitada, el número de tesoros únicos encontrados de dicha región, y el número total de tesoros excavados.
 
 #### Ver Tesoros
 

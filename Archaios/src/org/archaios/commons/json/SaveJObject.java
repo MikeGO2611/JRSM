@@ -31,7 +31,7 @@ public class SaveJObject {
      * Constructor del SaveJObject
      * @param UID String UID del jugador
      * @param partida String nombre de la partida
-     * @param arqueólogos List<Archeologist> de arqueólogos
+     * @param arqueólogos {@code List<Archeologist>} de arqueólogos
      * @param puntos int puntos de la partida
      */
     public SaveJObject(String UID, String partida, List<Archeologist> arqueólogos, int puntos) {
@@ -76,7 +76,7 @@ public class SaveJObject {
 
     /**
      * Obtiene la lista de todos los arqueólogos en el SaveJObject
-     * @return List<Archeologist> de arqueólogos
+     * @return {@code List<Archeologist>} de arqueólogos
      */
     public List<Archeologist> getArcheologistCollection() {
         return archeologistCollection;
@@ -84,7 +84,7 @@ public class SaveJObject {
 
     /**
      * Setear la lista de todos los arqueólogos en el SaveJObject
-     * @param archeologistCollection List<Archeologist> de arqueólogos
+     * @param archeologistCollection {@code List<Archeologist>} de arqueólogos
      */
     public void setArcheologistCollection(List<Archeologist> archeologistCollection) {
         this.archeologistCollection = archeologistCollection;
@@ -115,7 +115,7 @@ public class SaveJObject {
     }
 
     /**
-     * Obtiene los puntos del SaveJObject
+     * Establece los puntos del SaveJObject
      * @param points int puntos
      */
     public void setPoints(int points) {
@@ -158,7 +158,7 @@ public class SaveJObject {
 
         /**
          * Obtiene el mapa con los tesoros y número de veces que aparecen.
-         * @return Map<String, Integer>
+         * @return {@code Map<String, Integer>}
          */
         public Map<String, Integer> getTreasureSaveStats() {
             return treasureSaveStats;
@@ -166,7 +166,7 @@ public class SaveJObject {
 
         /**
          * Obtiene el mapa con la ubicación y número de veces que se excavó en ella.
-         * @return Map<String, Integer>
+         * @return {@code Map<String, Integer>}
          */
         public Map<String, Integer> getLocationSaveStats() {
             return locationSaveStats;

@@ -38,7 +38,7 @@ public class Stats {
 
     /**
      * Devuelve la lista de arqueólogos del jugador.
-     * @return List<Archeologist> del jugador.
+     * @return {@code List<Archeologist>} del jugador.
      */
     public static List<Archeologist> getArcheologistCollection(){
         return archeologistCollection;
@@ -54,7 +54,7 @@ public class Stats {
 
     /**
      * Setea la colección de arqueólogos directamente
-     * @param m_archeologistCollection List<Archeologist> con todos los arqueólogos
+     * @param m_archeologistCollection {@code List<Archeologist>} con todos los arqueólogos
      */
     public static void setArcheologistCollection(List<Archeologist> m_archeologistCollection){
         archeologistCollection = m_archeologistCollection;
@@ -86,7 +86,7 @@ public class Stats {
 
     /**
      * Obtiene todos las estadísticas de terreno
-     * @return List<TerrainStatEntry>
+     * @return {@code List<TerrainStatEntry>}
     */
     public static List<TerrainStatEntry> getTerrainStatEntryCollection(){
         return terrainStatEntryCollection;
@@ -94,7 +94,7 @@ public class Stats {
 
     /**
      * Añade una estadísitca de terreno a la lista como <code>TerrainStatEntry</code>
-     * @param terrainStatEntry
+     * @param terrainStatEntry Entrada estadística del terreno a añadir.
      */
     public static void addTerrainStatEntry(TerrainStatEntry terrainStatEntry){
         terrainStatEntryCollection.add(terrainStatEntry);
@@ -103,7 +103,7 @@ public class Stats {
     /**
      * Añade una estadística de terreno a partir de una región y de una lista de tesoro.
      * @param region Region
-     * @param foundTreasureCollection List<Treasure>
+     * @param foundTreasureCollection {@code List<Treasure>}
      */
     public static void addTerrainStatEntry(Region region, List<Treasure> foundTreasureCollection){
         boolean alreadyExists = false;

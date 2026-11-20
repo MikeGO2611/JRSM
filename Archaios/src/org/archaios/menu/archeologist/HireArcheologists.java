@@ -71,6 +71,10 @@ public class HireArcheologists implements IOperation{
                         randomArcheologist.addSkill(secondSkills.get(0));
                     }
                     System.out.println("Arqueólogo de tipo raro.");
+                    System.out.println("Con las siguientes habilidades:");
+                    for (Skill skill : randomArcheologist.getSkillList()) {
+                        System.out.println("- " + skill.getName());
+                    }
                 }
                 System.out.println("Nombre del nuevo arqueólogo: ");
                 String archeologistName = UserInput.getUserUniqueArcheologistName();

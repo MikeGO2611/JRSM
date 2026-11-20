@@ -4,7 +4,13 @@ import java.util.List;
 
 import org.archaios.treasures.Treasure;
 
+/** Utilidades para imprimir listados de tesoros en los menús de estadísticas. */
 public class StatsTreasureUtils {
+    
+    /** 
+     * Imprime los tesoros agrupándolos por nombre. 
+     * @param treasureCollection Lista de tesoros a mostrar. 
+     */
     public static void printTreasures(List<Treasure> treasureCollection) {
         for (int i = 0; i < treasureCollection.size(); i++) {
             Treasure treasure = treasureCollection.get(i);

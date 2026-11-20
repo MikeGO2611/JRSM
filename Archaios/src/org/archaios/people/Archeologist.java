@@ -82,6 +82,7 @@ public class Archeologist {
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     transient private int extraRTreasure = 0;
 
+    /** Constructor vacío utilizado por GSON para deserializar partidas guardadas. */
     public Archeologist() {
         maxExp = 50;
     }

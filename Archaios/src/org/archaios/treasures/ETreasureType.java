@@ -44,13 +44,14 @@ public enum ETreasureType {
 	 */
 	public static ETreasureType getByCode(String code) {
 		for (ETreasureType tType : ETreasureType.values()) {
-			if(tType.code == code) {
+			if(tType.code.equals(code)) {
 				return tType;
 			}
 		}
 		return null;
 	}
 
+	/** @return Texto descriptivo de la constante. */
 	@Override
 	public String toString()
 	{

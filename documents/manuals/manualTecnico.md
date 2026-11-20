@@ -1,167 +1,164 @@
-# Manual Técnico de Arquitectura — Archaios
+# Archaios - Manual Técnico
 
-## Estructura de recursos, configuración y persistencia
+## Estructura de carpetas y recursos
 
 ### Carpeta `config/`
-Almacena la configuración externa necesaria para conectar la aplicación con el servidor del museo.
-* **Zeraf.conf**: Fichero JSON que define la URL del servidor remoto y el identificador del grupo de trabajo.
+Contiene la configuración externa necesaria para conectar el programa con el servidor del museo.
+* **Zeraf.conf**: Archivo JSON con la URL del servidor y el identificador del grupo.
 
 ### Carpeta `input/treasures/`
-Contiene los archivos de datos iniciales con los tesoros disponibles en cada región del mundo.
-* **EGP.json, GRC.json, IBR.json, PTR.json, ROM.json y SUM.json**: Catálogos en formato JSON leídos por `TreasureJSON` al arrancar el programa para poblar las colecciones de tesoros de cada país.
+Guarda los ficheros de datos iniciales con los tesoros disponibles en cada región.
+* **EGP.json, GRC.json, IBR.json, PTR.json, ROM.json y SUM.json**: Listados de tesoros en formato JSON que se cargan al iniciar el juego mediante `TreasureJSON`.
 
 ### Carpeta `lib/`
-Reúne las librerías externas empaquetadas (`.jar`) de las que depende la compilación y ejecución del proyecto.
-* **gson-2.15.0.jar** *(y `gson-2.15.0-javadoc.jar`)*: Librería de Google empleada para la serialización y deserialización de archivos JSON de tesoros y partidas guardadas.
-* **Terra.v1.0.0.jar**: Librería externa que proporciona las clases de `Zeraf` para la comunicación y envío de tesoros al museo.
+Almacena las librerías externas (`.jar`) necesarias para compilar y ejecutar el proyecto.
+* **gson-2.15.0.jar** *(y `gson-2.15.0-javadoc.jar`)*: Librería usada para leer los ficheros de tesoros y guardar o cargar partidas en formato JSON.
+* **Terra.v1.0.0.jar**: Librería externa que incluye las clases de `Zeraf` para enviar los tesoros encontrados al museo.
 
 ### Carpeta `saves/`
-Directorio destinado a almacenar el estado persistente de las partidas guardadas por el jugador.
-* **`<nombrePartida>.save`**: Archivos generados en formato JSON por `JsonManager` que guardan el UID, los puntos, los arqueólogos con sus habilidades/licencias y las estadísticas acumuladas.
+Carpeta donde se guardan las partidas del jugador.
+* **`<nombrePartida>.save`**: Archivos JSON creados por `JsonManager` con el UID, el nombre de la partida, los puntos, los arqueólogos y las estadísticas.
 
 ### Carpeta `log/`
-Centraliza el registro histórico de eventos de juego y la traza de errores de ejecución.
-* **errors.log**: Fichero común donde `LogManager` registra con marca temporal las excepciones y fallos de entrada/salida.
-* **`register/<nombrePartida>.log`**: Archivos de registro individuales por partida que anotan cronológicamente el inicio de sesión y los códigos de los tesoros descubiertos.
+Almacena los registros de actividad de las partidas y los errores de ejecución.
+* **errors.log**: Archivo común en el que `LogManager` anota con fecha y hora los errores de entrada/salida.
+* **`register/<nombrePartida>.log`**: Registro individual de cada partida donde se apuntan el inicio de sesión y los códigos de los tesoros excavados.
 
 ### Carpeta `backup/`
-Almacena copias de seguridad locales generadas durante el intercambio de datos con el módulo del museo.
-* **`<idGrupo>_<idUsuario>.bkp`**: Ficheros de respaldo codificados que conservan los datos de tesoros enviados por el jugador.
+Guarda copias de respaldo locales generadas al enviar datos al servidor del museo.
+* **`<idGrupo>_<idUsuario>.bkp`**: Archivos de respaldo con los tesoros enviados por el usuario.
 
 ---
 
 ## Estructura del código fuente (`src/`)
 
-Contiene todo el código fuente Java de la aplicación, organizado de forma modular en paquetes bajo la raíz `org.archaios`. A continuación se detalla la responsabilidad de cada paquete y de las clases, interfaces y enumeraciones que lo componen.
+Contiene el código Java del proyecto, dividido por paquetes dentro de `org.archaios`.
 
 ### Paquete `org.archaios.commons.input`
-Contiene las utilidades responsables de la captura interactiva, saneamiento y validación de las entradas por consola del usuario.
-* **UserInput**: Centraliza la lectura de datos por teclado mediante métodos estáticos que validan enteros, rangos numéricos, cadenas de texto y nombres únicos de arqueólogos. Evita entradas erróneas antes de pasarlas al resto del sistema.
+Incluye la clase encargada de leer y validar los datos que introduce el usuario por consola.
+* **UserInput**: Métodos estáticos para pedir números enteros, valores dentro de un rango, texto y nombres de arqueólogos que no estén repetidos.
 
 ### Paquete `org.archaios.commons.json`
-Agrupa las clases encargadas de la serialización y deserialización del estado de la partida en formato JSON mediante la librería GSON.
-* **JsonManager**: Gestiona la escritura y lectura de los archivos de guardado (`.save`) en el directorio `./saves`, registrando cualquier error de entrada/salida en el sistema de logs.
-* **SaveJObject**: Encapsula todos los datos persistentes de una partida (UID, nombre, puntos, plantilla de arqueólogos y estadísticas internas mediante `SaveStats`) con anotaciones `@SerializedName` para su volcado a JSON.
-* **SkillAdapter**: Implementa un adaptador personalizado de GSON (`JsonSerializer` y `JsonDeserializer`) para guardar las habilidades por su nombre y reconstruir sus instancias concretas al cargar una partida.
+Reúne las clases dedicadas a guardar y cargar partidas en formato JSON con GSON.
+* **JsonManager**: Escribe y lee los archivos `.save` dentro de `./saves` y registra en el log cualquier error de lectura o escritura.
+* **SaveJObject**: Objeto que agrupa los datos que se guardan en el JSON (UID, nombre de partida, puntos, arqueólogos y la clase interna `SaveStats` para tesoros y visitas).
+* **SkillAdapter**: Adaptador de GSON para guardar cada habilidad por su nombre y recuperar la instancia correspondiente desde `Archaios.skillRepository` al cargar.
 
 ### Paquete `org.archaios.commons.logs`
-Gestiona el registro cronológico de eventos de partida y la captura de errores en archivos de texto.
-* **LogManager**: Crea y administra el archivo de registro individual de cada partida (`./log/register/`) y el fichero común de incidencias (`./log/errors.log`), anteponiendo la fecha y hora exacta en cada línea.
+Gestiona el registro de eventos y errores en archivos de texto.
+* **LogManager**: Crea los directorios y archivos de log al iniciar la partida y añade cada mensaje con la fecha y hora actuales.
 
 ### Paquete `org.archaios.commons.operations`
-Define la interfaz base para desacoplar y estandarizar las operaciones ejecutables desde los menús del sistema.
-* **IOperation**: Interfaz que define el contrato de cualquier opción del menú mediante los métodos `getName()` y `operation()`. Permite que los menús invoquen funcionalidades polimórficamente sin conocer su implementación interna.
+Define la interfaz común para todas las opciones ejecutables de los menús.
+* **IOperation**: Interfaz con los métodos `getName()` y `operation()`, implementada por cada menú y submenú de la aplicación.
 
 ### Paquete `org.archaios.commons.repositories`
-Agrupa los repositorios genéricos y especializados en memoria para indexar y consultar las entidades centrales del juego.
-* **ICode**: Interfaz que obliga a las entidades almacenables a exponer un código identificador único mediante `getCode()`.
-* **Repository**: Clase genérica base que implementa el almacenamiento en listas y la recuperación de elementos a partir de su código.
-* **Regions**: Repositorio especializado que instancia y registra todas las regiones del juego (Grecia, Egipto, Iberia, Petra, Roma y Sumeria).
-* **Skills**: Repositorio especializado en habilidades que almacena el catálogo completo y ofrece la selección aleatoria de destrezas compatibles.
-* **Terrains**: Clase repositorio reservada para la futura gestión centralizada de terrenos en el sistema.
-* **Treasures**: Repositorio especializado encargado de almacenar y recuperar el inventario global de tesoros del juego.
+Contiene los repositorios en memoria para almacenar y buscar las entidades del juego por código.
+* **ICode**: Interfaz que obliga a las clases almacenables a devolver un código único con `getCode()`.
+* **Repository**: Clase genérica que guarda elementos en un `HashMap` usando su código y permite recuperarlos de uno en uno o en lista.
+* **Regions**: Repositorio que crea y registra las seis regiones del juego (Grecia, Egipto, Iberia, Petra, Roma y Sumeria).
+* **Skills**: Repositorio que inicializa todas las habilidades disponibles, define sus dependencias e incompatibilidades y permite pedir habilidades aleatorias compatibles.
 
 ### Paquete `org.archaios.commons.statistics`
-Centraliza el registro y acumulación de las métricas de la partida, el saldo del jugador y el desempeño en expediciones.
-* **Stats**: Clase estática que gestiona la plantilla de arqueólogos contratados, los puntos disponibles y el histórico de entradas estadísticas por región.
-* **TerrainStatEntry**: Modela el registro estadístico de una región concreta, contabilizando sus visitas, excavaciones exitosas y los tesoros recuperados en ella.
+Mantiene en memoria los datos generales de la partida y las estadísticas por región.
+* **Stats**: Clase estática que almacena los puntos del jugador, su lista de arqueólogos y las entradas de estadísticas de cada región.
+* **TerrainStatEntry**: Guarda para una región cuántas veces se ha visitado, el número total de tesoros excavados y la lista ordenada de tesoros encontrados.
 
 ### Paquete `org.archaios.excavation`
-Aloja el motor de simulación de la excavación, los tipos y formas de terreno, la cuadrícula interactiva y el ciclo de turnos.
-* **ETerrainShape**: Enumeración que define las disposiciones geométricas del tablero (fila, horizontal, columna, vertical y cuadrado) junto con sus dimensiones según el tamaño elegido.
-* **ETerrainSize**: Enumeración que especifica los tamaños base de cuadrícula, el número de filas y columnas iniciales y la bonificación de experiencia asociada.
-* **ETerrainType**: Enumeración de los tipos de suelo excavables (tierra básica `·`, terreno compacto `-`, arena `~` y piedra `^`), indicando su rango de coste en acciones y su capa subyacente.
-* **Grid**: Modela la matriz bidimensional de celdas gestionando las capas de terreno, costes por casilla, demolición de piedras, control de celdas ya excavadas y pistas visuales.
-* **Excavation**: Orquesta una expedición completa controlando los turnos restantes, el cálculo dinámico de costes, la distribución de tesoros, el envío de resultados a Zeraf y la entrega de recompensas.
+Contiene la lógica de la excavación, la cuadrícula y las enumeraciones del terreno.
+* **ETerrainShape**: Enumerado con las formas posibles del tablero (fila, horizontal, columna, vertical y cuadrado) y sus dimensiones según el tamaño elegido.
+* **ETerrainSize**: Enumerado con los tamaños de terreno (`SMALL`, `MEDIUM`, `LARGE`), su tamaño base y la experiencia extra al completar la excavación.
+* **ETerrainType**: Enumerado con los tipos de suelo (`·` tierra, `-` terreno compacto, `~` arena y `^` piedra), su rango de coste en acciones y la capa inferior si tiene.
+* **Grid**: Representa la cuadrícula de excavación, gestiona las capas de terreno, los costes, la demolición de piedras, las casillas ya excavadas, las pistas y el pintado por consola.
+* **Excavation**: Controla una partida de excavación completa: calcula intentos, reparte tesoros, procesa las coordenadas del jugador, registra el log, aplica recompensas y envía los tesoros a Zeraf.
 
 ### Paquete `org.archaios.helpers`
-Suministra clases auxiliares con rutinas comunes de formateo de texto, cálculos matemáticos y análisis de identificadores.
-* **CodeHelper**: Proporciona utilidades estáticas para descomponer los códigos alfanuméricos de los tesoros y extraer su región, tipo, número y parte.
-* **UtilsHelper**: Reúne métodos de apoyo para capitalizar textos, calcular porcentajes y generar combinaciones aleatorias de índices.
+Clases auxiliares con funciones de apoyo usadas en distintas partes del proyecto.
+* **CodeHelper**: Métodos estáticos para separar un código de tesoro (`RRR_TTT_NNN_PPPP`) y sacar la región, el tipo, el número o la parte.
+* **UtilsHelper**: Métodos de ayuda para poner mayúsculas iniciales, calcular porcentajes y generar índices aleatorios sin repetir.
 
 ### Paquete `org.archaios.main`
-Contiene el punto de entrada de la aplicación y la coordinación del ciclo de vida completo de una sesión de juego.
-* **Archaios**: Clase principal que ejecuta la preinicialización de repositorios, la carga o creación de partidas guardadas, la conexión con la librería externa `Zeraf`, el registro en logs y el guardado automático al finalizar.
+Contiene la clase principal de entrada al programa.
+* **Archaios**: Arranca la aplicación desde `main`, inicializa los repositorios, permite cargar una partida o crear una nueva, crea el `LogManager`, conecta con `Zeraf` y guarda la partida.
 
 ### Paquete `org.archaios.menu`
-Contiene el controlador principal de la consola y la utilidad para renderizar interfaces de texto uniformes.
-* **Menu**: Punto de entrada de la interfaz de usuario que agrupa los módulos principales (arqueólogos, habilidades, licencias, atlas, catálogo, excavación y estadísticas) en el bucle principal.
-* **MenuGenerator**: Utilidad estática para maquetar menús en consola generando encabezados, divisores visuales y lectura validada de opciones.
+Contiene el menú principal y las utilidades para mostrar menús por consola.
+* **Menu**: Carga las siete secciones principales (arqueólogos, habilidades, licencias, atlas, catálogo, excavación y estadísticas) y lanza el bucle del menú.
+* **MenuGenerator**: Clase estática para imprimir títulos, separadores y listas de opciones leyendo la selección del usuario.
 
 ### Paquete `org.archaios.menu.archeologist`
-Reúne los menús encargados de la contratación, consulta y despido de arqueólogos de la plantilla.
-* **ArcheologistMenu**: Menú contenedor que expone las distintas operaciones administrativas sobre los arqueólogos.
-* **ArcheologistMenuUtils**: Clase de apoyo que centraliza la selección interactiva de un arqueólogo de la plantilla actual.
-* **HireArcheologists**: Menú que genera candidatos y permite contratar nuevos arqueólogos descontando los puntos correspondientes.
-* **LicenseArcheologist**: Submenú que permite licenciar (despedir) a un arqueólogo a cambio de puntos, siempre que quede al menos uno en la plantilla.
-* **ShowArcheologists**: Muestra en consola la ficha completa de los arqueólogos con su nivel, experiencia, habilidades y terrenos disponibles.
+Agrupa los menús de gestión de la plantilla de arqueólogos.
+* **ArcheologistMenu**: Submenú principal de arqueólogos con las opciones de ver, contratar y licenciar.
+* **ArcheologistMenuUtils**: Utilidad para mostrar los arqueólogos disponibles y devolver el que seleccione el usuario.
+* **HireArcheologists**: Permite gastar puntos para contratar un arqueólogo aleatorio (común, infrecuente o raro con habilidades iniciales) y asignarle un nombre único.
+* **LicenseArcheologist**: Permite despedir a un arqueólogo a cambio de puntos, siempre que el jugador conserve al menos uno.
+* **ShowArcheologists**: Muestra la información completa del arqueólogo seleccionado (nivel, experiencia, tamaños, formas, habilidades y licencias).
 
 ### Paquete `org.archaios.menu.atlas`
-Gestiona la navegación interactiva por el atlas de regiones disponibles en el repositorio.
-* **AtlasMenu**: Lista las regiones registradas en `Archaios.regionsRepository` y permite inspeccionar todos los tesoros que pueden hallarse en cada una.
+Gestiona la consulta de regiones y sus tesoros.
+* **AtlasMenu**: Muestra las regiones del repositorio y permite entrar en cada una para ver sus tesoros y leer su descripción.
 
 ### Paquete `org.archaios.menu.excavation`
-Controla el flujo de configuración previa a una expedición y el lanzamiento de la partida.
-* **ExcavateMenu**: Solicita primero el arqueólogo, filtra las regiones disponibles (básicas más difíciles con licencia), pide el tamaño del terreno y lanza `Excavation` con una forma válida.
+Controla la configuración previa antes de empezar a excavar.
+* **ExcavateMenu**: Pide al jugador que elija arqueólogo, una región disponible según sus licencias y un tamaño de terreno, elige una forma válida y lanza `Excavation`.
 
 ### Paquete `org.archaios.menu.license`
-Implementa la interfaz de adquisición de licencias para habilitar expediciones en regiones difíciles.
-* **LicenseMenu**: Consulta en el repositorio las regiones marcadas con `ITerDif` que el arqueólogo aún no posee, valida el coste progresivo en puntos y registra la licencia comprada.
+Implementa la compra de licencias para regiones difíciles.
+* **LicenseMenu**: Busca en `Archaios.regionsRepository` las regiones con `ITerDif` que el arqueólogo aún no tiene, comprueba los puntos disponibles y añade la licencia comprada.
 
 ### Paquete `org.archaios.menu.skill`
-Agrupa los menús de consulta y exploración de habilidades organizadas según su categoría funcional.
-* **SkillMenu**: Menú raíz de habilidades que canaliza la navegación hacia los listados específicos de cada tipo.
-* **ExcavationSkillMenu**: Lista y describe las habilidades orientadas a otorgar turnos directos o bonificaciones porcentuales de excavación.
-* **SpecialistSkillMenu**: Muestra las habilidades de especialista en terrenos difíciles, reducción de costes de excavación y demolición inicial de piedras.
-* **TerrainSkillMenu**: Presenta el listado de habilidades que desbloquean nuevas formas geométricas para la cuadrícula.
-* **TreasureSkillMenu**: Exhibe las habilidades enfocadas en garantizar la aparición de tesoros adicionales o mejorar sus probabilidades de rareza.
+Contiene los menús de consulta de habilidades separadas por categoría.
+* **SkillMenu**: Submenú principal que da acceso a las listas de habilidades de tesoro, excavación, terreno y especialista.
+* **ExcavationSkillMenu**: Lista ordenada de las habilidades de excavación y revelación con su descripción y tipo.
+* **SpecialistSkillMenu**: Lista ordenada de las habilidades de especialista en terrenos difíciles.
+* **TerrainSkillMenu**: Lista ordenada de las habilidades que desbloquean formas de terreno.
+* **TreasureSkillMenu**: Lista ordenada de las habilidades relacionadas con la aparición y rareza de tesoros.
 
 ### Paquete `org.archaios.menu.stats`
-Centraliza los menús de visualización del rendimiento histórico, piezas recuperadas y estadísticas territoriales.
-* **StatsMenu**: Menú distribuidor que permite consultar las métricas por regiones y los distintos desgloses de tesoros encontrados.
-* **StatsRegionsMenu**: Imprime el informe de visitas realizadas y tesoros excavados en cada una de las regiones visitadas.
-* **StatsTreasureMenu**: Submenú que bifurca la consulta de antigüedades recuperadas según su región de procedencia o su tipología.
-* **StatsTreasureByRegionMenu**: Muestra un listado detallado de las piezas arqueológicas desenterradas agrupadas por región.
-* **StatsTreasureByTypeMenu**: Clasifica y muestra las piezas históricas encontradas según su tipo arqueológico.
-* **StatsTreasureUtils**: Clase utilitaria con rutinas compartidas para imprimir listados formateados de tesoros.
+Agrupa los menús de consulta de estadísticas de la partida.
+* **StatsMenu**: Submenú principal para elegir entre estadísticas de regiones o de tesoros.
+* **StatsRegionsMenu**: Muestra por cada región visitada el número de visitas, los tesoros únicos encontrados y el total de tesoros excavados.
+* **StatsTreasureMenu**: Submenú para ver los tesoros encontrados filtrados por región o por tipo.
+* **StatsTreasureByRegionMenu**: Muestra los tesoros conseguidos agrupados por la región donde aparecieron.
+* **StatsTreasureByTypeMenu**: Muestra todos los tesoros conseguidos agrupados por su `ETreasureType`.
+* **StatsTreasureUtils**: Utilidad compartida para imprimir listas de tesoros agrupando las piezas con el mismo nombre.
 
 ### Paquete `org.archaios.menu.treasure`
-Maneja la visualización del registro general de tesoros del juego.
-* **TreasureCatalogMenu**: Muestra el catálogo integral de antigüedades, detallando su rareza, descripción, código y valor en puntos.
+Gestiona la vista del catálogo general de tesoros por región.
+* **TreasureCatalogMenu**: Permite seleccionar una región del repositorio y muestra el listado con los nombres de todos sus tesoros.
 
 ### Paquete `org.archaios.people`
-Modela a los arqueólogos como entidades dinámicas con progresión, habilidades y permisos regionales.
-* **Archeologist**: Representa a un arqueólogo gestionando su nivel, experiencia, habilidades activas, licencias adquiridas y costes progresivos. Expone además modificadores directos de acciones, costes por terreno y demolición para la fase de excavación.
+Contiene la clase que modela a los arqueólogos.
+* **Archeologist**: Almacena el nombre, nivel, experiencia, habilidades, formas de terreno y licencias de cada arqueólogo. Calcula las subidas de nivel, el coste progresivo de licencias y los bonos que aplica durante una excavación.
 
 ### Paquete `org.archaios.regions`
-Define el modelo base de las regiones geográficas y su colección global de consulta.
-* **Region**: Clase abstracta que encapsula el código, el nombre y la colección de tesoros de una región, ofreciendo consultas filtradas o aleatorias por rareza.
-* **Atlas**: Clase utilitaria que mantiene un mapa estático de instancias de regiones y permite recuperarlas por nombre o como lista completa.
+Define la clase base de todas las regiones del juego.
+* **Region**: Clase abstracta con el código, el nombre y la lista de tesoros de una región, además de métodos para obtener tesoros filtrados o aleatorios por rareza.
 
 ### Paquete `org.archaios.regions.Countries`
-Contiene las implementaciones concretas de cada región del mundo, la interfaz de regiones difíciles y la carga de tesoros desde JSON.
-* **ITerDif**: Interfaz que identifica a las regiones difíciles e impone la declaración de su expansión y los porcentajes de aparición de cada tipo de terreno.
-* **TreasureJSON**: Utilidad encargada de leer y deserializar mediante GSON los ficheros JSON de tesoros ubicados en `./input/treasures/`.
-* **Greece**: Región básica que modela Grecia (`GRC`) cargando su catálogo de tesoros desde `GRC.json`.
-* **Iberia**: Región básica que modela Iberia (`IBR`) cargando su catálogo de tesoros desde `IBR.json`.
-* **Rome**: Región básica que modela Roma (`ROM`) cargando su catálogo de tesoros desde `ROM.json`.
-* **Egypt**: Región difícil (`ITerDif`) que modela Egipto (`EGP`), carga `EGP.json` y define su distribución de arena, tierra y terreno compacto.
-* **Petra**: Región difícil (`ITerDif`) que modela Petra (`PTR`), carga `PTR.json` y define su distribución predominante de piedra y arena.
-* **Sumeria**: Región difícil (`ITerDif`) que modela Sumeria (`SUM`), carga `SUM.json` y define su distribución mixta de arena, piedra y tierra.
+Contiene las regiones concretas, la interfaz de regiones difíciles y la carga de los JSON de tesoros.
+* **ITerDif**: Interfaz que identifica las regiones difíciles y define `getExpansion()` y `getTerrainPercent(String)`.
+* **TreasureJSON**: Lee los archivos JSON de `./input/treasures/` con GSON y los convierte en listas de objetos `Treasure`.
+* **Greece**: Región básica de Grecia (`GRC`), carga sus tesoros desde `GRC.json`.
+* **Iberia**: Región básica de Iberia (`IBR`), carga sus tesoros desde `IBR.json`.
+* **Rome**: Región básica de Roma (`ROM`), carga sus tesoros desde `ROM.json`.
+* **Egypt**: Región difícil (`ITerDif`) de Egipto (`EGP`), carga `EGP.json` y define los porcentajes de arena, tierra y terreno compacto.
+* **Petra**: Región difícil (`ITerDif`) de Petra (`PTR`), carga `PTR.json` y define los porcentajes de piedra y arena.
+* **Sumeria**: Región difícil (`ITerDif`) de Sumeria (`SUM`), carga `SUM.json` y define los porcentajes de arena, piedra y tierra.
 
 ### Paquete `org.archaios.skills`
-Modela la jerarquía polimórfica de habilidades, sus efectos sobre el juego y las reglas de compatibilidad.
-* **ESkillType**: Enumeración que clasifica las habilidades en excavación, especialista, revelación, terreno y tesoro.
-* **Skill**: Clase abstracta base que define el nombre, descripción, tipo, requisitos previos e incompatibilidades de cada destreza, vinculada a `SkillAdapter` para su guardado en JSON.
-* **ExcavationSkill**: Especialización que proporciona turnos extra directos o multiplicadores porcentuales al total de acciones.
-* **ExpertSkill**: Especialización que fija costes reducidos en terrenos difíciles concretos y permite demoler piedras antes de comenzar a excavar.
-* **RevelationSkill**: Especialización que desvela información oculta al inicio de la excavación marcando casillas vacías o ubicaciones de tesoros.
-* **TerrainSkill**: Especialización que desbloquea nuevas formas geométricas de cuadrícula para el arqueólogo.
-* **TreasureSkill**: Especialización que garantiza la generación de tesoros adicionales o de rarezas concretas en el yacimiento.
-* **SkillService**: Servicio encargado de seleccionar ternas de habilidades válidas al subir de nivel respetando dependencias e incompatibilidades.
+Define la jerarquía de habilidades de los arqueólogos y su lógica de selección.
+* **ESkillType**: Enumerado con los tipos de habilidad (tesoro, excavación, terreno y especialista).
+* **Skill**: Clase abstracta base con nombre, descripción, tipo, dependencias e incompatibilidades, anotada con `@JsonAdapter(SkillAdapter.class)` para el guardado en JSON.
+* **ExcavationSkill**: Habilidad que suma acciones fijas o aplica un multiplicador sobre los intentos iniciales.
+* **ExpertSkill**: Habilidad de especialista que fija el coste de un tipo de terreno o rompe piedras antes de comenzar la excavación.
+* **RevelationSkill**: Habilidad que revela al inicio casillas vacías o posiciones con tesoro.
+* **TerrainSkill**: Habilidad que desbloquea nuevas formas de cuadrícula para el arqueólogo.
+* **TreasureSkill**: Habilidad que garantiza tesoros adicionales aleatorios o de rarezas concretas.
+* **SkillService**: Selecciona hasta tres habilidades válidas al subir de nivel respetando dependencias e incompatibilidades y priorizando mejoras.
 
 ### Paquete `org.archaios.treasures`
-Define los tipos, rarezas y atributos de los artefactos históricos que pueden desenterrarse en los yacimientos.
-* **ETreasureRarity**: Enumeración que clasifica las piezas en común, infrecuente o rara junto con su código representativo.
-* **ETreasureType**: Enumeración que agrupa los tesoros por su tipología formal y proporciona los códigos de clasificación.
-* **Treasure**: Modela un artefacto histórico almacenando su nombre, código, descripción, tipo, rareza, número de partes y puntuación.
+Modela los tesoros y sus enumerados de clasificación.
+* **ETreasureRarity**: Enumerado con las rarezas de tesoro (`COMMON`, `UNCOMMON`, `RARE`) y su letra de código.
+* **ETreasureType**: Enumerado con los tipos de tesoro (moneda, tesela, cuenta, joyería, cerámica, equipo, estela y fragmento) y su prefijo de tres letras.
+* **Treasure**: Representa un tesoro con su nombre, descripción, código con número de parte, tipo, rareza, total de partes y puntos.

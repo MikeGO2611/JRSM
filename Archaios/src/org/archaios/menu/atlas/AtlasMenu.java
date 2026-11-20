@@ -26,7 +26,7 @@ public class AtlasMenu implements IOperation{
         return "Atlas";
     }
 
-    /**    (non-Javadoc)
+    /**
      * Pide al usuario que seleccione una región, y muestra todos los tesoros posibles en ella.
      * @see org.archaios.commons.operations.IOperation#operation()
      */
@@ -61,6 +61,11 @@ public class AtlasMenu implements IOperation{
         
     }
 
+    /** 
+     * Muestra el listado de tesoros de una región y permite ver su descripción. 
+     * @param selectedRegion Región seleccionada. 
+     * 
+     */
     private void regionTreasuresMenu(Region selectedRegion){
         boolean userExit = false;
 
