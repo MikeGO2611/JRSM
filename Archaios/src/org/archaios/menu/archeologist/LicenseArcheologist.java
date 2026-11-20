@@ -3,6 +3,7 @@ package org.archaios.menu.archeologist;
 import org.archaios.commons.input.UserInput;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.commons.statistics.Stats;
+import org.archaios.main.Archaios;
 import org.archaios.menu.MenuGenerator;
 import org.archaios.people.Archeologist;
 /**
@@ -52,6 +53,7 @@ public class LicenseArcheologist implements IOperation {
                     Stats.addPoints(selectedArcheologist.getDismissPoints());
                     Stats.removeArcheologist(selectedArcheologist);
                     System.out.println("Arqueólogo licenciado.");
+                    Archaios.save();
                 }
             }
         } else {

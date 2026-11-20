@@ -85,7 +85,12 @@ final public class MenuGenerator {
                 else if(userInput.contains("add_exp")){
                     List<String> command = Arrays.asList(userInput.split("\s"));
                     if(command.size() > 2){
-                        int exp = Integer.parseInt(command.get(1));
+                        int exp = 0;
+                        try{
+                            exp = Integer.parseInt(command.get(1));
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
                         StringBuilder sb = new StringBuilder();
                         for(int i = 2; i < command.size(); i++){
                             sb.append(command.get(i) + " ");

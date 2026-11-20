@@ -70,6 +70,7 @@ public class LicenseMenu implements IOperation {
             selectedArcheologist.addLicense(chosenRegion.getCode());
 
             System.out.println("Licencia para " + chosenRegion.getName() + " adquirida con éxito para " + selectedArcheologist.getName() + ".");
+            Archaios.save();
         }
     }
 }
