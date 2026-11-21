@@ -6,6 +6,7 @@ import java.util.List;
 import org.archaios.commons.operations.IOperation;
 import org.archaios.menu.MenuGenerator;
 
+/** Submenú para consultar estadísticas de tesoros por región o por tipo. */
 public class StatsTreasureMenu implements IOperation{
 
     /** Opciones del menú de estadísticas */

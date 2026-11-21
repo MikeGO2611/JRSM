@@ -15,7 +15,7 @@ public class Rome extends Region {
     public static final String CODE = "ROM";
 
     /**
-     * Constructor de Greece.
+     * Constructor de Rome.
      * Obtiene todos los tesoros del JSON de la región
      */ 
     public Rome() {

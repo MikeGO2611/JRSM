@@ -1,4 +1,4 @@
-<h3 align="center">JSRM</h1>
+<h3 align="center">JRSM</h3>
 
 <div align="center">
 
@@ -9,7 +9,7 @@
 
 ---
 
-<div align="center">Implentación del ejercicio Archaios por Javier Búa Martínez, Miguel González Obenza, Sergio González Prego, Rubén Hernández Torres.
+<div align="center">Implementación del ejercicio Archaios por Javier Búa Martínez, Miguel González Obenza, Sergio González Prego, Rubén Hernández Torres.
 </div>
 
 # Plantilla Archaios

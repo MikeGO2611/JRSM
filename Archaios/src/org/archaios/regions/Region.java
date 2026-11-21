@@ -23,8 +23,8 @@ public abstract class Region implements ICode {
 
     /**
      * Constructor de región, dado un código y un nombre.
-     * @param code
-     * @param name
+     * @param code Código de la región.
+     * @param name Nombre de la región.
      */
     public Region(String code, String name) {
         this.code = code;
@@ -54,7 +54,7 @@ public abstract class Region implements ICode {
 
     /**
      * Getter de todos los tesoros de una rareza especificada.
-     * @param rarity
+     * @param rarity Rareza por la que filtrar.
      * @return Lista de tesoros de la rareza especificada.
      */
     public List<Treasure> getRarityTreasures(ETreasureRarity rarity) {
@@ -78,7 +78,7 @@ public abstract class Region implements ICode {
 
     /**
      * Devuelve un tesoro aleatorio de la rareza especificada.
-     * @param rarity
+     * @param rarity Rareza por la que filtrar.
      * @return Tesoro aleatorio de la rareza específica.
      */
     public Treasure getRandomRarityTreasure(ETreasureRarity rarity) {
@@ -92,11 +92,19 @@ public abstract class Region implements ICode {
         return toReturn.get(random.nextInt(toReturn.size()));
     }
 
+    /** 
+     * @return Código hash calculado a partir del código de la región.
+     */
     @Override
     public int hashCode() {
         return code.hashCode();
     }
 
+    /** 
+     * Compara dos regiones por su código. 
+     * @param obj Objeto a comparar. 
+     * @return true si son la misma región. 
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

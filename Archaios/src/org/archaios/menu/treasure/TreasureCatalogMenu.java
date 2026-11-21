@@ -9,6 +9,7 @@ import org.archaios.menu.MenuGenerator;
 import org.archaios.regions.Region;
 import org.archaios.treasures.Treasure;
 
+/** Menú que permite consultar el catálogo de tesoros de cada región. */
 public class TreasureCatalogMenu implements IOperation {
 
 
@@ -47,7 +48,7 @@ public class TreasureCatalogMenu implements IOperation {
 
             for (int i = 0; i < regionTreasureCollection.size(); i++) {
                 Treasure treasure = regionTreasureCollection.get(i);
-                System.out.println(i + ". " + treasure.getName());
+                System.out.println((i + 1) + ". " + treasure.getName());
             }
         }
     }   

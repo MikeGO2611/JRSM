@@ -44,7 +44,7 @@ public class HireArcheologists implements IOperation{
             System.out.println("0. No");
             System.out.println("1. Sí");
 
-            int userInput = UserInput.getUserIntegerInRange(0, 2, "Opción no válida.");
+            int userInput = UserInput.getUserIntegerInRange(0, 1, "Opción no válida.");
         
             if(userInput == 1){
                 Archeologist randomArcheologist = new Archeologist(null);
@@ -62,16 +62,20 @@ public class HireArcheologists implements IOperation{
                     }
                     
                 } else {
-                    List<Skill> randomSkills = SkillService.selectThreeSkills(randomArcheologist, Archaios.skillRepository.getAllElements());
-                    randomArcheologist.addSkill(randomSkills.get(0));
-                    randomArcheologist.addSkill(randomSkills.get(1));
+                    List<Skill> firstSkills = SkillService.selectThreeSkills(randomArcheologist, Archaios.skillRepository.getAllElements());
+                    if (!firstSkills.isEmpty()) {
+                        randomArcheologist.addSkill(firstSkills.get(0));
+                    }
+                    List<Skill> secondSkills = SkillService.selectThreeSkills(randomArcheologist, Archaios.skillRepository.getAllElements());
+                    if (!secondSkills.isEmpty()) {
+                        randomArcheologist.addSkill(secondSkills.get(0));
+                    }
                     System.out.println("Arqueólogo de tipo raro.");
                     System.out.println("Con las siguientes habilidades:");
                     for (Skill skill : randomArcheologist.getSkillList()) {
                         System.out.println("- " + skill.getName());
                     }
                 }
-
                 System.out.println("Nombre del nuevo arqueólogo: ");
                 String archeologistName = UserInput.getUserUniqueArcheologistName();
                 randomArcheologist.setName(archeologistName);

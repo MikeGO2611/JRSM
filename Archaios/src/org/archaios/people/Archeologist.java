@@ -82,6 +82,7 @@ public class Archeologist {
     /** Tesoros raros garantizados por excedente de experiencia a nivel máximo. */
     transient private int extraRTreasure = 0;
 
+    /** Constructor vacío utilizado por GSON para deserializar partidas guardadas. */
     public Archeologist() {
         maxExp = 50;
     }
@@ -275,6 +276,26 @@ public class Archeologist {
         this.extraCTreasure = this.exp / 50;
         this.extraITreasure = this.exp / 100;
         this.extraRTreasure = this.exp / 200;
+    }
+
+    /**
+     * Recalcula los campos transient tras cargar un arqueólogo desde un archivo guardado.
+     */
+    public void recalculateAfterLoad() {
+        if (this.licenses == null) {
+            this.licenses = new ArrayList<>();
+        }
+        if (this.skillCollection == null) {
+            this.skillCollection = new ArrayList<>();
+        }
+        if (this.terrainShapes == null) {
+            this.terrainShapes = new ArrayList<>();
+            this.terrainShapes.add(ETerrainShape.S_SQUARE);
+        }
+        this.maxExp = 50 * (this.level + 1);
+        if (this.level == MAX_LEVEL) {
+            extrasExpSpecialization();
+        }
     }
 
     /**

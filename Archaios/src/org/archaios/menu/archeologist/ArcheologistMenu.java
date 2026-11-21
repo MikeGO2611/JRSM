@@ -38,7 +38,7 @@ public class ArcheologistMenu implements IOperation {
      * @see HireArcheologists
      * @see LicenseArcheologist
      * @see ShowArcheologists
-     * @see commons.operations.IOperation#operation()
+     * @see org.archaios.commons.operations.IOperation#operation()
      */
     @Override
     public void operation() {

@@ -43,7 +43,7 @@ public class UserInput {
      * Pide al usuario un número entero y comprueba que está entre los valores definidos.
      * Si no está imprime el mensaje de error y lo vuelve a pedir.
      * @param min el número mínimo permitido inclusive
-     * @param max el número máximo permitido exclusive
+     * @param max el número máximo permitido inclusive
      * @param errorMessage el mensaje para imprimir si el número está fuera del rango
      * @return el número dentro del rango
      */

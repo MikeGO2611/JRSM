@@ -66,6 +66,7 @@ public class TreasureSkillMenu implements IOperation {
      * Inicializa una lista filtrada de habilidades que solo aplican a este menú.
      */
     private void initSkillList(){
+        treasureSkillCollection.clear();
         List<Skill> skillCollection = Archaios.skillRepository.getAllElements();
 
         for (Skill skill : skillCollection) {

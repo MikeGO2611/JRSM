@@ -157,11 +157,19 @@ public abstract class Skill implements ICode {
     }
 
 
+    /** 
+     * @return Código hash basado en el nombre y tipo de la habilidad. 
+     */
     @Override
     public int hashCode() {
         return name.hashCode() + type.hashCode();
     }
 
+    /** 
+     * Compara dos habilidades por su nombre y tipo. 
+     * @param obj Objeto a comparar. 
+     * @return true si representan la misma habilidad. 
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

@@ -21,8 +21,7 @@ public class Treasure implements ICode {
     private int points;
 
     /**
-     * Constructor que genera el código del tesoro a partir de region, type y
-     * codeNumber.
+     * Construye un tesoro con todos sus atributos.
      */
 
     public Treasure(String name, String region, ETreasureType type, String codeNumber, int parts, int part, int points,
@@ -106,7 +105,7 @@ public class Treasure implements ICode {
     }
 
     /**
-     * @return
+     * Asigna aleatoriamente una parte válida al tesoro.
      */
     public void generateRandomPart(){
         Random random = new Random();

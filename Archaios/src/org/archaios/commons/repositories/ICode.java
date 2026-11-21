@@ -1,6 +1,6 @@
 package org.archaios.commons.repositories;
-
+/** Interfaz para elementos identificables por un código único. */
 public interface ICode {
-    // Código necesario en todo elemento que se quiera añadir a un repositorio.
+    /** @return Código identificador del elemento. */
     String getCode();
 }

@@ -10,6 +10,7 @@ import org.archaios.menu.MenuGenerator;
 import org.archaios.treasures.ETreasureType;
 import org.archaios.treasures.Treasure;
 
+/** Menú que muestra los tesoros encontrados agrupados por tipo. */
 public class StatsTreasureByTypeMenu implements IOperation {
 
     /**

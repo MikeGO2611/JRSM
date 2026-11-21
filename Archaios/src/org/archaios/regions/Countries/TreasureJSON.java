@@ -38,6 +38,11 @@ public class TreasureJSON {
         private String type;
     }
 
+    /** 
+     * Busca un tipo de tesoro a partir de su código. 
+     * @param code Código del tipo. 
+     * @return Tipo encontrado o null. 
+    */
     private static ETreasureType getTreasureType(String code) {
         for (ETreasureType type : ETreasureType.values()) {
             if (type.getCode().equals(code)) {
@@ -47,6 +52,11 @@ public class TreasureJSON {
         return null;
     }
 
+    /** 
+     * Busca una rareza de tesoro a partir de su código. 
+     * @param code Código de la rareza. 
+     * @return Rareza encontrada o null. 
+    */
     private static ETreasureRarity getTreasureRarity(String code) {
         for (ETreasureRarity rarity : ETreasureRarity.values()) {
             if (rarity.getCode().equals(code)) {
@@ -59,7 +69,7 @@ public class TreasureJSON {
     /**
      * Lee los datos recibidos y los guarda en una lista.
      *
-     * @param filePath Ruta relativa al paquete Countries.
+     * @param filePath Nombre del archivo JSON dentro de ./input/treasures/.
      * @return Lista de tesoros de la región.
      */
     public static List<Treasure> loadTreasures(String filePath) {

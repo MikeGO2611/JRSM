@@ -22,7 +22,7 @@ public class RevelationSkill extends Skill {
      * @param questionMarks Cantidad de pistas con interrogación descubiertas.
      */
     public RevelationSkill(String name, String description, int emptyRevealed, int questionMarks) {
-        super(name, description, ESkillType.EXPERT);
+        super(name, description, ESkillType.EXCAVATION);
         this.emptyRevealed = emptyRevealed;
         this.questionMarks = questionMarks;
     }

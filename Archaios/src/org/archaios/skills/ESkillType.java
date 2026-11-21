@@ -22,6 +22,7 @@ public enum ESkillType {
 		this.txt = txt;
 	}
 
+	/** @return Texto descriptivo de la constante. */
 	@Override
 	public String toString()
 	{

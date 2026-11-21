@@ -23,7 +23,7 @@ public class StatsMenu implements IOperation{
 
     /**
      * @return el nombre de la operación.
-     * @see commons.operations.IOperation#getName()
+     * @see org.archaios.commons.operations.IOperation#getName()
      */
     @Override
     public String getName() {
@@ -36,7 +36,7 @@ public class StatsMenu implements IOperation{
      * @see StatsTreasureByRegionMenu
      * @see StatsTreasureByTypeMenu
      * @see StatsTreasureMenu
-     * @see commons.operations.IOperation#operation()
+     * @see org.archaios.commons.operations.IOperation#operation()
      */
     @Override
     public void operation() {

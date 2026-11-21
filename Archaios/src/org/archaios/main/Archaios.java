@@ -2,7 +2,6 @@ package org.archaios.main;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -92,9 +91,6 @@ public class Archaios {
         File saveDirectory = new File("./saves");
         boolean newSave = true;
 
-        logManager = new LogManager(playName);
-        logManager.log("Inicio de la partida");
-
         if (saveDirectory.exists() && saveDirectory.isDirectory()){
 
             List<File> saveFileCollection = new ArrayList<>();
@@ -108,7 +104,7 @@ public class Archaios {
                 System.out.println("Hay partidas guardadas, ¿quieres cargar alguna?");
                 System.out.println("0. No");
                 System.out.println("1. Sí");
-                int userInput = UserInput.getUserIntegerInRange(0, 2, "Opción no válida");
+                int userInput = UserInput.getUserIntegerInRange(0, 1, "Opción no válida");
 
                 if(userInput == 1){
                     newSave = false;
@@ -119,14 +115,15 @@ public class Archaios {
                     }
                     System.out.println("0. Volver");
 
-                    userInput = UserInput.getUserIntegerInRange(0, saveFileCollection.size() + 1, "Opción no válida");
+                    userInput = UserInput.getUserIntegerInRange(0, saveFileCollection.size(), "Opción no válida");
 
                     if(userInput == 0){
                         newSave = true;
                     } else {
-                        load(saveFileCollection.get(userInput - 1));
+                        if (!load(saveFileCollection.get(userInput - 1))) {
+                            newSave = true;
+                        }
                     }
-
                 } else{
                     newSave = true;
                 }
@@ -145,10 +142,8 @@ public class Archaios {
             Archeologist firstArcheologist = new Archeologist(archeologistName);
             Stats.addArcheologist(firstArcheologist);
         }
-
-        
-
-        
+        logManager = new LogManager(playName);
+        logManager.log("Inicio de la partida");
         zeraf = ZerafFactory.createZeraf(ESistema.MUSEO, idUser, idGroup);
     }
 
@@ -168,10 +163,15 @@ public class Archaios {
 
     /**
      * Carga la partida
+     * @param saveFile Archivo de partida guardada a cargar.
+     * @return true si la partida se cargó correctamente; false en caso de error.
      */
-    private static void load(File saveFile) {
+    private static boolean load(File saveFile) {
         SaveJObject saveJObject = JsonManager.readFromFile(saveFile);
-
+        if (saveJObject == null) {
+            System.err.println("No se pudo cargar el archivo de guardado.");
+            return false;
+        }
         idUser = saveJObject.getUid();
         playName = saveJObject.getPlayName();
         Stats.setPoints(saveJObject.getPoints());
@@ -179,7 +179,9 @@ public class Archaios {
         Stats.setArcheologistCollection(saveJObject.getArcheologistCollection());
 
         List<TerrainStatEntry> terrainStatEntryCollection = new ArrayList<>();
-
+        for (Archeologist arch : Stats.getArcheologistCollection()) {
+            arch.recalculateAfterLoad();
+        }
         Map<String, Integer> locationSaveStats = saveJObject.getSaveStats().getLocationSaveStats();
 
         for(Map.Entry<String, Integer> entry : locationSaveStats.entrySet()){
@@ -209,8 +211,10 @@ public class Archaios {
                     break;
             }
 
-            terrainStatEntry.setVisits(entry.getValue());
-            terrainStatEntryCollection.add(terrainStatEntry);
+            if (terrainStatEntry != null) {
+                terrainStatEntry.setVisits(entry.getValue());
+                terrainStatEntryCollection.add(terrainStatEntry);
+            }
         }
 
         //TODO Hacerlo bien con HashMaps y un repositorio
@@ -232,7 +236,7 @@ public class Archaios {
                             for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
                                 if(terrainStatEntry.getRegion().equals(region)){
                                     for(int i = 0; i < entry.getValue(); i++){
-                                        terrainStatEntry.addTreasures(Arrays.asList(treasure));
+                                        terrainStatEntry.addLoadedTreasure(treasure);
                                     }
                                 }
                             }
@@ -245,11 +249,12 @@ public class Archaios {
         for(TerrainStatEntry terrainStatEntry : terrainStatEntryCollection){
             Stats.addTerrainStatEntry(terrainStatEntry);
         }
+        return true;
     }
 
     /**
      * Getter del ID del usuario
-     * @return int ID
+     * @return String ID del usuario.
      */
     public static String getIdUser() {
         return idUser;

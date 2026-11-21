@@ -48,7 +48,7 @@ public class LicenseArcheologist implements IOperation {
                 System.out.println("Seguro que quieres licenciar a " + selectedArcheologist.getName() + " por " + selectedArcheologist.getDismissPoints() + " puntos?");
                 System.out.println("0. No");
                 System.out.println("1. Sí");
-                int userConfirmation = UserInput.getUserIntegerInRange(0, 2, "Opción no válida");
+                int userConfirmation = UserInput.getUserIntegerInRange(0, 1, "Opción no válida");
                 if(userConfirmation == 1){
                     Stats.addPoints(selectedArcheologist.getDismissPoints());
                     Stats.removeArcheologist(selectedArcheologist);
