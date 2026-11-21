@@ -5,9 +5,11 @@
     {
       "Licencias": [],
       "Nombre": "Arch Test",
-      "Exp": 4,
-      "Nv": 0,
-      "Habilidades": [],
+      "Exp": 28,
+      "Nv": 1,
+      "Habilidades": [
+        "Escaneo A"
+      ],
       "Terrenos": [
         "S_SQUARE"
       ]
@@ -15,11 +17,23 @@
   ],
   "Estadísticas": {
     "Tesoros": {
-      "EGP_TES_GRC_TES_001": 2
+      "ROM_CUE_002_0001": 1,
+      "IBR_CER_004_0002": 1,
+      "ROM_MON_004_0001": 1,
+      "ROM_MON_002_0001": 1,
+      "IBR_CER_005_0005": 1,
+      "IBR_CUE_001_0001": 1,
+      "ROM_CUE_003_0001": 1,
+      "ROM_MON_003_0001": 1,
+      "IBR_TES_001_0022": 1,
+      "IBR_CER_001_0017": 1,
+      "ROM_EQP_002_0003": 1
     },
     "Lugares": {
+      "ROM": 8,
+      "IBR": 7,
       "GRC": 1
     }
   },
-  "Puntos": 2
+  "Puntos": 18
 }
