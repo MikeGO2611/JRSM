@@ -187,6 +187,7 @@ public class Archaios {
         for(Map.Entry<String, Integer> entry : locationSaveStats.entrySet()){
             TerrainStatEntry terrainStatEntry = null;
 
+            //TODO Usar el repositorio de los terrainsStats
             switch (entry.getKey()) {
                 case "EGP":
                     terrainStatEntry = new TerrainStatEntry(new Egypt());

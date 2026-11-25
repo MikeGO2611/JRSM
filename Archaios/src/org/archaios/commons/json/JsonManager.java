@@ -61,6 +61,7 @@ public class JsonManager {
         Gson gson = new Gson();
         SaveJObject saveJObject = null;
 
+        //TODO Cambiar el UTF-8 a StandardEncode
         try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(saveFile), "UTF-8"))){
             saveJObject = gson.fromJson(br, SaveJObject.class);
         } catch(IOException e){
