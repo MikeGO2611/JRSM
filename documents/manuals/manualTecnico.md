@@ -2,29 +2,29 @@
 
 ## Estructura de carpetas y recursos
 
-### Carpeta `config/`
+### Paquete `config/`
 Contiene la configuración externa necesaria para conectar el programa con el servidor del museo.
 * **Zeraf.conf**: Archivo JSON con la URL del servidor y el identificador del grupo.
 
-### Carpeta `input/treasures/`
+### Paquete `input/treasures/`
 Guarda los ficheros de datos iniciales con los tesoros disponibles en cada región.
 * **EGP.json, GRC.json, IBR.json, PTR.json, ROM.json y SUM.json**: Listados de tesoros en formato JSON que se cargan al iniciar el juego mediante `TreasureJSON`.
 
-### Carpeta `lib/`
+### Paquete `lib/`
 Almacena las librerías externas (`.jar`) necesarias para compilar y ejecutar el proyecto.
 * **gson-2.15.0.jar** *(y `gson-2.15.0-javadoc.jar`)*: Librería usada para leer los ficheros de tesoros y guardar o cargar partidas en formato JSON.
 * **Terra.v1.0.0.jar**: Librería externa que incluye las clases de `Zeraf` para enviar los tesoros encontrados al museo.
 
-### Carpeta `saves/`
-Carpeta donde se guardan las partidas del jugador.
+### Paquete `saves/`
+Paquete donde se guardan las partidas del jugador.
 * **`<nombrePartida>.save`**: Archivos JSON creados por `JsonManager` con el UID, el nombre de la partida, los puntos, los arqueólogos y las estadísticas.
 
-### Carpeta `log/`
+### Paquete `log/`
 Almacena los registros de actividad de las partidas y los errores de ejecución.
 * **errors.log**: Archivo común en el que `LogManager` anota con fecha y hora los errores de entrada/salida.
 * **`register/<nombrePartida>.log`**: Registro individual de cada partida donde se apuntan el inicio de sesión y los códigos de los tesoros excavados.
 
-### Carpeta `backup/`
+### Paquete `backup/`
 Guarda copias de respaldo locales generadas al enviar datos al servidor del museo.
 * **`<idGrupo>_<idUsuario>.bkp`**: Archivos de respaldo con los tesoros enviados por el usuario.
 
