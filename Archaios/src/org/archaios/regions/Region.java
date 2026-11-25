@@ -48,6 +48,7 @@ public abstract class Region implements ICode {
     /**
      * @return devuelve una lista de todos los tesoros de la región.
      */
+    // TODO pasar a hashMap <Codigo,Tesoro>
     public List<Treasure> getAllTreasures() {
         return treasures;
     }
