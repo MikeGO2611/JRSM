@@ -36,6 +36,8 @@ Muestra un submenú donde se puede contratar, licenciar y ver los arqueólogos.
 
 Muestra una lista con los arqueólogos actualmente en posesión del jugador. Seleccionando un arqueólogo de la lista, se mostrarán todos los detalles de ese arqueólogo.
 
+![menu ver arqueólogos](./img/menu-ver-arquelogo_archaios.png)
+
 #### Contratar
 
 Permite contratar nuevos arqueólogos siempre y cuando el jugador tenga puntos suficientes.
@@ -48,17 +50,23 @@ Permite licenciar un arqueólogo, es decir deshacerse de él, a cambio de puntos
 
 Permite ver todas las habilidades existentes en el juego, con sus efectos y mejoras. Están clasificadas por tipos.
 
+![menu ver habilidades](./img/menu-ver-habilidades_archaios.png)
+
 ### 3. Licencias
 
 Permite la compra de licencias para los arqueólogos ya disponibles. Las licencias permiten acceder a nuevas regiones.
 
 ### 4. Atlas
 
-Permite consultar todas las regiones disponibles en el juego, y la información de los distintos tipos de tesoros de dicha región.
+Permite consultar todas las regiones disponibles en el juego.
+
+![altas](./img/menu-atlas.png)
 
 ### 5. Catálogo de Tesoros
 
-Permite consultar una lista completa de todos los tesoros disponibles de cada región.
+Permite consultar una lista completa de todos los tesoros disponibles de cada región, y la información de cada tesoro
+
+![catálogo de tesoros](./img/menu-tesoro-catalogo.png)
 
 ### 6. Excavación
 
@@ -82,6 +90,10 @@ Permite ver las estadísticas tanto de las regiones como de los tesoros.
 
 Permite ver el número de veces que una región fue visitada, el número de tesoros únicos encontrados de dicha región, y el número total de tesoros excavados.
 
+![estadísticas de regiones](./img/menu-estadisticas-regiones_archaios.png)
+
 #### Ver Tesoros
 
 Permite ver una lista de los tesoros totales adquiridos en las distintas excavaciones.
+
+![estadísticas de tesoros](./img/menu-estadisticas-tesoros_archaios.png)
